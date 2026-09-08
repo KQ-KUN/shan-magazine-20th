@@ -1,0 +1,31 @@
+# InDesign 工作文档、锁和恢复文件
+*.indd
+*.idml
+*.idlk
+*.indt
+*.indb
+InDesign Recovery/
+RecoveryData/
+# 导出图像及 PDF 不进入源码仓库
+*.[pP][dD][fF]
+*.[pP][nN][gG]
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+exports/*
+!exports/.gitkeep
+# 临时文件、日志和本机环境
+*.tmp
+*.temp
+*.bak
+*.log
+*.swp
+~*
+.DS_Store
+Thumbs.db
+desktop.ini
+.env
+.env.*
+node_modules/
+__pycache__/
+.vscode/
+.idea/

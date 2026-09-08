@@ -1,0 +1,9 @@
+{
+  "foundation": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": ["core/document.jsx", "core/styles.jsx", "core/parents.jsx", "core/utils.jsx", "build/01_foundation.jsx"],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
+  }
+}
