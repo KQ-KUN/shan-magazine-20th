@@ -22,3 +22,11 @@ API：Adobe [WordRTFImportPreference](https://developer.adobe.com/indesign/uxp/d
 自动测试：`node tests/foundation.test.js`、`node tests/chapter.test.js`、`node tests/interview.test.js`。Node 验证错误路径、映射、续页/无进展保护和冻结文件，不能代替真实排版。
 
 TODO: DESIGN VALUE — 字体、字号、Q/A 视觉、首屏构图与页眉页脚待 Visual System 阶段，不修改冻结模块。无未核实 API 待实现分支。Interview 保持 IMPLEMENTED_PENDING_IND2026_TEST、runtimeTested=false、frozen=false；本轮宿主测试不等于人工验收或第二篇样本验证，不打 tag。
+
+## TASK 03B 第二样本复用验证
+
+用户第二轮只新增肖兆旭稿。入口为 `build/03b_interview_xiao_test.jsx`，调用原样的 `modules/interview.jsx`，参数为 interview_xiao 及指定 DOCX；无专用排版逻辑。原邵珠瑜入口继续可用。
+
+InDesign 2026 21.5.1.73 原生验证：肖兆旭 3 页、37 段，问题 13 段、回答 18 段；邵珠瑜回归 3 页、41 段，问题 13 段、回答 24 段。两篇最终 overset=false；标题、副标题、作者、Metadata 与 Q/A 全部按 Word 样式映射，B-INTERVIEW、O_Text_Main 双栏正常，无图片，导入偏好恢复。页数是观测值，不是视觉目标。第二样本未暴露通用 Bug，Interview 模块没有修改。
+
+复现命令：`powershell -NoProfile -File tests/interview.native.ps1 -Sample xiao` 与 `powershell -NoProfile -File tests/interview.native.ps1 -Sample shao`。原生测试只关闭自身新建文档。手动复测新入口并核对全文；Interview 保持未冻结，不创建 tag，待用户确认后再单独冻结。

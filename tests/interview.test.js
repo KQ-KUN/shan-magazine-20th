@@ -90,7 +90,9 @@ const entry = read('build/03_interview_test.jsx');
 assert.equal((entry.match(/\.docx/g) || []).length, 1);
 assert.ok(entry.includes('/manuscripts/01_interview_邵珠瑜_贾锦阳.docx'));
 assert.doesNotMatch(source + entry, /getFiles\s*\(|\beval\s*\(|\.exportFile\s*\(|\.save\s*\(/);
-for (const file of ['modules/interview.jsx', 'build/03_interview_test.jsx']) {
+const xiaoEntry = read('build/03b_interview_xiao_test.jsx');
+assert.equal(xiaoEntry.replace('01_interview_肖兆旭_河流.docx', '01_interview_邵珠瑜_贾锦阳.docx').replace('interview_xiao', 'interview_shao'), entry);
+for (const file of ['modules/interview.jsx', 'build/03_interview_test.jsx', 'build/03b_interview_xiao_test.jsx']) {
     assert.equal(fs.readFileSync(path.join(root, file)).subarray(0,3).toString('hex'), 'efbbbf');
 }
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
