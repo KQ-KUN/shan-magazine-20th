@@ -14,10 +14,10 @@
     "frozen": true
   },
   "interview": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "FROZEN",
     "scope": ["modules/interview.jsx", "build/03_interview_test.jsx"],
-    "runtimeTested": false,
+    "runtimeTested": true,
     "designValuesPending": true,
-    "frozen": false
+    "frozen": true
   }
 }
