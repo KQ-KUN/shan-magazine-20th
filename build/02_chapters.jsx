@@ -1,4 +1,4 @@
-#target "indesign"
+﻿#target "indesign"
 #include "../core/utils.jsx"
 #include "../core/document.jsx"
 #include "../core/styles.jsx"

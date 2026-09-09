@@ -12,7 +12,7 @@ const moduleSource = read('modules/chapter.jsx');
 // Node accepts BOM-less UTF-8, but the native ExtendScript include loader does not
 // reliably detect this module's encoding. The native companion test proves it.
 assert.equal(fs.readFileSync(path.join(root, 'modules/chapter.jsx')).subarray(0, 3).toString('hex'), 'efbbbf');
-const entry = read('build/02_chapters.jsx').replace(/^#.*$/gm, '');
+const entry = read('build/02_chapters.jsx').replace(/^\uFEFF?#.*$/gm, '');
 
 // Reuse the existing test fixture without editing the Foundation test file.
 const fixtureSource = read('tests/foundation.test.js').split('const normal = environment();')[0];
@@ -76,15 +76,16 @@ assert.equal(doc.pages.length, 7);
 assert.equal(doc.masterSpreads.length, 9);
 assert.equal(env.ctx.app.scriptPreferences.measurementUnit, 'USER_UNIT');
 assert.deepEqual(manifest.sections.map(s => s.cn), ['山口', '火种', '地层', '越岭', '星图', '此刻', '山外']);
-const styles = { chapter_index: 'P_Chapter_Number', cn: 'P_Section_Title_CN', en: 'P_Section_Title_EN', intro: 'P_Chapter_Intro' };
+const styles = { display_index: 'P_Chapter_Number', cn: 'P_Section_Title_CN', en: 'P_Section_Title_EN', intro: 'P_Chapter_Intro' };
 const labels = new Set();
 for (const [i, section] of manifest.sections.entries()) {
     const page = doc.pages.item(i);
     assert.equal(page.label, 'SHAN_CHAPTER:' + section.id);
     assert.equal(page.appliedMaster, doc.masterSpreads.itemByName('H-CHAPTER'));
     assert.equal(page.textFrames.length, i === 0 ? 3 : 4);
-    const fields = i === 0 ? ['cn', 'en', 'intro'] : ['chapter_index', 'cn', 'en', 'intro'];
+    const fields = i === 0 ? ['cn', 'en', 'intro'] : ['display_index', 'cn', 'en', 'intro'];
     assert.equal(section.chapter_index, i === 0 ? null : i);
+    assert.equal(section.display_index, [null, '壹', '贰', '叁', '肆', '伍', '陆'][i]);
     for (const [j, field] of fields.entries()) {
         const frame = page.textFrames.items[j];
         assert.equal(frame.label, 'SHAN_CHAPTER:' + section.id + ':' + field);
@@ -103,14 +104,14 @@ vm.runInContext(entry, env.ctx);
 assert.equal(env.made.length, 2);
 assert.equal(env.made[1].pages.length, 7);
 assert.equal(JSON.stringify(doc), snapshot);
-for (const field of ['id', 'chapter_index', 'cn', 'en', 'intro']) {
+for (const field of ['id', 'chapter_index', 'display_index', 'cn', 'en', 'intro']) {
     const bad = JSON.parse(manifestText); delete bad.sections[3][field];
     const failed = setup(JSON.stringify(bad));
-    assert.throws(() => vm.runInContext(entry, failed.ctx), /missing\/invalid|chapter_index/);
+    assert.throws(() => vm.runInContext(entry, failed.ctx), /missing\/invalid|chapter_index|display_index/);
     assert.equal(failed.made.length, 0);
     assert.equal(failed.ctx.app.scriptPreferences.measurementUnit, 'USER_UNIT');
 }
-for (const mutate of [m => m.sections.pop(), m => m.sections[2].id = m.sections[1].id, m => m.sections[1].chapter_index = '1']) {
+for (const mutate of [m => m.sections.pop(), m => m.sections[2].id = m.sections[1].id, m => m.sections[1].chapter_index = '1', m => m.sections[0].display_index = '零', m => m.sections[1].display_index = 1]) {
     const bad = JSON.parse(manifestText); mutate(bad);
     assert.throws(() => vm.runInContext(entry, setup(JSON.stringify(bad)).ctx));
 }
@@ -122,6 +123,10 @@ assert.equal(JSON.stringify(env.ctx.SHAN.chapter.parseJSON(escaped)), escaped);
 assert.deepEqual(JSON.parse(JSON.stringify(env.ctx.SHAN.chapter.parseJSON('\uFEFF' + manifestText))), manifest);
 assert.doesNotMatch(moduleSource + entry, /\beval\s*\(|\.place\s*\(|\.exportFile\s*\(|\.save\s*\(/);
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
+const jsxFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '--', '*.jsx'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/);
+for (const file of jsxFiles.filter(file => !status.foundation.scope.includes(file))) {
+    assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf', file + ' must be UTF-8 with BOM');
+}
 for (const file of status.foundation.scope) {
     const frozen = execFileSync('git', ['show', 'foundation-v1.0:' + file], { cwd: root });
     assert.equal(read(file).replace(/\r\n/g, '\n'), frozen.toString('utf8').replace(/\r\n/g, '\n'), file + ' changed');

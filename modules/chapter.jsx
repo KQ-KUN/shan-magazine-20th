@@ -86,6 +86,14 @@ SHAN.chapter = {
                 throw new Error("Invalid chapter_index in " + section.id);
             }
         }
+        for (i = 0; i < sections.length; i += 1) {
+            section = sections[i];
+            if (!section.hasOwnProperty("display_index") ||
+                (section.chapter_index === null ? section.display_index !== null :
+                    typeof section.display_index !== "string" || !/\S/.test(section.display_index))) {
+                throw new Error("Invalid display_index in " + section.id);
+            }
+        }
         return sections;
     },
     readManifest: function (file) {
@@ -114,7 +122,7 @@ SHAN.chapter = {
         var sections = this.validate(manifest), i, j, page, section, bounds, left, right, top, bottom, step;
         var parent = doc.masterSpreads.itemByName("H-CHAPTER");
         var styles = ["P_Chapter_Number", "P_Section_Title_CN", "P_Section_Title_EN", "P_Chapter_Intro"];
-        var fields = ["chapter_index", "cn", "en", "intro"];
+        var fields = ["display_index", "cn", "en", "intro"];
         if (!parent.isValid) { throw new Error("Missing H-CHAPTER Parent"); }
         for (i = 0; i < styles.length; i += 1) {
             if (!doc.paragraphStyles.itemByName(styles[i]).isValid) { throw new Error("Missing style: " + styles[i]); }

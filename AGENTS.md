@@ -87,6 +87,8 @@ Avoid:
 
 ## InDesign
 
+所有新创建或修改的 `.jsx` 源文件必须保存为 UTF-8 with BOM。InDesign 2026 原生 `#include` 已验证会因无 BOM 的编码识别问题产生 Error 14；Node 解析通过不能代替宿主编译检查。相关自动测试必须检查 BOM，语法或编码修复应运行原生编译测试。已有 FROZEN Foundation 文件保持原样，不为统一编码修改冻结文件。
+
 Use the environment defined in:
 spec/ENVIRONMENT.md
 
