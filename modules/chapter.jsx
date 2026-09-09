@@ -1,4 +1,4 @@
-/* Chapter only. ES3; manifest JSON is data, never executable code. */
+﻿/* Chapter only. ES3; manifest JSON is data, never executable code. */
 var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
 
 SHAN.chapter = {

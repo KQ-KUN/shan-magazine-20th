@@ -9,6 +9,9 @@ const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const manifestText = read('spec/CONTENT_MANIFEST.json');
 const manifest = JSON.parse(manifestText);
 const moduleSource = read('modules/chapter.jsx');
+// Node accepts BOM-less UTF-8, but the native ExtendScript include loader does not
+// reliably detect this module's encoding. The native companion test proves it.
+assert.equal(fs.readFileSync(path.join(root, 'modules/chapter.jsx')).subarray(0, 3).toString('hex'), 'efbbbf');
 const entry = read('build/02_chapters.jsx').replace(/^#.*$/gm, '');
 
 // Reuse the existing test fixture without editing the Foundation test file.
