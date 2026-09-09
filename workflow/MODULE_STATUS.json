@@ -12,5 +12,12 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "interview": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": ["modules/interview.jsx", "build/03_interview_test.jsx"],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
