@@ -7,10 +7,10 @@
     "frozen": true
   },
   "chapter": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "FROZEN",
     "scope": ["modules/chapter.jsx", "build/02_chapters.jsx"],
-    "runtimeTested": false,
+    "runtimeTested": true,
     "designValuesPending": true,
-    "frozen": false
+    "frozen": true
   }
 }
