@@ -5,5 +5,12 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "chapter": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": ["modules/chapter.jsx", "build/02_chapters.jsx"],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
