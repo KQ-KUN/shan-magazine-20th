@@ -24,7 +24,7 @@ SHAN.parents = {
         // 当前容器占外侧一个模块列、下边距区域，文字统一由 P_Page_Folio 控制。
     },
     create: function (doc, context) {
-        var i, j, definition, parent, firstParent;
+        var i, j, k, definition, parent, firstParent;
         // 新文档内置母版可能来自用户预设；另建确定的双页母版后再移除它。
         var original = [];
         for (i = 0; i < doc.masterSpreads.length; i += 1) {
@@ -34,6 +34,11 @@ SHAN.parents = {
             definition = this.definitions[i];
             // UI 称 Parent Pages；ExtendScript DOM 仍使用 masterSpreads。
             parent = doc.masterSpreads.add(2);
+            if (i === 0) {
+                // 先保留新双页母版，再移除默认 A-Parent，避免设置 A 前缀时重名。
+                doc.pages.item(0).appliedMaster = parent;
+                for (k = original.length - 1; k >= 0; k -= 1) { original[k].remove(); }
+            }
             parent.namePrefix = definition[0];
             parent.baseName = definition[1];
             if (i === 0) { firstParent = parent; }
@@ -43,7 +48,6 @@ SHAN.parents = {
             }
         }
         doc.pages.item(0).appliedMaster = firstParent;
-        for (i = original.length - 1; i >= 0; i -= 1) { original[i].remove(); }
         SHAN.utils.warn(context, "页码位于外侧下边距容器；精确基线和字体参数待确认。H-CHAPTER 不含页码。");
     }
 };

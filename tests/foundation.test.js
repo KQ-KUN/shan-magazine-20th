@@ -61,14 +61,26 @@ function environment(fail = false) {
             item(i) { return masterItems[i]; },
             add(count) {
                 assert.equal(count, 2);
-                const parent = { pages: collection([page(true), page(false)]),
+                let prefix = String.fromCharCode(65 + masterItems.length);
+                let base = 'Parent';
+                const parent = {
+                    get namePrefix() { return prefix; },
+                    set namePrefix(value) {
+                        if (masterItems.some(p => p !== this && p.namePrefix === value && p.baseName === base)) {
+                            throw new Error('Duplicate Parent name: ' + value + '-' + base);
+                        }
+                        prefix = value;
+                    },
+                    get baseName() { return base; },
+                    set baseName(value) { base = value; },
+                    pages: collection([page(true), page(false)]),
                     remove() { masterItems.splice(masterItems.indexOf(this), 1); } };
                 masterItems.push(parent);
                 return parent;
             },
             items: masterItems
         };
-        doc.masterSpreads.add(2).baseName = 'Default';
+        doc.masterSpreads.add(2); // 新文档默认 A-Parent，命名碰撞必须在测试中可见。
         if (fail) doc.colors.add = () => { throw new Error('Injected color failure'); };
         return doc;
     }
@@ -116,6 +128,7 @@ checkMargins(doc.marginPreferences);
 checkMargins(doc.pages.item(0).marginPreferences);
 let folios = 0;
 for (const parent of doc.masterSpreads.items) {
+    assert.equal(parent.pages.length, 2);
     for (const page of parent.pages.items) {
         checkMargins(page.marginPreferences);
         assert.equal(page.textFrames.items.length, parent.namePrefix === 'H' ? 0 : 1);
