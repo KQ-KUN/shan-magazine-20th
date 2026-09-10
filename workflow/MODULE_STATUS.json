@@ -28,14 +28,14 @@
     "frozen": true
   },
   "fiction": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "FROZEN",
     "scope": [
       "modules/fiction.jsx",
       "visual/fiction_skin.jsx",
       "build/05_fiction_test.jsx"
     ],
-    "runtimeTested": false,
+    "runtimeTested": true,
     "designValuesPending": true,
-    "frozen": false
+    "frozen": true
   }
 }
