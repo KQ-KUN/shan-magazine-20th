@@ -1,0 +1,236 @@
+{
+  "version": "0.1",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "note": "Exact print CMYK for SDU red remains pending. This file controls the visual prototype.",
+  "colors": {
+    "C_PAPER": {
+      "rgb": [
+        247,
+        244,
+        236
+      ],
+      "hex": "#F7F4EC"
+    },
+    "C_TEXT": {
+      "rgb": [
+        31,
+        31,
+        31
+      ],
+      "hex": "#1F1F1F"
+    },
+    "C_MUTED": {
+      "rgb": [
+        110,
+        106,
+        99
+      ],
+      "hex": "#6E6A63"
+    },
+    "C_SDU_RED": {
+      "rgb": [
+        139,
+        45,
+        45
+      ],
+      "hex": "#8B2D2D",
+      "provisional": true
+    },
+    "C_LINE": {
+      "rgb": [
+        207,
+        201,
+        190
+      ],
+      "hex": "#CFC9BE"
+    },
+    "C_ARCHIVE": {
+      "rgb": [
+        183,
+        170,
+        148
+      ],
+      "hex": "#B7AA94"
+    },
+    "C_SPECIAL_BLUE": {
+      "rgb": [
+        129,
+        199,
+        212
+      ],
+      "hex": "#81C7D4",
+      "special_only": true
+    }
+  },
+  "font_stacks": {
+    "serif_cn": [
+      "Source Han Serif SC",
+      "Noto Serif CJK SC",
+      "思源宋体"
+    ],
+    "sans_cn": [
+      "Source Han Sans SC",
+      "Noto Sans CJK SC",
+      "思源黑体"
+    ],
+    "mono": [
+      "Source Code Pro",
+      "Noto Sans Mono CJK SC",
+      "Consolas"
+    ]
+  },
+  "paragraph_styles": {
+    "P_Body_CN": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15.5,
+      "first_line_indent_em": 2.0,
+      "space_after_mm": 0.8
+    },
+    "P_Body_EN": {
+      "family": "serif_cn",
+      "size_pt": 8.5,
+      "leading_pt": 13.2,
+      "space_after_mm": 1.0
+    },
+    "P_Article_Title": {
+      "family": "serif_cn",
+      "weight_preference": "SemiBold",
+      "size_pt": 25,
+      "leading_pt": 29,
+      "space_after_mm": 3.5
+    },
+    "P_Article_Subtitle": {
+      "family": "sans_cn",
+      "weight_preference": "Regular",
+      "size_pt": 10.5,
+      "leading_pt": 15,
+      "color": "C_MUTED",
+      "space_after_mm": 2.0
+    },
+    "P_Author": {
+      "family": "sans_cn",
+      "weight_preference": "Medium",
+      "size_pt": 9.2,
+      "leading_pt": 13,
+      "color": "C_TEXT",
+      "space_after_mm": 1.0
+    },
+    "P_Metadata": {
+      "family": "mono",
+      "size_pt": 7.5,
+      "leading_pt": 11,
+      "tracking": 60,
+      "color": "C_MUTED",
+      "space_after_mm": 1.5
+    },
+    "P_Section_Title_CN": {
+      "family": "serif_cn",
+      "weight_preference": "SemiBold",
+      "size_pt": 30,
+      "leading_pt": 34
+    },
+    "P_Section_Title_EN": {
+      "family": "sans_cn",
+      "size_pt": 8.5,
+      "leading_pt": 12,
+      "tracking": 180,
+      "color": "C_MUTED"
+    },
+    "P_Chapter_Number": {
+      "family": "serif_cn",
+      "weight_preference": "SemiBold",
+      "size_pt": 34,
+      "leading_pt": 36,
+      "color": "C_SDU_RED"
+    },
+    "P_Chapter_Intro": {
+      "family": "serif_cn",
+      "size_pt": 10.5,
+      "leading_pt": 18,
+      "color": "C_TEXT"
+    },
+    "P_Interview_Q": {
+      "family": "sans_cn",
+      "weight_preference": "Medium",
+      "size_pt": 10.2,
+      "leading_pt": 16.5,
+      "space_before_mm": 5.0,
+      "space_after_mm": 1.8,
+      "color": "C_TEXT",
+      "rule_above": {
+        "weight_pt": 0.5,
+        "color": "C_SDU_RED",
+        "offset_mm": 2.3
+      }
+    },
+    "P_Interview_A": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15.8,
+      "first_line_indent_em": 0.0,
+      "space_after_mm": 2.2,
+      "color": "C_TEXT"
+    },
+    "P_Caption": {
+      "family": "sans_cn",
+      "size_pt": 7.5,
+      "leading_pt": 11,
+      "color": "C_MUTED"
+    },
+    "P_Quote": {
+      "family": "serif_cn",
+      "weight_preference": "Medium",
+      "size_pt": 15,
+      "leading_pt": 22,
+      "color": "C_TEXT",
+      "left_rule": {
+        "weight_pt": 1.2,
+        "color": "C_SDU_RED"
+      }
+    },
+    "P_Page_Folio": {
+      "family": "mono",
+      "size_pt": 7.5,
+      "leading_pt": 10,
+      "tracking": 80,
+      "color": "C_TEXT"
+    }
+  },
+  "running_system": {
+    "header_y_mm": 9.5,
+    "header_rule_y_mm": 14.0,
+    "header_rule_weight_pt": 0.25,
+    "footer_y_mm": 248.0,
+    "header_font_style": "P_Metadata",
+    "folio_style": "P_Page_Folio",
+    "static_left": "山  SHAN",
+    "static_right": "2006—2026",
+    "hide_on_parents": [
+      "H-CHAPTER",
+      "I-FRONT"
+    ],
+    "minimal_on_parents": [
+      "F-GALLERY",
+      "G-MESSAGE"
+    ]
+  },
+  "chapter_visual": {
+    "use_whitespace": true,
+    "number_color": "C_SDU_RED",
+    "intro_max_width_modules": 4,
+    "motif": "thin contour/strata line only",
+    "motif_weight_pt": 0.25,
+    "motif_color": "C_LINE",
+    "no_full_page_space_background": true
+  },
+  "interview_visual": {
+    "default_portrait": false,
+    "body_columns": 2,
+    "column_gutter_mm": 6,
+    "preferred_target_pages_for_long_founder_interview": "5-6 (visual target only, not hard-coded)",
+    "allow_optional_archive_image_later": true,
+    "allow_optional_pull_quote_later": true,
+    "do_not_add_portrait_placeholder": true
+  }
+}

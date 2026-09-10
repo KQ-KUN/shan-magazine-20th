@@ -19,5 +19,12 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "visual_system": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": ["visual/tokens.jsx", "visual/typography.jsx", "visual/running_system.jsx", "visual/chapter_skin.jsx", "visual/interview_skin.jsx", "visual/apply_visual_system.jsx", "build/04_visual_system_test.jsx"],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
