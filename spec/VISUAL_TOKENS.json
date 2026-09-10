@@ -1,7 +1,7 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "status": "APPROVED_FOR_PROTOTYPE",
-  "note": "Exact print CMYK for SDU red remains pending. This file controls the visual prototype.",
+  "note": "Visual acceptance revision 04A. Exact print CMYK for SDU red remains pending.",
   "colors": {
     "C_PAPER": {
       "rgb": [
@@ -96,15 +96,15 @@
     "P_Article_Title": {
       "family": "serif_cn",
       "weight_preference": "SemiBold",
-      "size_pt": 25,
-      "leading_pt": 29,
-      "space_after_mm": 3.5
+      "size_pt": 24,
+      "leading_pt": 28,
+      "space_after_mm": 3.2
     },
     "P_Article_Subtitle": {
       "family": "sans_cn",
       "weight_preference": "Regular",
-      "size_pt": 10.5,
-      "leading_pt": 15,
+      "size_pt": 10.2,
+      "leading_pt": 14.5,
       "color": "C_MUTED",
       "space_after_mm": 2.0
     },
@@ -117,10 +117,11 @@
       "space_after_mm": 1.0
     },
     "P_Metadata": {
-      "family": "mono",
-      "size_pt": 7.5,
-      "leading_pt": 11,
-      "tracking": 60,
+      "family": "sans_cn",
+      "weight_preference": "Regular",
+      "size_pt": 7.8,
+      "leading_pt": 11.2,
+      "tracking": 20,
       "color": "C_MUTED",
       "space_after_mm": 1.5
     },
@@ -132,16 +133,16 @@
     },
     "P_Section_Title_EN": {
       "family": "sans_cn",
-      "size_pt": 8.5,
-      "leading_pt": 12,
-      "tracking": 180,
+      "size_pt": 9.2,
+      "leading_pt": 12.5,
+      "tracking": 160,
       "color": "C_MUTED"
     },
     "P_Chapter_Number": {
       "family": "serif_cn",
       "weight_preference": "SemiBold",
-      "size_pt": 34,
-      "leading_pt": 36,
+      "size_pt": 42,
+      "leading_pt": 44,
       "color": "C_SDU_RED"
     },
     "P_Chapter_Intro": {
@@ -153,23 +154,23 @@
     "P_Interview_Q": {
       "family": "sans_cn",
       "weight_preference": "Medium",
-      "size_pt": 10.2,
-      "leading_pt": 16.5,
+      "size_pt": 10.4,
+      "leading_pt": 17,
       "space_before_mm": 5.0,
-      "space_after_mm": 1.8,
+      "space_after_mm": 2.4,
       "color": "C_TEXT",
       "rule_above": {
-        "weight_pt": 0.5,
+        "weight_pt": 0.65,
         "color": "C_SDU_RED",
-        "offset_mm": 2.3
+        "offset_mm": 2.6
       }
     },
     "P_Interview_A": {
       "family": "serif_cn",
-      "size_pt": 9.3,
-      "leading_pt": 15.8,
+      "size_pt": 9.4,
+      "leading_pt": 16.2,
       "first_line_indent_em": 0.0,
-      "space_after_mm": 2.2,
+      "space_after_mm": 2.6,
       "color": "C_TEXT"
     },
     "P_Caption": {
@@ -222,12 +223,55 @@
     "motif": "thin contour/strata line only",
     "motif_weight_pt": 0.25,
     "motif_color": "C_LINE",
-    "no_full_page_space_background": true
+    "no_full_page_space_background": true,
+    "layout": {
+      "number": {
+        "top_offset_mm": 6,
+        "left_offset_mm": 0,
+        "width_mm": 30,
+        "height_mm": 24
+      },
+      "slash": {
+        "top_offset_mm": 8,
+        "left_offset_mm": 34,
+        "width_mm": 0,
+        "height_mm": 28,
+        "stroke_pt": 0.75,
+        "color": "C_SDU_RED"
+      },
+      "title": {
+        "top_offset_mm": 12,
+        "left_offset_mm": 46,
+        "width_mm": 92,
+        "height_mm": 22
+      },
+      "english": {
+        "top_offset_mm": 35,
+        "left_offset_mm": 46,
+        "width_mm": 92,
+        "height_mm": 10
+      },
+      "intro": {
+        "top_offset_mm": 55,
+        "left_offset_mm": 46,
+        "width_modules": 4,
+        "height_mm": 48
+      },
+      "baseline_bottom_offset_mm": 5
+    }
   },
   "interview_visual": {
     "default_portrait": false,
     "body_columns": 2,
     "column_gutter_mm": 6,
+    "span_opener_styles": [
+      "P_Article_Title",
+      "P_Article_Subtitle",
+      "P_Author",
+      "P_Metadata"
+    ],
+    "span_question_style": "P_Interview_Q",
+    "question_span_columns": true,
     "preferred_target_pages_for_long_founder_interview": "5-6 (visual target only, not hard-coded)",
     "allow_optional_archive_image_later": true,
     "allow_optional_pull_quote_later": true,

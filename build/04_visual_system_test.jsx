@@ -18,7 +18,7 @@
         var root = File($.fileName).parent.parent.fsName;
         app.scriptPreferences.measurementUnit = MeasurementUnits.POINTS;
         var doc = SHAN.visualSystem.createTestDocument(root, context);
-        alert("Visual System 原型已创建；请检查字体报告与页眉页脚。未保存或导出。\n\n" + context.warnings.join("\n"));
+        alert("Visual System 原型已创建；请检查字体报告与页眉页脚。未保存或导出。\n\n" + doc.extractLabel("SHAN_VISUAL_FONTS") + "\n\n" + context.warnings.join("\n"));
     } catch (e) { alert("Visual System 未完成：" + e.message + "\n行号：" + e.line); throw e; }
     finally { app.scriptPreferences.measurementUnit = unit; }
 }());

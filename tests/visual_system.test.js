@@ -6,7 +6,7 @@ const { execFileSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const files = ['tokens', 'typography', 'running_system', 'chapter_skin', 'interview_skin', 'apply_visual_system'].map(n => 'visual/' + n + '.jsx');
-const ctx = vm.createContext({ FontStatus: { INSTALLED: 'installed' }, ColorModel: { PROCESS: 'process' }, ColorSpace: { RGB: 'RGB' },
+const ctx = vm.createContext({ SpanColumnTypeOptions: { SPAN_COLUMNS: "span", SINGLE_COLUMN: "single" }, FontStatus: { INSTALLED: 'installed' }, ColorModel: { PROCESS: 'process' }, ColorSpace: { RGB: 'RGB' },
     PageSideOptions: { LEFT_HAND: 'left' }, Justification: { LEFT_ALIGN: 'left', RIGHT_ALIGN: 'right' }, SpecialCharacters: { AUTO_PAGE_NUMBER: 'auto' } });
 vm.runInContext(['core/utils.jsx','core/document.jsx','modules/chapter.jsx', ...files].map(read).join('\n'), ctx);
 const t = ctx.SHAN.chapter.parseJSON(read('spec/VISUAL_TOKENS.json'));
@@ -69,7 +69,7 @@ ctx.SHAN.chapterSkin.example(doc,chapterPage,manifest.sections[1],t);
 const intro=chapterPage.items.find(x=>x.label.endsWith(':intro'));
 assert.equal(intro.contents,manifest.sections[1].intro);
 assert.ok(Math.abs((intro.geometricBounds[3]-intro.geometricBounds[1])-ctx.SHAN.utils.pt(ctx.SHAN.utils.moduleWidthMM()*t.chapter_visual.intro_max_width_modules+ctx.SHAN.spec.gutterMM*(t.chapter_visual.intro_max_width_modules-1)))<1e-8);
-assert.equal(chapterPage.items.filter(x=>x.kind==='line').length,1);
+assert.equal(chapterPage.items.filter(x=>x.kind==='line').length,2);
 for(const file of [...files,'build/04_visual_system_test.jsx']) assert.equal(fs.readFileSync(path.join(root,file)).subarray(0,3).toString('hex'),'efbbbf');
 const status=JSON.parse(read('workflow/MODULE_STATUS.json'));
 for(const mod of ['foundation','chapter','interview']){
@@ -79,3 +79,21 @@ for(const mod of ['foundation','chapter','interview']){
 }
 assert.doesNotMatch(files.map(read).join('\n'),/\.ovals\.add|ColorSpace\.CMYK|\.pointSize\s*=\s*[0-9]/);
 console.log('PASS: exact tokens, approved font fallback/warnings, RGB, rules, running visibility/idempotence, chapter content/width, BOM, frozen files; mock only.');
+
+const ps=['P_Article_Title','P_Article_Subtitle','P_Author','P_Metadata','P_Interview_Q','P_Interview_A','Unknown'].map(name=>({appliedParagraphStyle:{name}}));
+const story={contents:'原文 Q/A 不变',paragraphs:{length:ps.length,item:i=>ps[i]}};
+ctx.SHAN.interviewSkin.applyStory(story,t);
+assert.equal(story.contents,'原文 Q/A 不变');
+for(const p of ps.slice(0,5)){assert.equal(p.spanColumnType,'span');assert.equal(p.spanSplitColumnCount,2);}
+assert.equal(ps[5].spanColumnType,'single');assert.equal(ps[6].spanColumnType,undefined);
+const off=JSON.parse(JSON.stringify(t));off.interview_visual.question_span_columns=false;
+ctx.SHAN.interviewSkin.applyStory(story,off);assert.equal(ps[4].spanColumnType,'single');
+for(const [field,key] of [['display_index','number'],['cn','title'],['en','english'],['intro','intro']]){
+ const item=chapterPage.items.find(x=>x.label.endsWith(':'+field)),box=t.chapter_visual.layout[key];
+ assert.ok(Math.abs(item.geometricBounds[0]-ctx.SHAN.utils.pt(ctx.SHAN.spec.marginsMM.top+box.top_offset_mm))<1e-8);
+ assert.ok(Math.abs(item.geometricBounds[1]-ctx.SHAN.utils.pt(ctx.SHAN.spec.marginsMM.inside+box.left_offset_mm))<1e-8);
+}
+assert.equal(t.paragraph_styles.P_Metadata.family,'sans_cn');
+assert.ok(read('build/04_visual_system_test.jsx').includes('doc.extractLabel("SHAN_VISUAL_FONTS")'));
+assert.ok(read('visual/apply_visual_system.jsx').includes(', 6, context, tokens)'));
+console.log('PASS 04A: style spans, unchanged text, token layout, Metadata sans_cn and font alert.');

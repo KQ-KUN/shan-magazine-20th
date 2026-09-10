@@ -18,7 +18,19 @@ $code += @'
    for(j=0;j<p.textFrames.length;j++){if(p.textFrames.item(j).overflows){over++;}}
   }
   if(over){throw new Error("Page text frames overset: "+over);}
-  if(doc.pages.length-1<2||doc.pages.length-1>4){throw new Error("Expected 2-4 excerpt pages, got "+(doc.pages.length-1));}
+  var story=doc.pages.item(1).textFrames.item(0).parentStory,before=story.contents,q=0,para,name;
+  var tokens=SHAN.visualTokens.read(File("__ROOT__/spec/VISUAL_TOKENS.json"));
+  SHAN.interviewSkin.applyStory(story,tokens);
+  if(story.contents!==before){throw new Error("Span changed text");}
+  for(i=0;i<story.paragraphs.length;i++){
+   para=story.paragraphs.item(i);name=para.appliedParagraphStyle.name;
+   if(name==="P_Interview_Q"){q++;}
+   if(SHAN.runningSystem.contains(tokens.interview_visual.span_opener_styles,name)||name==="P_Interview_Q"){
+    if(para.spanColumnType!==SpanColumnTypeOptions.SPAN_COLUMNS||para.spanSplitColumnCount!==2){throw new Error("Missing span: "+name);}
+   }
+   if(name==="P_Interview_A"&&para.spanColumnType!==SpanColumnTypeOptions.SINGLE_COLUMN){throw new Error("Answer spans");}
+  }
+  if(q!==6){throw new Error("Expected six complete Q/A groups: "+q);}
   for(i=0;i<doc.masterSpreads.length;i++){
    var master=doc.masterSpreads.item(i);
    for(j=0;j<master.pages.length;j++){

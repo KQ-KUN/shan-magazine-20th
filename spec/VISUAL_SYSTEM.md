@@ -1,7 +1,7 @@
 # 《山》Base Visual System v0.1
 状态：已批准用于视觉原型。结构模块 Foundation / Chapter / Interview 保持 FROZEN。
 ## 1. 视觉方向
-以 `references/VISUAL_BOARD_APPROVED.png` 为气质参考，但机器实现以 `spec/VISUAL_TOKENS.json` 为唯一数值真源。
+先读 `VISUAL_REFERENCE_INDEX.md`，按当前任务选用拆分参考图作为层级、疏密和构图参考，但机器实现以 `spec/VISUAL_TOKENS.json` 为唯一数值真源。
 关键词：文学纪念刊、纸本感、档案感、瑞士式秩序、克制、山体/等高线、少量红色强调。
 禁止：蓝紫星云、宇航员、赛博 HUD、大面积科技发光、满版宇宙背景。
 ## 2. 配色

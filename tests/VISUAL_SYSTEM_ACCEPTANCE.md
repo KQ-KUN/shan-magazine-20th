@@ -34,3 +34,15 @@ TODO: DESIGN VALUE — 最终印刷 CMYK 未批准；复杂等高线/地层带�
 本轮 Node 测试通过；首次 InDesign COM 启动返回 0x80080005（服务器运行失败），原生字体/编译/排版验证未完成，不把 Node 结果冒充宿主结果。Visual System 保持 IMPLEMENTED_PENDING_IND2026_TEST、runtimeTested=false、frozen=false，待原生测试与用户视觉验收。
 
 API 参考：[ParagraphStyle](https://developer.adobe.com/indesign/uxp/dom/api/p/paragraph-style/) 的字距/段距/规则线/单侧段落边框，[Font](https://developer.adobe.com/indesign/uxp/dom/api/f/font/) 的字体家族与字重。文件导入、按 Word 样式映射、续页复用已验证的 Interview；JSON 解析复用冻结 Chapter 的无 eval parser。
+
+## TASK 04A 修正与实测（2026-09-10）
+
+本节替代上文旧的四等分容器、前四组问答和 2—4 页断言。数值使用原包 v0.2 tokens，未修改。章节按 layout 的 number/title/english/intro 定位，加入 token 分隔线及基线偏移；Running System 源码不变。参考仅使用索引和 REF_01/03/08。
+
+applyStory 只匹配映射后的段落样式；标题/副标题/作者/Metadata 和问题跨两栏，回答恢复 SINGLE_COLUMN，在双栏文本框内正常流动。应用前后 story.contents 相等。测试片段为前六组完整问答，不设最终页数。P_Metadata 通过既有 typography 读取 sans_cn，不新增 fallback。弹窗显示 SHAN_VISUAL_FONTS。
+
+InDesign 21.5.1.73 最小宿主探针验证 SPAN_COLUMNS、spanSplitColumnCount=2、SINGLE_COLUMN 与文本不变。原生 #include 测试通过：总计 3 页（章节 1 页、采访 2 页），24 段、6 组完整问答，标题/问题跨栏、回答不跨栏、无 overset，H/I 无页眉页脚。所有 Foundation/Chapter/Interview/Visual Node 测试通过，BOM 与冻结文件检查通过。
+
+实际字体报告：P_Page_Folio = Consolas Regular；其余 14 个样式（包括 P_Metadata）均 MISSING APPROVED FONT。TODO：补齐批准中文字体后重新进行字形和视觉验收，当前不能宣称中文方框已实机消失。原有印刷 CMYK/复杂路径设计 TODO 保留；无新增未验证 API TODO。Visual System 保持未冻结。
+
+API 文档：[Adobe ParagraphStyle](https://developer.adobe.com/indesign/uxp/dom/api/p/paragraph-style/)、[SpanColumnTypeOptions](https://developer.adobe.com/indesign/uxp/dom/api/s/span-column-type-options/)。文档名称经上述 ExtendScript 原生探针确认。

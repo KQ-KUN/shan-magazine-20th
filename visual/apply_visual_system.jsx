@@ -16,7 +16,7 @@ SHAN.visualSystem = {
         var doc = SHAN.document.create(context);
         SHAN.styles.create(doc, context); SHAN.parents.create(doc, context);
         SHAN.visualSystem.apply(doc, tokens, context);
-        var story = SHAN.interviewSkin.sample(doc, File(root + "/manuscripts/01_interview_邵珠瑜_贾锦阳.docx"), 4, context);
+        var story = SHAN.interviewSkin.sample(doc, File(root + "/manuscripts/01_interview_邵珠瑜_贾锦阳.docx"), 6, context, tokens);
         var page = doc.pages.add(LocationOptions.BEFORE, doc.pages.item(0));
         SHAN.chapterSkin.example(doc, page, section, tokens);
         doc.recompose();

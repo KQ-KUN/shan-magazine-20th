@@ -7,7 +7,26 @@ SHAN.interviewSkin = {
         style.textFramePreferences.textColumnGutter = t.interview_visual.column_gutter_mm + " mm";
         // No portrait/archive/pull-quote placeholders; those are not this task.
     },
-    sample: function (doc, file, questionLimit, context) {
+    applyStory: function (story, t) {
+        var before = story.contents, v = t.interview_visual, i, j, p, name, span;
+        // Native InDesign 21.5.1.73 verified; match mapped styles, never text.
+        for (i = 0; i < story.paragraphs.length; i += 1) {
+            p = story.paragraphs.item(i); name = p.appliedParagraphStyle.name;
+            span = false;
+            for (j = 0; j < v.span_opener_styles.length; j += 1) {
+                if (name === v.span_opener_styles[j]) { span = true; }
+            }
+            if (name === v.span_question_style) { span = v.question_span_columns; }
+            if (span) {
+                p.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS;
+                p.spanSplitColumnCount = v.body_columns;
+            } else if (name === "P_Interview_A" || name === v.span_question_style) {
+                p.spanColumnType = SpanColumnTypeOptions.SINGLE_COLUMN;
+            }
+        }
+        if (story.contents !== before) { throw new Error("Interview visual styling changed text"); }
+    },
+    sample: function (doc, file, questionLimit, context, t) {
         // Test fixture selection only: retain the introduction and complete Q/A groups.
         // Boundaries come from imported Word styles, never question text or speaker names.
         SHAN.interview.checkStyles(doc);
@@ -25,6 +44,7 @@ SHAN.interviewSkin = {
         for (i = 0; i < cut; i += 1) { expected += story.paragraphs.item(i).contents; }
         if (cut < story.paragraphs.length) { story.paragraphs.itemByRange(cut, story.paragraphs.length - 1).remove(); }
         if (story.contents !== expected) { throw new Error("Visual excerpt text changed"); }
+        SHAN.interviewSkin.applyStory(story, t);
         story.label = "SHAN_VISUAL:interview_excerpt";
         var pages = SHAN.interview.flow(doc, story, first, "visual_excerpt");
         doc.insertLabel("SHAN_VISUAL_EXCERPT", "Source introduction + first " + questionLimit + " complete Q/A groups; paragraphs=" + cut + "; pages=" + pages + "; overset=" + story.overflows);
