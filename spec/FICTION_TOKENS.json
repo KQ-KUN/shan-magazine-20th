@@ -16,7 +16,7 @@
     "rule_above": {
       "weight_pt": 0.45,
       "color": "C_SDU_RED",
-      "offset_mm": 2.4
+      "offset_mm": 5.0
     }
   },
   "body_style_source": "P_Body_CN",
