@@ -1,0 +1,24 @@
+{
+  "version": "1.1",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "body_columns": 2,
+  "column_gutter_mm": 6,
+  "opener_span_columns": true,
+  "chapter_heading_span_columns": true,
+  "fiction_chapter_style": {
+    "family": "serif_cn",
+    "weight_preference": "SemiBold",
+    "size_pt": 13.5,
+    "leading_pt": 20,
+    "space_before_mm": 6.0,
+    "space_after_mm": 3.0,
+    "color": "C_TEXT",
+    "rule_above": {
+      "weight_pt": 0.45,
+      "color": "C_SDU_RED",
+      "offset_mm": 2.4
+    }
+  },
+  "body_style_source": "P_Body_CN",
+  "special_skin_enabled": false
+}

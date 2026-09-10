@@ -26,5 +26,16 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "fiction": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/fiction.jsx",
+      "visual/fiction_skin.jsx",
+      "build/05_fiction_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
