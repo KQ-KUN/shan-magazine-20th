@@ -97,3 +97,19 @@ assert.equal(t.paragraph_styles.P_Metadata.family,'sans_cn');
 assert.ok(read('build/04_visual_system_test.jsx').includes('doc.extractLabel("SHAN_VISUAL_FONTS")'));
 assert.ok(read('visual/apply_visual_system.jsx').includes(', 6, context, tokens)'));
 console.log('PASS 04A: style spans, unchanged text, token layout, Metadata sans_cn and font alert.');
+
+// 04B: normalize approved names; exact weight wins before body aliases.
+{
+ const face=style=>({fontFamily:'  Source Han Sans SC  ',fontStyleName:style,status:'installed'});
+ const normal=face('Normal'),regular=face('  REGULAR  '),medium=face(' Medium ');
+ const choose=(faces,weight)=>ctx.SHAN.typography.chooseFont(faces,['source han sans sc'],weight);
+ assert.equal(choose([normal,medium,regular],'Regular').font,regular);
+ assert.equal(choose([normal,medium],'Regular').font,normal);
+ assert.equal(choose([normal],'Regular').exact,true);
+ assert.equal(choose([normal,regular,medium],'Medium').font,medium);
+ assert.equal(choose([normal,regular,medium],'Medium').exact,true);
+ assert.equal(choose([normal,regular],'SemiBold').font,regular);
+ assert.equal(choose([normal],'SemiBold').exact,false);
+ assert.equal(choose([{...regular,fontFamily:'Unapproved'}],'Regular'),null);
+ console.log('PASS 04B: normalized Regular, Normal alias, Medium exact and approved-family fallback.');
+}

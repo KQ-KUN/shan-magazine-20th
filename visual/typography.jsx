@@ -1,18 +1,55 @@
-﻿var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
+﻿﻿var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
 SHAN.typography = {
+    canonical: function (value) {
+        return String(value === undefined || value === null ? "" : value)
+            .replace(/^\s+|\s+$/g, "")
+            .replace(/\s+/g, " ")
+            .toLowerCase();
+    },
     chooseFont: function (fonts, stack, weight) {
-        var i, j, candidates, fallback;
+        var i, j, candidates, requested, styleName, regularFallback, normalFallback;
+        requested = this.canonical(weight || "Regular");
+
         for (i = 0; i < stack.length; i += 1) {
-            candidates = []; fallback = null;
+            candidates = [];
+            regularFallback = null;
+            normalFallback = null;
+
             for (j = 0; j < fonts.length; j += 1) {
-                if (fonts[j].status === FontStatus.INSTALLED && fonts[j].fontFamily === stack[i]) { candidates.push(fonts[j]); }
+                if (fonts[j].status === FontStatus.INSTALLED &&
+                        this.canonical(fonts[j].fontFamily) === this.canonical(stack[i])) {
+                    candidates.push(fonts[j]);
+                }
             }
+
+            /* Pass 1: exact requested style. This deliberately happens before
+               the Regular/Normal alias fallback so a true Regular wins. */
             for (j = 0; j < candidates.length; j += 1) {
-                if (candidates[j].fontStyleName === (weight || "Regular")) { return { font: candidates[j], exact: true }; }
-                if (candidates[j].fontStyleName === "Regular") { fallback = candidates[j]; }
+                styleName = this.canonical(candidates[j].fontStyleName);
+                if (styleName === requested) {
+                    return { font: candidates[j], exact: true };
+                }
             }
-            // Only a regular face from an approved family may serve as fallback.
-            if (fallback) { return { font: fallback, exact: !weight }; }
+
+            /* Pass 2: remember approved-family body fallbacks. */
+            for (j = 0; j < candidates.length; j += 1) {
+                styleName = this.canonical(candidates[j].fontStyleName);
+                if (styleName === "regular" && !regularFallback) { regularFallback = candidates[j]; }
+                if (styleName === "normal" && !normalFallback) { normalFallback = candidates[j]; }
+            }
+
+            /* Some CJK OpenType families expose the body face as Normal rather
+               than Regular. Treat that as an approved alias only for a
+               requested Regular face. */
+            if (requested === "regular" && normalFallback) {
+                return { font: normalFallback, exact: true };
+            }
+
+            /* For a missing non-Regular requested weight, keep the prior rule:
+               fall back only inside the same approved family. Prefer Regular,
+               then Normal. */
+            if (regularFallback) { return { font: regularFallback, exact: false }; }
+            if (normalFallback) { return { font: normalFallback, exact: false }; }
         }
         return null;
     },
@@ -35,7 +72,7 @@ SHAN.typography = {
             if (selected) {
                 style.appliedFont = selected.font;
                 report.push(key + ": " + selected.font.name);
-                if (!selected.exact) { SHAN.utils.warn(context, key + " 字重 " + def.weight_preference + " 缺失；使用批准字体家族的 Regular。"); }
+                if (!selected.exact) { SHAN.utils.warn(context, key + " 字重 " + def.weight_preference + " 缺失；使用批准字体家族的 Regular/Normal。"); }
             } else {
                 report.push(key + ": MISSING APPROVED FONT");
                 SHAN.utils.warn(context, key + " 批准字体栈不可用；未替换字体，宿主原字体不视为批准视觉结果。");
