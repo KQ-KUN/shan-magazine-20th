@@ -1,0 +1,13 @@
+# Fiction Sample 2 Notes — 《锡兵》
+- 原始 Library 文件名：`短篇科幻小说赛道 山东大学科幻协会 张钧寒《锡兵》.docx`
+- 作者：`张钧寒`
+- 用途：Fiction 共用模块第二真实样本验证。
+- 不做作品专属皮肤，不新增颜色，不新增视觉体系。
+- 结构化 Word 已加入：
+  - ArticleTitle：锡兵
+  - Author：张钧寒
+  - FictionChapter：数字人 / 认知危机 / 永生还是？
+  - 其余正文：Body
+- `数字人三大法则：` 是正文中的世界观文本，不标为 FictionChapter。
+- 文末 `（释 ... ）` 本轮保留为 Body，禁止 Codex 擅自删除、改写或转换；是否在最终刊物删除/改为作者注，留到编辑精修阶段决定。
+- 本轮只验证既有 Fiction module 是否能无修改复用。
