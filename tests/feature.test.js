@@ -34,18 +34,29 @@ for (const match of documentXml.matchAll(/<w:p(?:\s[^>]*)?>([\s\S]*?)<\/w:p>/g))
     fixture.roles.push(style ? styleNames[style[1]] : 'DEFAULT');
     fixture.texts.push(decode([...xml.matchAll(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>/g)].map(value => value[1]).join('')));
 }
+const priorDocx = zipEntries(execFileSync('git', ['show', 'HEAD:manuscripts/09_feature_越岭_几华里.docx'], { cwd: root }));
+const priorStylesXml = priorDocx['word/styles.xml'].toString('utf8');
+const priorStyleNames = Object.fromEntries([...priorStylesXml.matchAll(/<w:style\b[^>]*w:styleId="([^"]+)"[^>]*>[\s\S]*?<w:name\b[^>]*w:val="([^"]+)"/g)].map(m => [m[1], m[2]]));
+const prior = { roles: [], texts: [] };
+for (const match of priorDocx['word/document.xml'].toString('utf8').matchAll(/<w:p(?:\s[^>]*)?>([\s\S]*?)<\/w:p>/g)) {
+    const xml = match[1], style = xml.match(/<w:pStyle\b[^>]*w:val="([^"]+)"/);
+    prior.roles.push(style ? priorStyleNames[style[1]] : 'DEFAULT');
+    prior.texts.push(decode([...xml.matchAll(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>/g)].map(value => value[1]).join('')));
+}
+const prose = data => data.texts.filter((_, i) => !/^(?:FeatureMedia|Caption|caption)$/.test(data.roles[i]));
+assert.deepEqual(prose(fixture), prose(prior));
 assert.equal(fixture.texts[fixture.roles.indexOf('ArticleTitle')], '越岭：十七年间，山外仍有回声');
 assert.equal(fixture.texts[fixture.roles.indexOf('Author')], '文 / 几华里');
 assert.equal(fixture.roles.filter(role => role === 'FeatureSection').length, 5);
-assert.equal(fixture.roles.filter(role => role === 'FeatureMedia').length, 4);
-assert.equal(fixture.roles.filter(role => /^(?:Caption|caption)$/.test(role)).length, 4);
+assert.equal(fixture.roles.filter(role => role === 'FeatureMedia').length, 1);
+assert.equal(fixture.roles.filter(role => /^(?:Caption|caption)$/.test(role)).length, 1);
 const articleText = fixture.texts.join('\n');
 assert.ok(articleText.includes('颜冬'));
 assert.ok(articleText.includes('齐鲁科幻联盟'));
 
 const manifest = JSON.parse(read('assets/YUELING_MEDIA_MANIFEST.json'));
-assert.equal(manifest.article_id, 'feature_beyond_ridge'); assert.equal(manifest.media.length, 4);
-assert.deepEqual(manifest.media.map(item => item.slot), ['YUELING_MEDIA_01', 'YUELING_MEDIA_02', 'YUELING_MEDIA_03', 'YUELING_MEDIA_04']);
+assert.equal(manifest.article_id, 'feature_beyond_ridge'); assert.equal(manifest.media.length, 1);
+assert.deepEqual(manifest.media.map(item => item.slot), ['YUELING_MEDIA_01']);
 for (const item of manifest.media) {
     assert.equal(fixture.texts.filter(text => text.includes(`[[${item.slot}]]`)).length, 1);
     const image = fs.readFileSync(path.join(root, item.file));
@@ -59,8 +70,8 @@ const styles = Object.fromEntries(Object.values(feature.styleMap).map(name => [n
 const paragraphs = fixture.roles.map((name, i) => ({ appliedParagraphStyle: { name }, contents: fixture.texts[i], applyParagraphStyle(style, clear) { assert.equal(clear, true); this.appliedParagraphStyle = style; } }));
 const story = { contents: fixture.texts.join('\r'), paragraphs: { length: paragraphs.length, item: i => paragraphs[i] } };
 const counts = feature.mapStory({ paragraphStyles: { itemByName: name => styles[name] || { isValid: false } } }, story);
-assert.equal(counts.FeatureSection, 5); assert.equal(counts.FeatureMedia, 4);
-assert.equal((counts.Caption || 0) + (counts.caption || 0), 4);
+assert.equal(counts.FeatureSection, 5); assert.equal(counts.FeatureMedia, 1);
+assert.equal((counts.Caption || 0) + (counts.caption || 0), 1);
 assert.equal(story.contents, fixture.texts.join('\r'));
 const withoutMarkers = feature.withoutMarkers(story.contents, manifest.media);
 for (const item of manifest.media) assert.ok(!withoutMarkers.includes(`[[${item.slot}]]`));
@@ -72,6 +83,11 @@ const buildText = build.toString('utf8');
 assert.ok(buildText.includes('/manuscripts/09_feature_越岭_几华里.docx'));
 assert.ok(buildText.includes('/assets/YUELING_MEDIA_MANIFEST.json'));
 assert.ok(buildText.includes('"feature_beyond_ridge"'));
+const tokens = JSON.parse(read('spec/FEATURE_TOKENS.json'));
+assert.equal(tokens.version, '1.1'); assert.equal(tokens.body_columns, 2); assert.equal(tokens.column_gutter_mm, 6);
+assert.deepEqual(tokens.span_styles, ['P_Article_Title', 'P_Author', 'P_Feature_Lead', 'P_Feature_Section']);
+assert.ok(!tokens.span_styles.includes('P_Feature_Media')); assert.ok(!tokens.span_styles.includes('P_Feature_Caption'));
+assert.doesNotMatch(documentXml + JSON.stringify(manifest), /YUELING_MEDIA_0[234]/);
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.deepEqual({ status: status.feature.status, runtimeTested: status.feature.runtimeTested, designValuesPending: status.feature.designValuesPending, frozen: status.feature.frozen },
     { status: 'IMPLEMENTED_PENDING_IND2026_TEST', runtimeTested: false, designValuesPending: true, frozen: false });
@@ -79,4 +95,4 @@ for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'ficti
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
-console.log('PASS Feature: title/author, 5 sections, 4 media markers/assets/captions, approved aliases, marker-only removal, BOM and frozen scopes.');
+console.log('PASS Feature refinement: 5 sections, one media marker/asset/caption, v1.1 spans, approved aliases, marker-only removal, BOM and frozen scopes.');

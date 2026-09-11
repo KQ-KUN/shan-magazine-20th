@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "status": "APPROVED_FOR_PROTOTYPE",
   "body_columns": 2,
   "column_gutter_mm": 6,
@@ -7,15 +7,13 @@
     "P_Article_Title",
     "P_Author",
     "P_Feature_Lead",
-    "P_Feature_Section",
-    "P_Feature_Media",
-    "P_Feature_Caption"
+    "P_Feature_Section"
   ],
   "body": {
     "family": "serif_cn",
     "weight": "Regular",
     "size_pt": 9.4,
-    "leading_pt": 16.5,
+    "leading_pt": 15.0,
     "first_line_indent_em": 2.0,
     "color": "C_TEXT"
   },
@@ -23,8 +21,8 @@
     "family": "serif_cn",
     "weight": "Regular",
     "size_pt": 11.0,
-    "leading_pt": 18.0,
-    "space_after_mm": 5.0,
+    "leading_pt": 17.0,
+    "space_after_mm": 3.5,
     "color": "C_TEXT"
   },
   "section": {
@@ -32,8 +30,8 @@
     "weight": "SemiBold",
     "size_pt": 14.0,
     "leading_pt": 21.0,
-    "space_before_mm": 6.0,
-    "space_after_mm": 3.5,
+    "space_before_mm": 4.5,
+    "space_after_mm": 2.5,
     "color": "C_TEXT",
     "rule_above": {
       "weight_pt": 0.45,
@@ -44,14 +42,14 @@
   "caption": {
     "family": "sans_cn",
     "weight": "Regular",
-    "size_pt": 7.5,
-    "leading_pt": 11.0,
-    "space_before_mm": 1.0,
-    "space_after_mm": 4.0,
+    "size_pt": 7.3,
+    "leading_pt": 10.5,
+    "space_before_mm": 0.8,
+    "space_after_mm": 2.5,
     "color": "C_MUTED"
   },
   "media": {
-    "space_before_mm": 4.0,
-    "space_after_mm": 1.0
+    "space_before_mm": 2.0,
+    "space_after_mm": 0.5
   }
 }
