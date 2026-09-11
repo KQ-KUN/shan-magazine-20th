@@ -39,14 +39,14 @@
     "frozen": true
   },
   "memoir": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "FROZEN",
     "scope": [
       "modules/memoir.jsx",
       "visual/memoir_skin.jsx",
       "build/06_memoir_test.jsx"
     ],
-    "runtimeTested": false,
+    "runtimeTested": true,
     "designValuesPending": true,
-    "frozen": false
+    "frozen": true
   }
 }
