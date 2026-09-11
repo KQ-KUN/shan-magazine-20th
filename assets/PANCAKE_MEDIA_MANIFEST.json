@@ -1,0 +1,12 @@
+{
+  "article_id": "memoir_pancake",
+  "file": "assets/pancake_media_canvas.png",
+  "media_paragraph_style": "P_Memoir_Media",
+  "width_mm": 146.0,
+  "height_mm": 74.0,
+  "anchor_position": "ABOVE_LINE",
+  "expected_source_images": 1,
+  "placed_graphics": 1,
+  "caption": "△《生物中心主义》",
+  "note": "Original portrait image is centered unchanged in meaning on a transparent full-width canvas to reuse the existing anchored-media implementation without code changes."
+}
