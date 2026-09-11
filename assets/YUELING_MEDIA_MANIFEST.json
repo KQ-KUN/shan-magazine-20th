@@ -1,0 +1,37 @@
+{
+  "article_id": "feature_beyond_ridge",
+  "source_docx": "manuscripts/09_feature_越岭_几华里.docx",
+  "media": [
+    {
+      "slot": "YUELING_MEDIA_01",
+      "file": "assets/yueling_01_2007_contacts.png",
+      "width_mm": 72.0,
+      "height_mm": 116.71,
+      "align": "CENTER"
+    },
+    {
+      "slot": "YUELING_MEDIA_02",
+      "file": "assets/yueling_02_20071125_alliance_record.png",
+      "width_mm": 146.0,
+      "height_mm": 120.49,
+      "align": "CENTER"
+    },
+    {
+      "slot": "YUELING_MEDIA_03",
+      "file": "assets/yueling_03_20071209_shanshi_visit.png",
+      "width_mm": 82.0,
+      "height_mm": 116.64,
+      "align": "CENTER"
+    },
+    {
+      "slot": "YUELING_MEDIA_04",
+      "file": "assets/yueling_04_20240316_qilu_group.png",
+      "width_mm": 146.0,
+      "height_mm": 13.91,
+      "align": "CENTER"
+    }
+  ],
+  "placement": "anchored_above_line",
+  "caption_style": "P_Feature_Caption",
+  "notes": "All four images are fixed archival facsimiles prepared upstream. Do not regenerate, OCR, crop, rewrite or substitute."
+}

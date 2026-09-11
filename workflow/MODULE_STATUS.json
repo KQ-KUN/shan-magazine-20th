@@ -48,5 +48,16 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "feature": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/feature.jsx",
+      "visual/feature_skin.jsx",
+      "build/08_feature_beyond_ridge_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
