@@ -48,6 +48,7 @@ assert.deepEqual(prose(fixture), prose(prior));
 assert.equal(fixture.texts[fixture.roles.indexOf('ArticleTitle')], '越岭：十七年间，山外仍有回声');
 assert.equal(fixture.texts[fixture.roles.indexOf('Author')], '文 / 几华里');
 assert.equal(fixture.roles.filter(role => role === 'FeatureSection').length, 5);
+assert.equal(fixture.roles.filter(role => role === 'FeatureLead').length, 0);
 assert.equal(fixture.roles.filter(role => role === 'FeatureMedia').length, 1);
 assert.equal(fixture.roles.filter(role => /^(?:Caption|caption)$/.test(role)).length, 1);
 const articleText = fixture.texts.join('\n');
@@ -73,6 +74,9 @@ const counts = feature.mapStory({ paragraphStyles: { itemByName: name => styles[
 assert.equal(counts.FeatureSection, 5); assert.equal(counts.FeatureMedia, 1);
 assert.equal((counts.Caption || 0) + (counts.caption || 0), 1);
 assert.equal(story.contents, fixture.texts.join('\r'));
+assert.equal(paragraphs[fixture.roles.indexOf('ArticleTitle')].appliedParagraphStyle.name, 'P_Feature_Title');
+assert.equal(paragraphs[fixture.roles.indexOf('Author')].appliedParagraphStyle.name, 'P_Feature_Author');
+assert.equal(paragraphs[fixture.roles.indexOf('FeatureSection')].appliedParagraphStyle.name, 'P_Feature_Section');
 const withoutMarkers = feature.withoutMarkers(story.contents, manifest.media);
 for (const item of manifest.media) assert.ok(!withoutMarkers.includes(`[[${item.slot}]]`));
 
@@ -84,9 +88,10 @@ assert.ok(buildText.includes('/manuscripts/09_feature_越岭_几华里.docx'));
 assert.ok(buildText.includes('/assets/YUELING_MEDIA_MANIFEST.json'));
 assert.ok(buildText.includes('"feature_beyond_ridge"'));
 const tokens = JSON.parse(read('spec/FEATURE_TOKENS.json'));
-assert.equal(tokens.version, '1.1'); assert.equal(tokens.body_columns, 2); assert.equal(tokens.column_gutter_mm, 6);
-assert.deepEqual(tokens.span_styles, ['P_Article_Title', 'P_Author', 'P_Feature_Lead', 'P_Feature_Section']);
+assert.equal(tokens.version, '1.2'); assert.equal(tokens.body_columns, 2); assert.equal(tokens.column_gutter_mm, 6);
+assert.deepEqual(tokens.span_styles, ['P_Feature_Title', 'P_Feature_Author']);
 assert.ok(!tokens.span_styles.includes('P_Feature_Media')); assert.ok(!tokens.span_styles.includes('P_Feature_Caption'));
+assert.ok(!tokens.span_styles.includes('P_Feature_Section')); assert.equal(tokens.section.rule_above, undefined);
 assert.doesNotMatch(documentXml + JSON.stringify(manifest), /YUELING_MEDIA_0[234]/);
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.deepEqual({ status: status.feature.status, runtimeTested: status.feature.runtimeTested, designValuesPending: status.feature.designValuesPending, frozen: status.feature.frozen },
@@ -95,4 +100,4 @@ for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'ficti
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
-console.log('PASS Feature refinement: 5 sections, one media marker/asset/caption, v1.1 spans, approved aliases, marker-only removal, BOM and frozen scopes.');
+console.log('PASS Feature continuous columns: dedicated title/author, no lead, 5 single-column sections, one media/caption, v1.2 spans, unchanged prose, BOM and frozen scopes.');

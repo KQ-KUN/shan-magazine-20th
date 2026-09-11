@@ -1,8 +1,8 @@
 ﻿var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
 SHAN.feature = {
     styleMap: {
-        ArticleTitle: "P_Article_Title", Author: "P_Author",
-        FeatureLead: "P_Feature_Lead", FeatureSection: "P_Feature_Section",
+        ArticleTitle: "P_Feature_Title", Author: "P_Feature_Author",
+        FeatureLead: "P_Feature_Body", FeatureSection: "P_Feature_Section",
         Body: "P_Feature_Body", FeatureMedia: "P_Feature_Media",
         Caption: "P_Feature_Caption", caption: "P_Feature_Caption"
     },
