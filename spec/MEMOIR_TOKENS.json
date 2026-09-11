@@ -1,0 +1,53 @@
+{
+  "version": "0.1",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "body_columns": 2,
+  "column_gutter_mm": 6,
+  "span_styles": [
+    "P_Article_Title",
+    "P_Author",
+    "P_Memoir_Section",
+    "P_Memoir_Media",
+    "P_Memoir_Caption"
+  ],
+  "body_style": {
+    "name": "P_Memoir_Body",
+    "family": "serif_cn",
+    "weight_preference": "Regular",
+    "size_pt": 9.4,
+    "leading_pt": 16.5,
+    "first_line_indent_em": 2.0,
+    "space_after_mm": 1.0,
+    "color": "C_TEXT"
+  },
+  "section_style": {
+    "name": "P_Memoir_Section",
+    "family": "serif_cn",
+    "weight_preference": "SemiBold",
+    "size_pt": 14.0,
+    "leading_pt": 21.0,
+    "space_before_mm": 6.0,
+    "space_after_mm": 3.5,
+    "color": "C_TEXT",
+    "rule_above": {
+      "weight_pt": 0.45,
+      "color": "C_SDU_RED",
+      "offset_mm": 5.0
+    }
+  },
+  "media_style": {
+    "name": "P_Memoir_Media",
+    "space_before_mm": 4.0,
+    "space_after_mm": 1.5
+  },
+  "caption_style": {
+    "name": "P_Memoir_Caption",
+    "family": "sans_cn",
+    "weight_preference": "Regular",
+    "size_pt": 7.5,
+    "leading_pt": 11.0,
+    "space_after_mm": 4.0,
+    "color": "C_MUTED"
+  },
+  "special_skin_enabled": false
+}

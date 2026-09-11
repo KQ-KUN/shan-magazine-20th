@@ -37,5 +37,16 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "memoir": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/memoir.jsx",
+      "visual/memoir_skin.jsx",
+      "build/06_memoir_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
