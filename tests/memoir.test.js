@@ -22,8 +22,8 @@ function zipEntries(buffer) {
     }
     return entries;
 }
-const docx = zipEntries(fs.readFileSync(path.join(root, 'manuscripts', '07_memoir_Gloomy_Biologist_Cry_笠原JunE.docx')));
-assert.equal(Object.keys(docx).filter(name => /^word\/media\/[^/]+$/.test(name)).length, 2);
+const docx = zipEntries(fs.readFileSync(path.join(root, 'manuscripts', '07_memoir_Gloomy_Biologist_Cry_笠原JunE_CLEAN.docx')));
+assert.equal(Object.keys(docx).filter(name => /^word\/media\/[^/]+$/.test(name)).length, 0);
 const documentXml = docx['word/document.xml'].toString('utf8');
 const stylesXml = docx['word/styles.xml'].toString('utf8');
 const styleNames = Object.fromEntries([...stylesXml.matchAll(/<w:style\b[^>]*w:styleId="([^"]+)"[^>]*>[\s\S]*?<w:name\b[^>]*w:val="([^"]+)"/g)].map(m => [m[1], m[2]]));
@@ -40,16 +40,23 @@ assert.deepEqual(fixture.texts.filter((_, i) => fixture.roles[i] === 'MemoirSect
     '1、青春症候群', '2、熙熙攘攘的科幻', '3、科幻、孤独与蓝色星球', '4、春日幻影', '5、聿日箋秋', '6、In your sci-fi eyes'
 ]);
 assert.equal(fixture.roles.filter(role => role === 'Media').length, 1);
-assert.deepEqual(fixture.texts.filter((_, i) => fixture.roles[i] === 'caption'), ['茫茫宇宙你不孤单；“8bit poster”']);
+assert.deepEqual(fixture.texts.filter((_, i) => /^(?:Caption|caption)$/.test(fixture.roles[i])), ['茫茫宇宙你不孤单；“8bit poster”']);
 
-const ctx = vm.createContext({ ResolveStyleClash: { RESOLVE_CLASH_USE_EXISTING: 'existing' }, LocationOptions: { AT_END: 'end' }, PageSideOptions: { LEFT_HAND: 'left' } });
+const manifest = JSON.parse(read('assets/GLOOMY_MEDIA_MANIFEST.json'));
+assert.deepEqual({ article_id: manifest.article_id, file: manifest.file, anchor_position: manifest.anchor_position, placed_graphics: manifest.placed_graphics },
+    { article_id: 'memoir_gloomy_biologist_cry', file: 'assets/gloomy_media_strip.png', anchor_position: 'ABOVE_LINE', placed_graphics: 1 });
+const media = fs.readFileSync(path.join(root, manifest.file));
+assert.equal(media.subarray(1, 4).toString('ascii'), 'PNG');
+
+const ctx = vm.createContext({ ResolveStyleClash: { RESOLVE_CLASH_USE_EXISTING: 'existing' }, LocationOptions: { AT_END: 'end' }, PageSideOptions: { LEFT_HAND: 'left' }, FitOptions: { PROPORTIONALLY: 'proportional', CENTER_CONTENT: 'center' }, AnchorPosition: { ABOVE_LINE: 'above' } });
 vm.runInContext(read('modules/memoir.jsx'), ctx);
 const memoir = ctx.SHAN.memoir;
+ctx.SHAN.utils = { pt: value => value * 72 / 25.4 };
 const styles = Object.fromEntries(Object.values(memoir.styleMap).map(name => [name, { name, isValid: true }]));
-const paragraphs = fixture.roles.map((name, i) => ({ appliedParagraphStyle: { name }, contents: fixture.texts[i], applyParagraphStyle(style, clear) { assert.equal(clear, true); this.appliedParagraphStyle = style; } }));
-const story = { contents: fixture.texts.join('\r'), allGraphics: [{}, {}], paragraphs: { length: paragraphs.length, item: i => paragraphs[i] } };
+const paragraphs = fixture.roles.map((name, i) => ({ appliedParagraphStyle: { name }, contents: fixture.texts[i], insertionPoints: { item: () => ({}) }, applyParagraphStyle(style, clear) { assert.equal(clear, true); this.appliedParagraphStyle = style; } }));
+const story = { contents: fixture.texts.join('\r'), allGraphics: [], paragraphs: { length: paragraphs.length, item: i => paragraphs[i] } };
 const counts = memoir.mapStory({ paragraphStyles: { itemByName: name => styles[name] || { isValid: false } } }, story);
-assert.equal(counts.MemoirSection, 6); assert.equal(counts.Media, 1); assert.equal(counts.caption, 1);
+assert.equal(counts.MemoirSection, 6); assert.equal(counts.Media, 1); assert.equal((counts.Caption || 0) + (counts.caption || 0), 1);
 assert.equal(story.contents, fixture.texts.join('\r'));
 
 for (const fail of [false, true]) {
@@ -57,10 +64,17 @@ for (const fail of [false, true]) {
     let state = { ...original };
     const pref = new Proxy({}, { get(_, key) { return key === 'properties' ? { ...state } : state[key]; }, set(_, key, value) { if (key === 'properties') state = value; else state[key] = value; return true; } });
     ctx.app = { wordRTFImportPreferences: pref };
-    const frame = { parentStory: story, place(_, show) { assert.equal(show, false); assert.equal(pref.preserveGraphics, true); if (fail) throw new Error('Native import failure'); } };
+    const frame = { parentStory: story, place(_, show) { assert.equal(show, false); assert.equal(pref.preserveGraphics, false); if (fail) throw new Error('Native import failure'); } };
     if (fail) assert.throws(() => memoir.importWord(frame, {}), /Native import failure/); else assert.equal(memoir.importWord(frame, {}), story);
     assert.deepEqual(state, original);
 }
+
+const rect = { anchoredObjectSettings: {}, place(file, show) { assert.equal(file.exists, true); assert.equal(show, false); }, fit(option) { assert.ok(['proportional', 'center'].includes(option)); } };
+rect.anchoredObjectSettings.insertAnchoredObject = (_, position) => { assert.equal(position, 'above'); story.contents += '\uFFFC'; story.allGraphics.push({}); };
+const mediaDoc = { pages: { item: () => ({ rectangles: { add: () => rect } }) }, swatches: { item: () => 'None' }, recompose() {} };
+memoir.placeMedia(mediaDoc, story, { exists: true }, manifest.width_mm, manifest.height_mm);
+assert.equal(story.allGraphics.length, 1);
+assert.equal(memoir.textOnly(story.contents), fixture.texts.join('\r'));
 
 const skinCtx = vm.createContext({ SpanColumnTypeOptions: { SPAN_COLUMNS: 'span', SINGLE_COLUMN: 'single' } });
 vm.runInContext(read('visual/memoir_skin.jsx'), skinCtx);
@@ -80,6 +94,9 @@ for (const name of tokens.span_styles) assert.equal(collection.item(name).spanCo
 assert.equal(collection.item('P_Memoir_Body').spanColumnType, 'single');
 
 for (const file of ['modules/memoir.jsx', 'visual/memoir_skin.jsx', 'build/06_memoir_test.jsx']) assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf');
+const buildText = read('build/06_memoir_test.jsx');
+assert.ok(buildText.includes('/manuscripts/07_memoir_Gloomy_Biologist_Cry_笠原JunE_CLEAN.docx'));
+assert.ok(buildText.includes('/assets/GLOOMY_MEDIA_MANIFEST.json'));
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.deepEqual({ status: status.memoir.status, runtimeTested: status.memoir.runtimeTested, designValuesPending: status.memoir.designValuesPending, frozen: status.memoir.frozen },
     { status: 'IMPLEMENTED_PENDING_IND2026_TEST', runtimeTested: false, designValuesPending: true, frozen: false });
@@ -87,4 +104,4 @@ for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'ficti
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
-console.log('PASS Memoir: title/author, 6 sections, 2 embedded images, caption, mapping, graphics preference, spans/columns, BOM and frozen scopes.');
+console.log('PASS Memoir clean media: title/author, 6 sections, caption, clean import preferences, anchored strip, spans/columns, BOM and frozen scopes.');

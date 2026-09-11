@@ -34,11 +34,13 @@ SHAN.memoir = {
         try {
             preferences.removeFormatting = false;
             preferences.importUnusedStyles = false;
-            preferences.preserveGraphics = true;
+            /* Host probe proved the clean DOCX imports reliably without Word graphics.
+               Media is placed separately from an explicit asset manifest. */
+            preferences.preserveGraphics = false;
             preferences.useTypographersQuotes = false;
             preferences.importTOC = false; preferences.importIndex = false;
-            preferences.importFootnotes = true; preferences.importEndnotes = true;
-            preferences.preserveTrackChanges = true;
+            preferences.importFootnotes = false; preferences.importEndnotes = false;
+            preferences.preserveTrackChanges = false;
             preferences.resolveParagraphStyleClash = ResolveStyleClash.RESOLVE_CLASH_USE_EXISTING;
             preferences.resolveCharacterStyleClash = ResolveStyleClash.RESOLVE_CLASH_USE_EXISTING;
             frame.place(source, false);
@@ -60,6 +62,37 @@ SHAN.memoir = {
         if (story.contents !== before) { throw new Error("Memoir text changed during style mapping"); }
         return counts;
     },
+    textOnly: function (value) {
+        return String(value).replace(/\uFFFC/g, "");
+    },
+    placeMedia: function (doc, story, mediaFile, widthMM, heightMM) {
+        if (!mediaFile || !mediaFile.exists) { throw new Error("Missing Memoir media asset"); }
+        var i, paragraph = null, count = 0;
+        for (i = 0; i < story.paragraphs.length; i += 1) {
+            if (story.paragraphs.item(i).appliedParagraphStyle.name === "P_Memoir_Media") {
+                paragraph = story.paragraphs.item(i);
+                count += 1;
+            }
+        }
+        if (count !== 1 || !paragraph) { throw new Error("Expected exactly one Memoir Media paragraph; found " + count); }
+
+        var rect = doc.pages.item(0).rectangles.add();
+        rect.label = "SHAN_MEMOIR_MEDIA";
+        rect.fillColor = doc.swatches.item(0);
+        rect.strokeColor = doc.swatches.item(0);
+        rect.geometricBounds = [0, 0, SHAN.utils.pt(heightMM), SHAN.utils.pt(widthMM)];
+        rect.place(mediaFile, false);
+        rect.fit(FitOptions.PROPORTIONALLY);
+        rect.fit(FitOptions.CENTER_CONTENT);
+        rect.anchoredObjectSettings.insertAnchoredObject(
+            paragraph.insertionPoints.item(0),
+            AnchorPosition.ABOVE_LINE
+        );
+        rect.anchoredObjectSettings.anchorSpaceAbove = 0;
+        rect.anchoredObjectSettings.anchorYoffset = 0;
+        doc.recompose();
+        return rect;
+    },
     flow: function (doc, story, first, articleId) {
         var last = first, next, pages = 1, lastEnd = -1, end;
         doc.recompose();
@@ -72,21 +105,36 @@ SHAN.memoir = {
         }
         return pages;
     },
-    create: function (doc, source, articleId) {
+    create: function (doc, source, articleId, mediaFile, mediaWidthMM, mediaHeightMM) {
         if (!source.exists || !/\.docx$/i.test(source.name)) { throw new Error("Missing/invalid Memoir DOCX: " + source.fsName); }
         if (!/^[a-z][a-z0-9_]*$/.test(articleId)) { throw new Error("Invalid Memoir article_id"); }
         this.checkStyles(doc);
         if (doc.pages.length !== 1 || doc.pages.item(0).textFrames.length !== 0) { throw new Error("Memoir requires a fresh document"); }
         doc.textPreferences.smartTextReflow = false;
+
         var first = this.addFrame(doc, doc.pages.item(0), articleId, 1);
-        var story = this.importWord(first, source), before = story.contents;
-        if (!before.length) { throw new Error("Memoir DOCX imported no text"); }
+        var story = this.importWord(first, source);
+        if (!story.contents.length) { throw new Error("Memoir DOCX imported no text"); }
         story.label = "SHAN_MEMOIR:" + articleId + ":story";
+
+        var sourceText = this.textOnly(story.contents);
         var counts = this.mapStory(doc, story);
+        this.placeMedia(doc, story, mediaFile, mediaWidthMM, mediaHeightMM);
+        if (this.textOnly(story.contents) !== sourceText) { throw new Error("Memoir visible text changed while placing media"); }
+
         var pages = this.flow(doc, story, first, articleId);
-        if (story.contents !== before) { throw new Error("Memoir text changed during flow"); }
+        if (this.textOnly(story.contents) !== sourceText) { throw new Error("Memoir visible text changed during flow"); }
+
         var graphics = story.allGraphics.length;
-        doc.insertLabel("SHAN_MEMOIR_REPORT", "article=" + articleId + "; pages=" + pages + "; paragraphs=" + story.paragraphs.length + "; sections=" + (counts.MemoirSection || 0) + "; graphics=" + graphics + "; captions=" + ((counts.Caption || 0) + (counts.caption || 0)) + "; overset=" + story.overflows + "; text unchanged=true");
+        doc.insertLabel("SHAN_MEMOIR_REPORT",
+            "article=" + articleId +
+            "; pages=" + pages +
+            "; paragraphs=" + story.paragraphs.length +
+            "; sections=" + (counts.MemoirSection || 0) +
+            "; graphics=" + graphics +
+            "; captions=" + ((counts.Caption || 0) + (counts.caption || 0)) +
+            "; overset=" + story.overflows +
+            "; text unchanged=true");
         return { story: story, pages: pages, counts: counts, graphics: graphics, overset: story.overflows };
     }
 };

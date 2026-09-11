@@ -1,0 +1,12 @@
+{
+  "article_id": "memoir_gloomy_biologist_cry",
+  "file": "assets/gloomy_media_strip.png",
+  "media_paragraph_style": "P_Memoir_Media",
+  "width_mm": 146.0,
+  "height_mm": 95.79,
+  "anchor_position": "ABOVE_LINE",
+  "expected_source_images": 2,
+  "placed_graphics": 1,
+  "caption": "茫茫宇宙你不孤单；“8bit poster”",
+  "note": "The two original DOCX PNGs are combined side-by-side into one transparent strip solely for stable anchored placement."
+}
