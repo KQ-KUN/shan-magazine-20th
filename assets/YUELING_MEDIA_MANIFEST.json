@@ -5,12 +5,12 @@
     {
       "slot": "YUELING_MEDIA_01",
       "file": "assets/yueling_01_2007_contacts_handwriting.png",
-      "width_mm": 66.0,
-      "height_mm": 98.76,
+      "width_mm": 52.0,
+      "height_mm": 77.81,
       "align": "CENTER"
     }
   ],
   "placement": "anchored_above_line",
   "caption_style": "P_Feature_Caption",
-  "notes": "Only the handwritten 2007 contact-page archival image is retained. It stays in one text column."
+  "notes": "Only the handwritten 2007 contact-page archival image is retained. It is reduced to 52 mm width to tighten the page."
 }

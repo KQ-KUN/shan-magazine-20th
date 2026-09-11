@@ -11,7 +11,7 @@ SHAN.featureSkin = {
         return false;
     },
     apply: function (doc, t, base, context) {
-        var names = ["P_Feature_Title", "P_Feature_Author", "P_Feature_Body",
+        var names = ["P_Feature_Title", "P_Feature_Author", "P_Feature_Lead", "P_Feature_Body",
             "P_Feature_Section", "P_Feature_Media", "P_Feature_Caption"];
         var i, style, prior = doc.extractLabel("SHAN_VISUAL_FONTS");
         for (i = 0; i < names.length; i += 1) {
@@ -22,6 +22,7 @@ SHAN.featureSkin = {
         var definitions = {
             P_Feature_Title: this.fontDef(t.title),
             P_Feature_Author: this.fontDef(t.author),
+            P_Feature_Lead: this.fontDef(t.lead),
             P_Feature_Body: this.fontDef(t.body),
             P_Feature_Section: this.fontDef(t.section),
             P_Feature_Caption: this.fontDef(t.caption)
