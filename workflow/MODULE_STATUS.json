@@ -50,14 +50,14 @@
     "frozen": true
   },
   "feature": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "FROZEN",
     "scope": [
       "modules/feature.jsx",
       "visual/feature_skin.jsx",
       "build/08_feature_beyond_ridge_test.jsx"
     ],
-    "runtimeTested": false,
+    "runtimeTested": true,
     "designValuesPending": true,
-    "frozen": false
+    "frozen": true
   }
 }
