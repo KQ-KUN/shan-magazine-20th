@@ -1,0 +1,23 @@
+{
+  "article_id": "feature_universe_is_big",
+  "source_docx": "manuscripts/10_feature_宇宙很大，科幻更大_几华里.docx",
+  "media": [
+    {
+      "slot": "NOW_MEDIA_01",
+      "file": "assets/now_01_baituan_booth.jpeg",
+      "width_mm": 66.0,
+      "height_mm": 49.47,
+      "align": "CENTER"
+    },
+    {
+      "slot": "NOW_MEDIA_02",
+      "file": "assets/now_02_notes.jpeg",
+      "width_mm": 66.0,
+      "height_mm": 49.51,
+      "align": "CENTER"
+    }
+  ],
+  "placement": "anchored_above_line",
+  "caption_style": "P_Feature_Caption",
+  "notes": "Keep only the two photographic current-era images. The rejection-email and translation-interface screenshots are intentionally omitted."
+}
