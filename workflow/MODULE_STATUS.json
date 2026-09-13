@@ -70,5 +70,16 @@
     "runtimeTested": false,
     "designValuesPending": true,
     "frozen": false
+  },
+  "association_profile": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/association_profile.jsx",
+      "visual/association_profile_skin.jsx",
+      "build/11_association_profile_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }

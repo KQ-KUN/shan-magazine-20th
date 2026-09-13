@@ -1,0 +1,59 @@
+{
+  "version": "0.1",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "title": {
+    "family": "serif_cn",
+    "weight": "SemiBold",
+    "size_pt": 24,
+    "leading_pt": 29,
+    "space_before_mm": 0,
+    "space_after_mm": 0,
+    "color": "C_TEXT"
+  },
+  "label": {
+    "family": "sans_cn",
+    "weight": "SemiBold",
+    "size_pt": 8.5,
+    "leading_pt": 11,
+    "space_before_mm": 0,
+    "space_after_mm": 0,
+    "color": "C_SDU_RED"
+  },
+  "value": {
+    "family": "sans_cn",
+    "weight": "Regular",
+    "size_pt": 9.5,
+    "leading_pt": 12,
+    "space_before_mm": 0,
+    "space_after_mm": 0,
+    "color": "C_TEXT"
+  },
+  "body": {
+    "family": "serif_cn",
+    "weight": "Regular",
+    "size_pt": 9.7,
+    "leading_pt": 15.5,
+    "first_line_indent_em": 2,
+    "space_before_mm": 0,
+    "space_after_mm": 1.2,
+    "color": "C_TEXT"
+  },
+  "layout": {
+    "left_mm": 25,
+    "title_top_mm": 27,
+    "title_width_mm": 135,
+    "title_height_mm": 18,
+    "info_top_mm": 62,
+    "label_width_mm": 27,
+    "label_value_gap_mm": 6,
+    "value_width_mm": 102,
+    "text_row_height_mm": 8,
+    "logo_row_height_mm": 28,
+    "row_gap_mm": 3,
+    "body_gap_mm": 7,
+    "body_width_mm": 130,
+    "body_bottom_mm": 24,
+    "logo_width_mm": 28,
+    "logo_max_width_mm": 32
+  }
+}

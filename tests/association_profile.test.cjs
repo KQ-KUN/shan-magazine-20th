@@ -1,0 +1,70 @@
+const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const { execFileSync } = require('node:child_process');
+
+const root = path.resolve(__dirname, '..');
+const read = file => fs.readFileSync(path.join(root, file), 'utf8');
+const hash = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex');
+const data = JSON.parse(read('content/ASSOCIATION_PROFILE.json'));
+const hashes = JSON.parse(read('spec/INPUT_HASHES.json'));
+assert.equal(hash('content/ASSOCIATION_PROFILE.json'), hashes['content/ASSOCIATION_PROFILE.json']);
+assert.equal(hash('assets/sdusfa_logo_black_transparent.png'), hashes['assets/sdusfa_logo_black_transparent.png']);
+assert.equal(data.copy_status, 'LOCKED_FINAL');
+assert.equal(data.title, '山东大学学生科幻协会');
+assert.deepEqual(data.fields.map(field => field.label), ['协会名称', '会徽', '创立时间', '现有分会', '微信公众号']);
+assert.equal(data.fields.find(field => field.label === '微信公众号').value, 'SFW10422');
+assert.equal(data.fields.filter(field => field.type === 'image').length, 1);
+assert.equal(data.fields.find(field => field.type === 'image').value, 'assets/sdusfa_logo_black_transparent.png');
+assert.equal(data.body.length, 2);
+assert.ok(data.body[1].endsWith('开展过不同形式的联动。'));
+
+const png = fs.readFileSync(path.join(root, 'assets', 'sdusfa_logo_black_transparent.png'));
+assert.equal(png.subarray(1, 4).toString('ascii'), 'PNG');
+assert.equal(png.readUInt32BE(16), 800); assert.equal(png.readUInt32BE(20), 800);
+assert.ok([4, 6].includes(png[25]), 'PNG must contain an alpha channel');
+
+const context = vm.createContext({ SHAN: { utils: { pt: value => value } } });
+vm.runInContext(read('modules/association_profile.jsx'), context);
+vm.runInContext(read('visual/association_profile_skin.jsx'), context);
+vm.runInContext(`var lockedData = ${JSON.stringify(data)};`, context);
+const association = context.SHAN.associationProfile;
+association.validateData(context.lockedData);
+const expectedVisible = [data.title];
+for (const field of data.fields) { expectedVisible.push(field.label); if (field.type === 'text') expectedVisible.push(field.value); }
+expectedVisible.push(...data.body);
+assert.equal(association.visibleText(context.lockedData), expectedVisible.join('\n'));
+assert.ok(association.visibleText(context.lockedData).replace(/\s/g, '').length > 150);
+
+const tokens = JSON.parse(read('spec/ASSOCIATION_PROFILE_TOKENS.json'));
+assert.ok(tokens.layout.logo_width_mm >= 24 && tokens.layout.logo_width_mm <= 30);
+assert.ok(tokens.layout.logo_width_mm <= tokens.layout.logo_max_width_mm && tokens.layout.logo_max_width_mm === 32);
+assert.ok(tokens.body.size_pt >= 9.5 && tokens.body.size_pt <= 10);
+assert.ok(tokens.body.leading_pt >= 15 && tokens.body.leading_pt <= 16);
+const jsxFiles = ['modules/association_profile.jsx', 'visual/association_profile_skin.jsx', 'build/11_association_profile_test.jsx'];
+for (const file of jsxFiles) assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf');
+const jsx = jsxFiles.map(read).join('\n');
+for (const mutable of [data.title, 'SFW10422', '2006年10月14日', '中心 / 兴隆山 / 软件园', '开展过不同形式的联动。']) {
+    assert.ok(!jsx.includes(mutable), `mutable JSON value hard-coded in JSX: ${mutable}`);
+}
+assert.ok(jsx.includes('SHAN.associationProfile.assertRendered'));
+assert.ok(jsx.includes('focusDocumentPage(doc, result.page)'));
+for (const guard of ['doc.pages.length !== 1', 'result.textFrames.length < 1', 'visibleCharacters <= 150',
+    'text is on a hidden layer', 'logo is missing or hidden', 'logo is outside the document page', 'overset assertion failed']) {
+    assert.ok(jsx.includes(guard), `missing runtime guard: ${guard}`);
+}
+const build = read('build/11_association_profile_test.jsx');
+assert.ok(build.includes('/content/ASSOCIATION_PROFILE.json'));
+assert.ok(build.includes('/spec/ASSOCIATION_PROFILE_TOKENS.json'));
+
+const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
+assert.deepEqual({ status: status.association_profile.status, runtimeTested: status.association_profile.runtimeTested,
+    designValuesPending: status.association_profile.designValuesPending, frozen: status.association_profile.frozen },
+{ status: 'IMPLEMENTED_PENDING_IND2026_TEST', runtimeTested: false, designValuesPending: true, frozen: false });
+for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'fiction', 'memoir', 'feature']) {
+    const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
+    execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
+}
+console.log('PASS Association Profile: locked JSON/logo hashes, five fields, two body paragraphs, 28 mm alpha logo, runtime guards, BOM and frozen scopes.');
