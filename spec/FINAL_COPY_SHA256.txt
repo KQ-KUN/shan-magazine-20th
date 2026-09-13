@@ -1,0 +1,4 @@
+manuscripts/11_front_写在山前_FINAL.docx
+sha256=cbb82827448d4e9710803a4aa750d48864ae8618613a6093c8540e10a20516c4
+COPY STATUS: LOCKED / FINAL
+No wording changes are permitted in layout implementation.

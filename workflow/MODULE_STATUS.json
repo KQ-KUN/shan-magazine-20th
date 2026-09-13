@@ -59,5 +59,16 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "front_note": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/front_note.jsx",
+      "visual/front_note_skin.jsx",
+      "build/10_front_note_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }

@@ -1,0 +1,34 @@
+{
+  "version": "0.1",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "text_width_mm": 118,
+  "top_mm": 35,
+  "bottom_mm": 28,
+  "title": {
+    "family": "serif_cn",
+    "weight": "SemiBold",
+    "size_pt": 24,
+    "leading_pt": 30,
+    "space_before_mm": 0,
+    "space_after_mm": 8,
+    "color": "C_TEXT"
+  },
+  "body": {
+    "family": "serif_cn",
+    "weight": "Regular",
+    "size_pt": 9.8,
+    "leading_pt": 15.5,
+    "first_line_indent_em": 2,
+    "space_after_mm": 1.2,
+    "color": "C_TEXT"
+  },
+  "signature": {
+    "family": "sans_cn",
+    "weight": "Regular",
+    "size_pt": 9,
+    "leading_pt": 13,
+    "space_before_mm": 5,
+    "space_after_mm": 0,
+    "color": "C_MUTED"
+  }
+}
