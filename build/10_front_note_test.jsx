@@ -23,9 +23,13 @@
         SHAN.styles.create(doc, context); SHAN.parents.create(doc, context);
         SHAN.typography.apply(doc, base, context); SHAN.runningSystem.apply(doc, base);
         SHAN.frontNoteSkin.apply(doc, tokens, base, context);
-        SHAN.frontNote.create(doc, File(root + "/manuscripts/11_front_写在山前_FINAL.docx"),
+        var result = SHAN.frontNote.create(doc, File(root + "/manuscripts/11_front_写在山前_FINAL.docx"),
             "front_note_shan", tokens, { hasSignature: false });
+        var rendered = SHAN.frontNote.assertRendered(doc, result, "写在《山》前", "而新的地层，仍在形成。");
+        if (app.layoutWindows.length > 0) { app.activeWindow.activePage = doc.pages.item(0); }
         alert("Front Note 测试；未保存或导出。\n" + doc.extractLabel("SHAN_FRONT_NOTE_REPORT") +
+            "\ntextFrames=" + rendered.textFrames + "; visibleCharacters=" + rendered.visibleCharacters +
+            "; overset=" + rendered.overset +
             "\n\n" + doc.extractLabel("SHAN_VISUAL_FONTS") + "\n\n" + context.warnings.join("\n"));
     } catch (e) { alert("Front Note 未完成：" + e.message + "\n行号：" + e.line); throw e; }
     finally { app.scriptPreferences.measurementUnit = unit; }

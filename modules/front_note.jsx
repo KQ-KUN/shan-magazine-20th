@@ -57,6 +57,34 @@ SHAN.frontNote = {
         }
         return pages;
     },
+    assertRendered: function (doc, result, title, finalSentence) {
+        var i, j, page, frame, pageBounds, frameBounds, frameCount = 0, intersects = false;
+        var visibleCharacters = 0, storyIds = {}, contents = "", mainFrames = 0;
+        if (doc.pages.length < 1 || result.pages < 1) { throw new Error("Front Note rendered no pages"); }
+        for (i = 0; i < doc.pages.length; i += 1) {
+            page = doc.pages.item(i); pageBounds = page.bounds;
+            for (j = 0; j < page.textFrames.length; j += 1) {
+                frame = page.textFrames.item(j); frameCount += 1; frameBounds = frame.geometricBounds;
+                if (frameBounds[2] > pageBounds[0] && frameBounds[0] < pageBounds[2] &&
+                        frameBounds[3] > pageBounds[1] && frameBounds[1] < pageBounds[3]) { intersects = true; }
+                if (frame.parentStory.id === result.story.id) {
+                    mainFrames += 1;
+                    if (!frame.itemLayer.visible) { throw new Error("Front Note main story is on a hidden layer"); }
+                }
+                if (!storyIds[frame.parentStory.id]) {
+                    storyIds[frame.parentStory.id] = true; contents += frame.parentStory.contents;
+                    visibleCharacters += String(frame.parentStory.contents).replace(/\s/g, "").length;
+                }
+            }
+        }
+        if (frameCount < 1) { throw new Error("Front Note rendered no text frames"); }
+        if (!intersects) { throw new Error("Front Note has no text frame intersecting a page"); }
+        if (mainFrames < 1 || visibleCharacters <= 100) { throw new Error("Front Note visible story is empty or too short"); }
+        if (contents.indexOf(title) < 0) { throw new Error("Front Note title missing from document text"); }
+        if (contents.indexOf(finalSentence) < 0) { throw new Error("Front Note final sentence missing from document text"); }
+        if (doc.extractLabel("SHAN_FRONT_NOTE_REPORT").indexOf("overset=") < 0) { throw new Error("Front Note report omits overset state"); }
+        return { textFrames: frameCount, visibleCharacters: visibleCharacters, overset: result.story.overflows };
+    },
     create: function (doc, source, articleId, tokens, options) {
         options = options || {};
         if (!source.exists || !/\.docx$/i.test(source.name)) { throw new Error("Missing/invalid Front Note DOCX: " + source.fsName); }

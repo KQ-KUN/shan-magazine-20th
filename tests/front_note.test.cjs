@@ -52,6 +52,14 @@ assert.equal(paragraphs[0].appliedParagraphStyle.name, 'P_FrontNote_Title');
 assert.ok(paragraphs.slice(1).every(paragraph => paragraph.appliedParagraphStyle.name === 'P_FrontNote_Body'));
 assert.equal(story.contents, texts.join('\r'));
 
+const mainStory = { id: 7, contents: texts.join('\r'), overflows: false };
+const pageBounds = [0, 0, 700, 500];
+const frame = { geometricBounds: [90, 80, 620, 420], parentStory: mainStory, itemLayer: { visible: true } };
+const mockDoc = { pages: { length: 1, item: () => ({ bounds: pageBounds, textFrames: { length: 1, item: () => frame } }) },
+    extractLabel: () => 'article=front_note_shan; pages=1; overset=false; text unchanged=true' };
+const rendered = frontNote.assertRendered(mockDoc, { pages: 1, story: mainStory }, texts[0], texts[texts.length - 1]);
+assert.equal(rendered.textFrames, 1); assert.ok(rendered.visibleCharacters > 100); assert.equal(rendered.overset, false);
+
 const tokens = JSON.parse(read('spec/FRONT_NOTE_TOKENS.json'));
 assert.ok(tokens.text_width_mm >= 112 && tokens.text_width_mm <= 122);
 assert.ok(tokens.title.size_pt >= 22 && tokens.title.size_pt <= 26);
@@ -70,6 +78,8 @@ const build = read('build/10_front_note_test.jsx');
 assert.ok(build.includes('/manuscripts/11_front_写在山前_FINAL.docx'));
 assert.ok(build.includes('"front_note_shan"'));
 assert.ok(build.includes('{ hasSignature: false }'));
+assert.ok(build.includes('SHAN.frontNote.assertRendered'));
+assert.ok(build.includes('app.activeWindow.activePage = doc.pages.item(0)'));
 const base = JSON.parse(read('spec/VISUAL_TOKENS.json'));
 assert.ok(base.running_system.hide_on_parents.includes('I-FRONT'));
 
