@@ -1,11 +1,11 @@
 {
-  "version": "0.1",
+  "version": "1.1",
   "status": "APPROVED_FOR_PROTOTYPE",
   "title": {
     "family": "serif_cn",
     "weight": "SemiBold",
-    "size_pt": 24,
-    "leading_pt": 29,
+    "size_pt": 30,
+    "leading_pt": 34,
     "space_before_mm": 0,
     "space_after_mm": 0,
     "color": "C_TEXT"
@@ -13,17 +13,26 @@
   "label": {
     "family": "sans_cn",
     "weight": "SemiBold",
-    "size_pt": 8.5,
-    "leading_pt": 11,
+    "size_pt": 10,
+    "leading_pt": 12,
     "space_before_mm": 0,
     "space_after_mm": 0,
     "color": "C_SDU_RED"
   },
-  "value": {
+  "separator": {
     "family": "sans_cn",
     "weight": "Regular",
     "size_pt": 9.5,
     "leading_pt": 12,
+    "space_before_mm": 0,
+    "space_after_mm": 0,
+    "color": "C_MUTED"
+  },
+  "value": {
+    "family": "sans_cn",
+    "weight": "Regular",
+    "size_pt": 11,
+    "leading_pt": 13,
     "space_before_mm": 0,
     "space_after_mm": 0,
     "color": "C_TEXT"
@@ -31,29 +40,36 @@
   "body": {
     "family": "serif_cn",
     "weight": "Regular",
-    "size_pt": 9.7,
+    "size_pt": 9.8,
     "leading_pt": 15.5,
-    "first_line_indent_em": 2,
+    "first_line_indent_em": 0,
     "space_before_mm": 0,
-    "space_after_mm": 1.2,
+    "space_after_mm": 4.5,
     "color": "C_TEXT"
   },
   "layout": {
-    "left_mm": 25,
-    "title_top_mm": 27,
-    "title_width_mm": 135,
+    "title_left_mm": 19,
+    "title_top_mm": 21,
+    "title_width_mm": 148,
     "title_height_mm": 18,
-    "info_top_mm": 62,
-    "label_width_mm": 27,
-    "label_value_gap_mm": 6,
-    "value_width_mm": 102,
-    "text_row_height_mm": 8,
-    "logo_row_height_mm": 28,
-    "row_gap_mm": 3,
-    "body_gap_mm": 7,
-    "body_width_mm": 130,
+    "accent_top_mm": 44,
+    "accent_length_mm": 12,
+    "accent_weight_pt": 0.65,
+    "info_top_mm": 52,
+    "label_x_mm": 19,
+    "separator_x_mm": 46,
+    "value_x_mm": 56,
+    "value_width_mm": 72,
+    "row_height_mm": 8,
+    "row_pitch_mm": 11,
+    "row_rule_weight_pt": 0.2,
+    "logo_x_mm": 138,
+    "logo_top_mm": 66,
+    "body_left_mm": 19,
+    "body_top_mm": 135,
+    "body_width_mm": 148,
     "body_bottom_mm": 24,
-    "logo_width_mm": 28,
-    "logo_max_width_mm": 32
+    "logo_width_mm": 26,
+    "logo_max_width_mm": 28
   }
 }

@@ -45,10 +45,24 @@ assert.equal(association.visibleText(context.lockedData), expectedVisible.join('
 assert.ok(association.visibleText(context.lockedData).replace(/\s/g, '').length > 150);
 
 const tokens = JSON.parse(read('spec/ASSOCIATION_PROFILE_TOKENS.json'));
-assert.ok(tokens.layout.logo_width_mm >= 24 && tokens.layout.logo_width_mm <= 30);
-assert.ok(tokens.layout.logo_width_mm <= tokens.layout.logo_max_width_mm && tokens.layout.logo_max_width_mm === 32);
+assert.equal(tokens.version, '1.1');
+assert.ok(tokens.layout.logo_width_mm >= 24 && tokens.layout.logo_width_mm <= 27);
+assert.ok(tokens.layout.logo_width_mm <= tokens.layout.logo_max_width_mm && tokens.layout.logo_max_width_mm === 28);
 assert.ok(tokens.body.size_pt >= 9.5 && tokens.body.size_pt <= 10);
 assert.ok(tokens.body.leading_pt >= 15 && tokens.body.leading_pt <= 16);
+assert.ok(tokens.layout.title_top_mm >= 19 && tokens.layout.title_top_mm <= 23);
+assert.ok(tokens.title.size_pt >= 28 && tokens.title.size_pt <= 32);
+assert.ok(tokens.layout.info_top_mm >= 52 && tokens.layout.info_top_mm <= 118);
+assert.ok(tokens.layout.info_top_mm - (tokens.layout.title_top_mm + tokens.layout.title_height_mm) <= 15);
+assert.ok(tokens.layout.info_top_mm + 4 * tokens.layout.row_pitch_mm + tokens.layout.row_height_mm <= 118);
+assert.ok(tokens.layout.body_top_mm >= 132 && tokens.layout.body_top_mm <= 138);
+assert.ok(tokens.layout.body_width_mm >= 145 && tokens.layout.body_width_mm <= 150);
+assert.ok(tokens.layout.accent_length_mm >= 10 && tokens.layout.accent_length_mm <= 14);
+assert.ok(tokens.layout.accent_weight_pt >= 0.5 && tokens.layout.accent_weight_pt <= 0.8);
+assert.ok(tokens.layout.label_x_mm >= 18 && tokens.layout.label_x_mm <= 21);
+assert.ok(tokens.layout.separator_x_mm >= 44 && tokens.layout.separator_x_mm <= 48);
+assert.ok(tokens.layout.value_x_mm >= 53 && tokens.layout.value_x_mm <= 58);
+assert.ok(tokens.layout.value_width_mm >= 70 && tokens.layout.value_width_mm <= 76);
 const jsxFiles = ['modules/association_profile.jsx', 'visual/association_profile_skin.jsx', 'build/11_association_profile_test.jsx'];
 for (const file of jsxFiles) assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf');
 const jsx = jsxFiles.map(read).join('\n');
@@ -59,6 +73,8 @@ assert.ok(jsx.includes('SHAN.associationProfile.assertRendered'));
 assert.ok(jsx.includes('focusDocumentPage(doc, result.page)'));
 assert.ok(jsx.includes('getFirstGraphic'));
 assert.ok(!jsx.includes('result.logo.allGraphics.item'));
+assert.ok(jsx.includes('P_Association_Separator'));
+assert.ok(jsx.includes('page.graphicLines.add()'));
 for (const guard of ['doc.pages.length !== 1', 'result.textFrames.length < 1', 'visibleCharacters <= 150',
     'text is on a hidden layer', 'logo is missing or hidden', 'logo is outside the document page', 'overset assertion failed']) {
     assert.ok(jsx.includes(guard), `missing runtime guard: ${guard}`);
@@ -75,4 +91,4 @@ for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'ficti
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
-console.log('PASS Association Profile: locked JSON/logo hashes, five fields, two body paragraphs, 28 mm alpha logo, runtime guards, BOM and frozen scopes.');
+console.log('PASS Association Profile v1.1: locked copy, compact grid, 26 mm alpha logo, body 135 mm/148 mm, runtime guards, BOM and frozen scopes.');
