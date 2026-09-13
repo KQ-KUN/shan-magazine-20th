@@ -28,6 +28,29 @@ SHAN.associationProfile = {
         return parts.join("\n");
     },
     normalizeText: function (value) { return String(value).replace(/\r\n|\r/g, "\n"); },
+    getFirstGraphic: function (pageItem) {
+        var graphics = null, first = null;
+        if (!pageItem || pageItem.isValid === false) { return null; }
+        try { graphics = pageItem.allGraphics; } catch (ignoreAllGraphics) { graphics = null; }
+        if (graphics && graphics.length > 0) {
+            first = graphics[0];
+            if (first && first.isValid !== false) { return first; }
+            if (typeof graphics.item === "function") {
+                first = graphics.item(0);
+                if (first && first.isValid !== false) { return first; }
+            }
+        }
+        try { graphics = pageItem.graphics; } catch (ignoreGraphics) { graphics = null; }
+        if (graphics && graphics.length > 0) {
+            first = graphics[0];
+            if (first && first.isValid !== false) { return first; }
+            if (typeof graphics.item === "function") {
+                first = graphics.item(0);
+                if (first && first.isValid !== false) { return first; }
+            }
+        }
+        return null;
+    },
     addTextFrame: function (doc, page, bounds, styleName, contents, label) {
         var frame = page.textFrames.add();
         frame.label = label; frame.appliedObjectStyle = doc.objectStyles.itemByName("O_Text_Main");
@@ -99,8 +122,9 @@ SHAN.associationProfile = {
         }
         if (!intersects || visibleCharacters <= 150) { throw new Error("Association Profile has no visible page text"); }
         if (actual.join("\n") !== this.visibleText(data)) { throw new Error("Association Profile visible copy differs from locked JSON"); }
-        if (!result.logo || result.logo.allGraphics.length !== 1 || !result.logo.itemLayer.visible ||
-                !result.logo.allGraphics.item(0).itemLink.isValid) { throw new Error("Association Profile logo is missing or hidden"); }
+        var graphic = this.getFirstGraphic(result.logo);
+        if (!result.logo || !result.logo.itemLayer.visible || !graphic || !graphic.itemLink ||
+                !graphic.itemLink.isValid) { throw new Error("Association Profile logo is missing or hidden"); }
         fb = result.logo.geometricBounds;
         if (!(fb[2] > pb[0] && fb[0] < pb[2] && fb[3] > pb[1] && fb[1] < pb[3])) { throw new Error("Association Profile logo is outside the document page"); }
         var logoWidth = (fb[3] - fb[1]) / SHAN.utils.pt(1);

@@ -32,6 +32,12 @@ vm.runInContext(read('visual/association_profile_skin.jsx'), context);
 vm.runInContext(`var lockedData = ${JSON.stringify(data)};`, context);
 const association = context.SHAN.associationProfile;
 association.validateData(context.lockedData);
+const arrayGraphic = { isValid: true, itemLink: { isValid: true } };
+assert.equal(association.getFirstGraphic({ isValid: true, allGraphics: Object.assign([arrayGraphic], { item() { throw new Error('array-like must use bracket access first'); } }) }), arrayGraphic);
+const collectionGraphic = { isValid: true, itemLink: { isValid: true } };
+assert.equal(association.getFirstGraphic({ isValid: true, allGraphics: { length: 1, item: () => collectionGraphic } }), collectionGraphic);
+assert.equal(association.getFirstGraphic({ isValid: true, allGraphics: [], graphics: { length: 1, item: () => collectionGraphic } }), collectionGraphic);
+assert.equal(association.getFirstGraphic({ isValid: false }), null);
 const expectedVisible = [data.title];
 for (const field of data.fields) { expectedVisible.push(field.label); if (field.type === 'text') expectedVisible.push(field.value); }
 expectedVisible.push(...data.body);
@@ -51,6 +57,8 @@ for (const mutable of [data.title, 'SFW10422', '2006年10月14日', '中心 / �
 }
 assert.ok(jsx.includes('SHAN.associationProfile.assertRendered'));
 assert.ok(jsx.includes('focusDocumentPage(doc, result.page)'));
+assert.ok(jsx.includes('getFirstGraphic'));
+assert.ok(!jsx.includes('result.logo.allGraphics.item'));
 for (const guard of ['doc.pages.length !== 1', 'result.textFrames.length < 1', 'visibleCharacters <= 150',
     'text is on a hidden layer', 'logo is missing or hidden', 'logo is outside the document page', 'overset assertion failed']) {
     assert.ok(jsx.includes(guard), `missing runtime guard: ${guard}`);
