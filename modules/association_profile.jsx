@@ -71,7 +71,7 @@ SHAN.associationProfile = {
     },
     checkStyles: function (doc) {
         var names = ["P_Association_Title", "P_Association_Label", "P_Association_Separator",
-            "P_Association_Value", "P_Association_Body"], i;
+            "P_Association_Name", "P_Association_Value", "P_Association_Lead", "P_Association_Body"], i;
         for (i = 0; i < names.length; i += 1) {
             if (!doc.paragraphStyles.itemByName(names[i]).isValid) { throw new Error("Missing Association Profile style: " + names[i]); }
         }
@@ -83,13 +83,25 @@ SHAN.associationProfile = {
         line.strokeColor = doc.colors.itemByName(colorName); line.strokeWeight = weight;
         return line;
     },
+    addContour: function (doc, page, points, weight, tint, handleMM, label) {
+        var line = page.graphicLines.add(), path = [], pathPoint, i;
+        line.label = label; line.strokeColor = doc.colors.itemByName("C_LINE");
+        line.strokeWeight = weight; line.strokeTint = tint;
+        for (i = 0; i < points.length; i += 1) { path.push([SHAN.utils.pt(points[i][0]), SHAN.utils.pt(points[i][1])]); }
+        line.paths.item(0).entirePath = path;
+        for (i = 0; i < line.paths.item(0).pathPoints.length; i += 1) {
+            pathPoint = line.paths.item(0).pathPoints.item(i);
+            pathPoint.leftDirection = [pathPoint.anchor[0] - SHAN.utils.pt(handleMM), pathPoint.anchor[1]];
+            pathPoint.rightDirection = [pathPoint.anchor[0] + SHAN.utils.pt(handleMM), pathPoint.anchor[1]];
+        }
+        return line;
+    },
     render: function (doc, data, tokens, root) {
         data = this.validateData(data); this.checkStyles(doc);
         if (doc.pages.length !== 1 || doc.pages.item(0).textFrames.length !== 0) { throw new Error("Association Profile requires one fresh document page"); }
         var page = doc.pages.item(0), b = page.bounds, pt = SHAN.utils.pt, layout = tokens.layout;
-        var titleX = b[1] + pt(layout.title_left_mm), labelX = b[1] + pt(layout.label_x_mm);
-        var separatorX = b[1] + pt(layout.separator_x_mm), valueX = b[1] + pt(layout.value_x_mm);
-        var y, frames = [], copyFrames = [], lines = [], logo = null, i, field, frame;
+        var titleX = b[1] + pt(layout.title_left_mm), frames = [], copyFrames = [], lines = [], logo = null;
+        var i, field, frame, x, width, y, contour;
         page.appliedMaster = doc.masterSpreads.itemByName("I-FRONT");
         frame = this.addTextFrame(doc, page,
             [b[0] + pt(layout.title_top_mm), titleX, b[0] + pt(layout.title_top_mm + layout.title_height_mm), titleX + pt(layout.title_width_mm)],
@@ -99,32 +111,54 @@ SHAN.associationProfile = {
             [b[0] + pt(layout.accent_top_mm), titleX, b[0] + pt(layout.accent_top_mm), titleX + pt(layout.accent_length_mm)],
             "C_SDU_RED", layout.accent_weight_pt, "SHAN_ASSOCIATION:" + data.id + ":title_accent"));
         for (i = 0; i < data.fields.length; i += 1) {
-            field = data.fields[i]; y = b[0] + pt(layout.info_top_mm + i * layout.row_pitch_mm);
-            frame = this.addTextFrame(doc, page, [y, labelX, y + pt(layout.row_height_mm), separatorX - pt(2)],
+            field = data.fields[i];
+            if (i < 2) {
+                x = b[1] + pt(i === 0 ? layout.name_x_mm : layout.logo_x_mm);
+                y = b[0] + pt(layout.info_top_mm);
+                width = pt(i === 0 ? layout.name_width_mm : layout.logo_width_mm);
+            } else {
+                x = b[1] + pt(layout.meta_x_mm[i - 2]);
+                y = b[0] + pt(layout.meta_top_mm);
+                width = pt(layout.meta_width_mm[i - 2]);
+            }
+            lines.push(this.addRule(doc, page, [y, x, y, x + width], i === 0 ? "C_SDU_RED" : "C_LINE",
+                i === 0 ? layout.info_accent_weight_pt : layout.meta_rule_weight_pt,
+                "SHAN_ASSOCIATION:" + data.id + ":field_rule:" + (i + 1)));
+            frame = this.addTextFrame(doc, page, [y + pt(layout.label_offset_mm), x,
+                    y + pt(layout.label_offset_mm + layout.label_height_mm), x + width],
                 "P_Association_Label", field.label, "SHAN_ASSOCIATION:" + data.id + ":label:" + (i + 1));
             frames.push(frame); copyFrames.push(frame);
-            frames.push(this.addTextFrame(doc, page, [y, separatorX, y + pt(layout.row_height_mm), separatorX + pt(4)],
-                "P_Association_Separator", "/", "SHAN_ASSOCIATION:" + data.id + ":separator:" + (i + 1)));
             if (field.type === "image") {
                 var logoX = b[1] + pt(layout.logo_x_mm), logoY = b[0] + pt(layout.logo_top_mm);
                 logo = this.placeLogo(doc, page, [logoY, logoX, logoY + pt(layout.logo_width_mm), logoX + pt(layout.logo_width_mm)],
                     File(root + "/" + field.value), "SHAN_ASSOCIATION:" + data.id + ":logo");
             } else {
-                frame = this.addTextFrame(doc, page, [y, valueX, y + pt(layout.row_height_mm), valueX + pt(layout.value_width_mm)],
-                    "P_Association_Value", field.value, "SHAN_ASSOCIATION:" + data.id + ":value:" + (i + 1));
+                frame = this.addTextFrame(doc, page, [y + pt(layout.value_offset_mm), x,
+                        y + pt(layout.value_offset_mm + layout.value_height_mm), x + width],
+                    i === 0 ? "P_Association_Name" : "P_Association_Value", field.value,
+                    "SHAN_ASSOCIATION:" + data.id + ":value:" + (i + 1));
                 frames.push(frame); copyFrames.push(frame);
             }
-            if (i < data.fields.length - 1) {
-                lines.push(this.addRule(doc, page,
-                    [b[0] + pt(layout.info_top_mm + (i + 1) * layout.row_pitch_mm - 1), labelX,
-                        b[0] + pt(layout.info_top_mm + (i + 1) * layout.row_pitch_mm - 1), valueX + pt(layout.value_width_mm)],
-                    "C_LINE", layout.row_rule_weight_pt, "SHAN_ASSOCIATION:" + data.id + ":row_rule:" + (i + 1)));
-            }
         }
-        var bodyX = b[1] + pt(layout.body_left_mm), bodyY = b[0] + pt(layout.body_top_mm);
-        frame = this.addTextFrame(doc, page, [bodyY, bodyX, b[2] - pt(layout.body_bottom_mm), bodyX + pt(layout.body_width_mm)],
-            "P_Association_Body", data.body.join("\r"), "SHAN_ASSOCIATION:" + data.id + ":body");
+        var bodyX = b[1] + pt(layout.body_left_mm), bodyY = b[0] + pt(layout.lead_top_mm);
+        lines.push(this.addRule(doc, page, [bodyY, bodyX, bodyY + pt(layout.lead_rule_length_mm), bodyX],
+            "C_SDU_RED", layout.lead_rule_weight_pt, "SHAN_ASSOCIATION:" + data.id + ":lead_rule"));
+        frame = this.addTextFrame(doc, page, [bodyY, bodyX + pt(layout.lead_indent_mm),
+                bodyY + pt(layout.lead_height_mm), bodyX + pt(layout.lead_width_mm)],
+            "P_Association_Lead", data.body[0], "SHAN_ASSOCIATION:" + data.id + ":lead");
         frames.push(frame); copyFrames.push(frame);
+        bodyY = b[0] + pt(layout.body_top_mm);
+        frame = this.addTextFrame(doc, page, [bodyY, bodyX, bodyY + pt(layout.body_height_mm), bodyX + pt(layout.body_width_mm)],
+            "P_Association_Body", data.body[1], "SHAN_ASSOCIATION:" + data.id + ":body");
+        frames.push(frame); copyFrames.push(frame);
+        for (i = 0; i < layout.contours.length; i += 1) {
+            contour = [];
+            for (var j = 0; j < layout.contours[i].length; j += 1) {
+                contour.push([b[1] / pt(1) + layout.contours[i][j][0], b[0] / pt(1) + layout.contours[i][j][1]]);
+            }
+            lines.push(this.addContour(doc, page, contour, layout.contour_weight_pt, layout.contour_tint,
+                layout.contour_handle_mm, "SHAN_ASSOCIATION:" + data.id + ":contour:" + (i + 1)));
+        }
         doc.recompose();
         var overset = false;
         for (i = 0; i < frames.length; i += 1) { if (frames[i].overflows) { overset = true; } }
