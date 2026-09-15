@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "status": "APPROVED_FOR_PROTOTYPE",
+  "render_english_mark": false,
+  "front": {
+    "title": { "family": "serif_cn", "weight": "Regular", "size_pt": 112, "leading_pt": 116, "color": "C_TEXT" },
+    "subtitle": { "family": "serif_cn", "weight": "Regular", "size_pt": 13, "leading_pt": 19, "color": "C_TEXT" },
+    "years": { "family": "sans_cn", "weight": "Regular", "size_pt": 15, "leading_pt": 18, "tracking": 80, "color": "C_SDU_RED" },
+    "layout": {
+      "title_bounds_mm": [60, 22, 132, 90],
+      "marker_y_mm": 146,
+      "marker_x_mm": 101,
+      "marker_length_mm": 15,
+      "marker_weight_pt": 0.65,
+      "subtitle_bounds_mm": [153, 101, 179, 164],
+      "years_bounds_mm": [187, 101, 198, 156]
+    },
+    "motif": {
+      "weight_pt": 0.32,
+      "tint_percent": 42,
+      "red_tint_percent": 28,
+      "handle_mm": 10,
+      "lines": [
+        { "color": "C_LINE", "points": [[-3, 42], [30, 35], [66, 43], [105, 31], [145, 39], [188, 27]] },
+        { "color": "C_LINE", "points": [[-3, 62], [32, 54], [69, 63], [108, 50], [149, 58], [188, 46]] },
+        { "color": "C_LINE", "points": [[-3, 83], [29, 75], [64, 85], [104, 71], [146, 80], [188, 68]] },
+        { "color": "C_SDU_RED", "points": [[-3, 105], [34, 96], [71, 107], [111, 92], [151, 101], [188, 90]] },
+        { "color": "C_LINE", "points": [[-3, 128], [31, 119], [68, 130], [107, 115], [147, 125], [188, 113]] },
+        { "color": "C_LINE", "points": [[-3, 151], [35, 141], [73, 153], [112, 137], [151, 147], [188, 136]] },
+        { "color": "C_LINE", "points": [[-3, 176], [30, 165], [67, 178], [105, 161], [146, 172], [188, 160]] },
+        { "color": "C_LINE", "points": [[-3, 202], [34, 190], [72, 204], [111, 186], [151, 198], [188, 185]] },
+        { "color": "C_LINE", "points": [[-3, 229], [31, 216], [69, 231], [108, 212], [149, 225], [188, 212]] }
+      ]
+    }
+  },
+  "back": {
+    "organization": { "family": "serif_cn", "weight": "Regular", "size_pt": 11.5, "leading_pt": 15, "color": "C_TEXT" },
+    "wechat": { "family": "sans_cn", "weight": "Regular", "size_pt": 8.8, "leading_pt": 11, "tracking": 40, "color": "C_MUTED" },
+    "layout": {
+      "logo_x_mm": 24,
+      "logo_top_mm": 181,
+      "logo_width_mm": 24,
+      "marker_y_mm": 211,
+      "marker_x_mm": 24,
+      "marker_length_mm": 12,
+      "marker_weight_pt": 0.55,
+      "organization_bounds_mm": [217, 24, 226, 161],
+      "wechat_bounds_mm": [231, 24, 239, 161]
+    },
+    "motif": {
+      "weight_pt": 0.26,
+      "tint_percent": 30,
+      "handle_mm": 11,
+      "lines": [
+        [[-3, 54], [34, 46], [74, 58], [115, 43], [153, 52], [188, 40]],
+        [[-3, 78], [31, 69], [70, 82], [111, 66], [151, 76], [188, 63]],
+        [[-3, 103], [36, 93], [76, 107], [116, 90], [155, 101], [188, 88]],
+        [[-3, 129], [32, 118], [71, 133], [112, 115], [152, 127], [188, 113]]
+      ]
+    }
+  },
+  "page": {
+    "width_mm": 185,
+    "height_mm": 260,
+    "bleed_mm": 3,
+    "critical_safe_mm": 15
+  },
+  "spine": {
+    "physical_width_status": "PENDING_FINAL_PAGE_COUNT_PAPER_BINDING",
+    "render_physical_spine": false
+  }
+}

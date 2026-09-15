@@ -1,5 +1,7 @@
 {
   "content/ASSOCIATION_PROFILE.json": "9fc227577514c4c02fe7b62602497c9ff1f87d9e8009b1928780a852fed10e98",
+  "content/COVER_COPY.json": "22fb009617a774fd5f116f3e12d9a354cf65fef1f74610ee97e1fb5f00198241",
   "assets/sdusfa_logo_black_transparent.png": "e21e8a8b75d7220942c62879bb40f28ba3b641d42c6d561848fa682a5a1e1a36",
-  "assets/sdusfa_logo_source.jpg": "330fe5ec4056119e23db4ea1e1a607b4c4a9d2ed36e815d1e21603af4554f3d4"
+  "assets/sdusfa_logo_source.jpg": "330fe5ec4056119e23db4ea1e1a607b4c4a9d2ed36e815d1e21603af4554f3d4",
+  "spec/COVER_SYSTEM_PHASE_A_DESIGN.md": "f2efef9ecbae3b1ffd6e2968250f1a15ba33fdbc8317e7498e8e21a312154b33"
 }

@@ -1,0 +1,28 @@
+{
+  "id": "shan_cover_system_phase_a",
+  "status": "PROTOTYPE_COPY",
+  "front": {
+    "title_cn": "山",
+    "subtitle_cn": "山东大学学生科幻协会二十周年纪念刊",
+    "years": "2006—2026",
+    "english_mark": "SHAN",
+    "english_mark_optional": true
+  },
+  "back": {
+    "organization": "山东大学学生科幻协会",
+    "wechat": "SFW10422",
+    "logo": "assets/sdusfa_logo_black_transparent.png",
+    "qr_status": "RESERVED_NOT_RENDERED",
+    "note": "封底暂不放二维码；如最终需要，整刊印前阶段再补。"
+  },
+  "spine": {
+    "status": "WIDTH_PENDING",
+    "preferred_text": [
+      "山",
+      "山东大学学生科幻协会二十周年纪念刊",
+      "2006—2026"
+    ],
+    "compact_text": "山｜山东大学学生科幻协会二十周年纪念刊｜2006—2026",
+    "final_width_rule": "最终页数、内文纸厚与装订方式确定后，由印厂书脊公式决定；Phase A不得写死书脊宽度。"
+  }
+}

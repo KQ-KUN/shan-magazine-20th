@@ -81,5 +81,16 @@
     "runtimeTested": true,
     "designValuesPending": true,
     "frozen": true
+  },
+  "cover_system": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/cover_system.jsx",
+      "visual/cover_system_skin.jsx",
+      "build/12_cover_system_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }
