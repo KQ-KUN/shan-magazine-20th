@@ -62,6 +62,7 @@ assert.ok(tokens.layout.meta_top_mm <= 102);
 assert.equal(tokens.layout.meta_x_mm.length, 3);
 assert.equal(tokens.layout.meta_width_mm.length, 3);
 assert.ok(tokens.layout.lead_top_mm >= 118 && tokens.layout.lead_top_mm <= 128);
+assert.equal(tokens.layout.lead_rule_length_mm, 18);
 assert.ok(tokens.layout.body_top_mm >= 158 && tokens.layout.body_top_mm <= 168);
 assert.equal(tokens.layout.body_top_mm, 158.5);
 assert.ok(tokens.layout.body_width_mm >= 126 && tokens.layout.body_width_mm <= 132);
