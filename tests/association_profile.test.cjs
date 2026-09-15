@@ -45,13 +45,13 @@ assert.equal(association.visibleText(context.lockedData), expectedVisible.join('
 assert.ok(association.visibleText(context.lockedData).replace(/\s/g, '').length > 150);
 
 const tokens = JSON.parse(read('spec/ASSOCIATION_PROFILE_TOKENS.json'));
-assert.equal(tokens.version, '1.2');
-assert.ok(tokens.layout.logo_width_mm >= 24 && tokens.layout.logo_width_mm <= 27);
-assert.ok(tokens.layout.logo_width_mm <= tokens.layout.logo_max_width_mm && tokens.layout.logo_max_width_mm === 28);
-assert.ok(tokens.body.size_pt >= 9.5 && tokens.body.size_pt <= 10);
+assert.equal(tokens.version, '1.3');
+assert.ok(tokens.layout.logo_width_mm >= 20 && tokens.layout.logo_width_mm <= 24);
+assert.ok(tokens.layout.logo_width_mm <= tokens.layout.logo_max_width_mm && tokens.layout.logo_max_width_mm === 24);
+assert.ok(tokens.body.size_pt >= 9.6 && tokens.body.size_pt <= 10);
 assert.ok(tokens.body.leading_pt >= 15 && tokens.body.leading_pt <= 16);
-assert.ok(tokens.lead.size_pt > tokens.body.size_pt);
-assert.ok(tokens.lead.leading_pt > tokens.body.leading_pt);
+assert.equal(tokens.lead.size_pt, tokens.body.size_pt);
+assert.equal(tokens.lead.leading_pt, tokens.body.leading_pt);
 assert.ok(tokens.layout.title_top_mm >= 19 && tokens.layout.title_top_mm <= 23);
 assert.ok(tokens.title.size_pt >= 28 && tokens.title.size_pt <= 32);
 assert.ok(tokens.layout.info_top_mm >= 54 && tokens.layout.info_top_mm <= 62);
@@ -61,11 +61,22 @@ assert.equal(tokens.layout.meta_x_mm.length, 3);
 assert.equal(tokens.layout.meta_width_mm.length, 3);
 assert.ok(tokens.layout.lead_top_mm >= 118 && tokens.layout.lead_top_mm <= 128);
 assert.ok(tokens.layout.body_top_mm >= 158 && tokens.layout.body_top_mm <= 168);
-assert.ok(tokens.layout.body_width_mm >= 145 && tokens.layout.body_width_mm <= 150);
+assert.ok(tokens.layout.body_width_mm >= 126 && tokens.layout.body_width_mm <= 132);
+assert.equal(tokens.layout.ending_width_mm, tokens.layout.body_width_mm);
+assert.equal(tokens.layout.ending_left_mm, tokens.layout.body_left_mm);
 assert.ok(tokens.layout.accent_length_mm >= 14 && tokens.layout.accent_length_mm <= 18);
 assert.ok(tokens.layout.accent_weight_pt >= 0.5 && tokens.layout.accent_weight_pt <= 0.8);
 assert.ok(tokens.layout.name_x_mm >= 18 && tokens.layout.name_x_mm <= 21);
-assert.ok(tokens.layout.contours.length >= 5 && tokens.layout.contours.length <= 9);
+assert.equal(tokens.ending.year_text, '2006—2026');
+assert.equal(tokens.ending.caption_text, '山东大学学生科幻协会　二十周年');
+assert.ok(tokens.year.size_pt >= 34 && tokens.year.size_pt <= 42);
+assert.ok(tokens.ending.year_tint_percent >= 28 && tokens.ending.year_tint_percent <= 40);
+assert.ok(tokens.anniversary.size_pt >= 7.5 && tokens.anniversary.size_pt <= 8.5);
+assert.ok(tokens.layout.ending_rule_length_mm >= 22 && tokens.layout.ending_rule_length_mm <= 34);
+assert.ok(tokens.layout.ending_rule_weight_pt >= 0.4 && tokens.layout.ending_rule_weight_pt <= 0.6);
+assert.ok(tokens.layout.year_top_mm - (tokens.layout.body_top_mm + 5 * tokens.body.leading_pt * 25.4 / 72) >= 10);
+assert.ok(tokens.layout.year_top_mm - (tokens.layout.body_top_mm + 5 * tokens.body.leading_pt * 25.4 / 72) <= 16);
+assert.equal('contours' in tokens.layout, false);
 const jsxFiles = ['modules/association_profile.jsx', 'visual/association_profile_skin.jsx', 'build/11_association_profile_test.jsx'];
 for (const file of jsxFiles) assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf');
 const jsx = jsxFiles.map(read).join('\n');
@@ -77,7 +88,13 @@ assert.ok(jsx.includes('focusDocumentPage(doc, result.page)'));
 assert.ok(jsx.includes('getFirstGraphic'));
 assert.ok(!jsx.includes('result.logo.allGraphics.item'));
 assert.ok(jsx.includes('P_Association_Lead'));
+assert.ok(jsx.includes('P_Association_Year'));
+assert.ok(jsx.includes('P_Association_Anniversary'));
 assert.ok(jsx.includes('page.graphicLines.add()'));
+assert.ok(!jsx.includes('addContour'));
+assert.ok(!jsx.includes('P_Association_Keywords'));
+assert.equal((JSON.stringify(tokens).match(/2006—2026/g) || []).length, 1);
+assert.equal((JSON.stringify(tokens).match(/山东大学学生科幻协会　二十周年/g) || []).length, 1);
 for (const guard of ['doc.pages.length !== 1', 'result.textFrames.length < 1', 'visibleCharacters <= 150',
     'text is on a hidden layer', 'logo is missing or hidden', 'logo is outside the document page', 'overset assertion failed']) {
     assert.ok(jsx.includes(guard), `missing runtime guard: ${guard}`);
@@ -94,4 +111,4 @@ for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'ficti
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
-console.log('PASS Association Profile v1.2: locked copy, editorial information band, 25 mm alpha logo, lead/body hierarchy, native contours, runtime guards, BOM and frozen scopes.');
+console.log('PASS Association Profile v1.3 Scheme B: locked copy, 130 mm aligned body, 22 mm logo, single anniversary ending, runtime guards, BOM and frozen scopes.');

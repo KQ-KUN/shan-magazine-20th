@@ -9,7 +9,8 @@ SHAN.associationProfileSkin = {
     },
     apply: function (doc, tokens, base, context) {
         var names = ["P_Association_Title", "P_Association_Label", "P_Association_Separator",
-            "P_Association_Name", "P_Association_Value", "P_Association_Lead", "P_Association_Body"], i, style;
+            "P_Association_Name", "P_Association_Value", "P_Association_Lead", "P_Association_Body",
+            "P_Association_Year", "P_Association_Anniversary"], i, style;
         for (i = 0; i < names.length; i += 1) {
             style = SHAN.utils.ensureNamed(doc.paragraphStyles, names[i]); style.basedOn = doc.paragraphStyles.item(0);
         }
@@ -20,9 +21,13 @@ SHAN.associationProfileSkin = {
             P_Association_Name: this.fontDef(tokens.name),
             P_Association_Value: this.fontDef(tokens.value),
             P_Association_Lead: this.fontDef(tokens.lead),
-            P_Association_Body: this.fontDef(tokens.body)
+            P_Association_Body: this.fontDef(tokens.body),
+            P_Association_Year: this.fontDef(tokens.year),
+            P_Association_Anniversary: this.fontDef(tokens.anniversary)
         } }, context);
         for (i = 0; i < names.length; i += 1) { doc.paragraphStyles.itemByName(names[i]).justification = Justification.LEFT_ALIGN; }
         doc.paragraphStyles.itemByName("P_Association_Label").tracking = 80;
+        doc.paragraphStyles.itemByName("P_Association_Year").justification = Justification.CENTER_ALIGN;
+        doc.paragraphStyles.itemByName("P_Association_Anniversary").justification = Justification.CENTER_ALIGN;
     }
 };
