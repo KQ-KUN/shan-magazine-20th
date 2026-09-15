@@ -87,7 +87,7 @@
   "ending": {
     "year_text": "2006—2026",
     "caption_text": "山东大学学生科幻协会　二十周年",
-    "year_tint_percent": 34
+    "year_tint_percent": 40
   },
   "layout": {
     "title_left_mm": 19,
@@ -117,7 +117,7 @@
     "lead_height_mm": 31,
     "lead_rule_length_mm": 25,
     "lead_rule_weight_pt": 0.7,
-    "body_top_mm": 162,
+    "body_top_mm": 158.5,
     "body_width_mm": 130,
     "body_height_mm": 34,
     "logo_width_mm": 22,
