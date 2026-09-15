@@ -28,6 +28,7 @@ SHAN.associationProfile = {
         return parts.join("\n");
     },
     normalizeText: function (value) { return String(value).replace(/\r\n|\r/g, "\n"); },
+    normalizeEndingText: function (value) { return String(value).replace(/[\r\n\s]+$/g, ""); },
     getFirstGraphic: function (pageItem) {
         var graphics = null, first = null;
         if (!pageItem || pageItem.isValid === false) { return null; }
@@ -83,11 +84,6 @@ SHAN.associationProfile = {
         line.label = label; line.geometricBounds = bounds;
         line.strokeColor = doc.colors.itemByName(colorName); line.strokeWeight = weight;
         return line;
-    },
-    countOccurrences: function (text, needle) {
-        var count = 0, offset = 0, found;
-        while ((found = text.indexOf(needle, offset)) >= 0) { count += 1; offset = found + needle.length; }
-        return count;
     },
     render: function (doc, data, tokens, root) {
         data = this.validateData(data); this.checkStyles(doc);
@@ -183,11 +179,30 @@ SHAN.associationProfile = {
         for (i = 0; i < result.copyFrames.length; i += 1) { actual.push(this.normalizeText(result.copyFrames[i].parentStory.contents)); }
         if (!intersects || visibleCharacters <= 150) { throw new Error("Association Profile has no visible page text"); }
         if (actual.join("\n") !== this.visibleText(data)) { throw new Error("Association Profile visible copy differs from locked JSON"); }
-        var allStoryText = "", yearText = tokens.ending.year_text, captionText = tokens.ending.caption_text;
-        for (i = 0; i < doc.stories.length; i += 1) { allStoryText += String(doc.stories.item(i).contents) + "\n"; }
-        if (result.endingFrames.length !== 2 || this.countOccurrences(allStoryText, yearText) !== 1 ||
-                this.countOccurrences(allStoryText, captionText) !== 1) {
-            throw new Error("Association Profile anniversary ending assertion failed");
+        if (!result.endingFrames || result.endingFrames.length !== 2) {
+            throw new Error("Association Profile ending frames missing");
+        }
+        var yearFrame = result.endingFrames[0], captionFrame = result.endingFrames[1];
+        if (this.normalizeEndingText(yearFrame.parentStory.contents) !== tokens.ending.year_text) {
+            throw new Error("Association Profile year ending text mismatch");
+        }
+        if (this.normalizeEndingText(captionFrame.parentStory.contents) !== tokens.ending.caption_text) {
+            throw new Error("Association Profile anniversary caption mismatch");
+        }
+        var endingNames = ["year ending", "anniversary caption"], endingFrame;
+        for (i = 0; i < result.endingFrames.length; i += 1) {
+            endingFrame = result.endingFrames[i]; fb = endingFrame.geometricBounds;
+            if (!endingFrame.parentPage || endingFrame.parentPage.isValid === false ||
+                    endingFrame.parentPage.id !== result.page.id ||
+                    !(fb[2] > pb[0] && fb[0] < pb[2] && fb[3] > pb[1] && fb[1] < pb[3])) {
+                throw new Error("Association Profile " + endingNames[i] + " outside page");
+            }
+            if (!endingFrame.itemLayer.visible) {
+                throw new Error("Association Profile " + endingNames[i] + " is on a hidden layer");
+            }
+            if (endingFrame.overflows) {
+                throw new Error("Association Profile " + endingNames[i] + " overset");
+            }
         }
         var graphic = this.getFirstGraphic(result.logo);
         if (!result.logo || !result.logo.itemLayer.visible || !graphic || !graphic.itemLink ||

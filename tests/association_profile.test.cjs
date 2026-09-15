@@ -43,6 +43,8 @@ for (const field of data.fields) { expectedVisible.push(field.label); if (field.
 expectedVisible.push(...data.body);
 assert.equal(association.visibleText(context.lockedData), expectedVisible.join('\n'));
 assert.ok(association.visibleText(context.lockedData).replace(/\s/g, '').length > 150);
+assert.equal(association.normalizeEndingText('2006—2026\r\n  '), '2006—2026');
+assert.equal(association.normalizeEndingText(' 山东大学学生科幻协会　二十周年\r'), ' 山东大学学生科幻协会　二十周年');
 
 const tokens = JSON.parse(read('spec/ASSOCIATION_PROFILE_TOKENS.json'));
 assert.equal(tokens.version, '1.3');
@@ -93,6 +95,13 @@ assert.ok(jsx.includes('P_Association_Anniversary'));
 assert.ok(jsx.includes('page.graphicLines.add()'));
 assert.ok(!jsx.includes('addContour'));
 assert.ok(!jsx.includes('P_Association_Keywords'));
+assert.ok(!jsx.includes('doc.stories'));
+assert.ok(!jsx.includes('countOccurrences'));
+for (const endingGuard of ['result.endingFrames[0]', 'result.endingFrames[1]', 'year ending text mismatch',
+    'anniversary caption mismatch', '["year ending", "anniversary caption"]', 'endingFrame.parentPage.id',
+    ' + " outside page"', ' + " is on a hidden layer"', ' + " overset"']) {
+    assert.ok(jsx.includes(endingGuard), `missing local ending guard: ${endingGuard}`);
+}
 assert.equal((JSON.stringify(tokens).match(/2006—2026/g) || []).length, 1);
 assert.equal((JSON.stringify(tokens).match(/山东大学学生科幻协会　二十周年/g) || []).length, 1);
 for (const guard of ['doc.pages.length !== 1', 'result.textFrames.length < 1', 'visibleCharacters <= 150',
