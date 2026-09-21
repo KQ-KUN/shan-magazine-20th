@@ -75,7 +75,13 @@ assert.ok(!jsx.includes('SHAN.parents.create'));
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.deepEqual({ status: status.cover_system.status, runtimeTested: status.cover_system.runtimeTested,
     designValuesPending: status.cover_system.designValuesPending, frozen: status.cover_system.frozen },
-{ status: 'IMPLEMENTED_PENDING_IND2026_TEST', runtimeTested: false, designValuesPending: true, frozen: false });
+{ status: 'PARTIAL_APPROVED_EXTERNAL_ARTWORK', runtimeTested: false, designValuesPending: true, frozen: false });
+assert.deepEqual(status.cover_system.frontCover, {
+    status: 'APPROVED', sourceType: 'EXTERNAL_ARTWORK', asset: 'assets/cover/SHAN_FRONT_COVER_FINAL.pdf',
+    assemblyMode: 'DIRECT_PDF_LINK', jsxStatus: 'SUPERSEDED_BY_EXTERNAL_ARTWORK'
+});
+assert.equal(status.cover_system.backCover.status, 'PENDING');
+assert.equal(status.cover_system.spine.status, 'WIDTH_PENDING');
 for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'fiction', 'memoir', 'feature', 'association_profile']) {
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
     execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });

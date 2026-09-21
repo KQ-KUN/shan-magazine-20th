@@ -83,12 +83,25 @@
     "frozen": true
   },
   "cover_system": {
-    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "status": "PARTIAL_APPROVED_EXTERNAL_ARTWORK",
     "scope": [
       "modules/cover_system.jsx",
       "visual/cover_system_skin.jsx",
       "build/12_cover_system_test.jsx"
     ],
+    "frontCover": {
+      "status": "APPROVED",
+      "sourceType": "EXTERNAL_ARTWORK",
+      "asset": "assets/cover/SHAN_FRONT_COVER_FINAL.pdf",
+      "assemblyMode": "DIRECT_PDF_LINK",
+      "jsxStatus": "SUPERSEDED_BY_EXTERNAL_ARTWORK"
+    },
+    "backCover": {
+      "status": "PENDING"
+    },
+    "spine": {
+      "status": "WIDTH_PENDING"
+    },
     "runtimeTested": false,
     "designValuesPending": true,
     "frozen": false
