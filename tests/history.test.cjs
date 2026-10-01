@@ -24,7 +24,8 @@ function node(data) {
     return {
         name: () => ({ localName: name, uri }), nodeKind: () => 'element',
         toString: () => data.text || '', children: () => list(data.children.map(node)),
-        elements: q => list(data.children.filter(c => c.tag === `{${q.ns.uri}}${q.name}`).map(node)),
+        // Regression: the real host returned an empty elements(QName) selection.
+        elements: () => list([]),
     };
 }
 function XML(text) { assert.equal(text, read(audit.xml_file)); return node(fixture.tree); }
@@ -45,6 +46,8 @@ for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'visual
 }
 const sourceModule = ctx.SHAN.historySource;
 const history = ctx.SHAN.history;
+assert.throws(() => node(fixture.tree).elements({})[0].elements({}), TypeError,
+    'reproduce the empty body selector failure reported at history_source.jsx:101');
 for (const bytes of ['', 'abc', 'a'.repeat(55), 'a'.repeat(56), 'a'.repeat(63), 'a'.repeat(64), 'a'.repeat(65), '\x00\xff'.repeat(250)]) {
     assert.equal(sourceModule.sha256(bytes), hash(Buffer.from(bytes, 'latin1')));
 }
@@ -55,6 +58,33 @@ const source = sourceModule.verifySource(root, audit);
 assert.deepEqual(Array.from(source.paragraphs), fixture.paragraphs, 'E4X projection matches independent Python reader, every paragraph');
 assert.equal(source.textboxes[0].text, fixture.textbox);
 assert.equal(XML.ignoreWhitespace, true);
+const wordURI = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+const bodyTree = fixture.tree.children.find(child => child.tag === `{${wordURI}}body`);
+assert.ok(bodyTree);
+function parseTree(tree) {
+    const originalXML = ctx.XML;
+    function MockXML() { return node(tree); }
+    MockXML.ignoreWhitespace = true;
+    ctx.XML = MockXML;
+    try { return sourceModule.parse('test XML'); }
+    finally { assert.equal(MockXML.ignoreWhitespace, true); ctx.XML = originalXML; }
+}
+const withoutBody = structuredClone(fixture.tree);
+withoutBody.children = withoutBody.children.filter(child => child.tag !== `{${wordURI}}body`);
+assert.throws(() => parseTree(withoutBody), /Expected one Word XML body; found 0; direct children=/);
+const duplicateBody = structuredClone(fixture.tree); duplicateBody.children.push(structuredClone(bodyTree));
+assert.throws(() => parseTree(duplicateBody), /Expected one Word XML body; found 2/);
+const wrongBodyNamespace = structuredClone(fixture.tree);
+wrongBodyNamespace.children.find(child => child.tag === `{${wordURI}}body`).tag = '{urn:not-word}body';
+assert.throws(() => parseTree(wrongBodyNamespace), /found 0; direct children=.*body\{urn:not-word\}/);
+const wrongRoot = structuredClone(fixture.tree); wrongRoot.tag = `{${wordURI}}body`;
+assert.throws(() => parseTree(wrongRoot), /Expected Word document XML root; found body/);
+const mixedBody = structuredClone(fixture.tree);
+mixedBody.children.find(child => child.tag === `{${wordURI}}body`).children.unshift({ tag: '{urn:not-word}p', text: 'must not import', children: [] });
+assert.deepEqual(Array.from(parseTree(mixedBody).paragraphs), fixture.paragraphs, 'ignore same-name foreign namespace paragraphs');
+assert.throws(() => sourceModule.wordChildren(undefined, 'body'), /Missing XML children/);
+assert.throws(() => sourceModule.wordChildren({ children: () => undefined }, 'body'), /Missing XMLList/);
+assert.throws(() => sourceModule.wordChildren({ children: () => ({ length: () => 1 }) }, 'body'), /Missing XML child 0/);
 sourceModule.validateMap(map, source);
 assert.equal(map.years.length, 21);
 assert.equal(map.paragraph_order.length, 216);
@@ -341,4 +371,4 @@ assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History: locked DOCX/XML/24 original image hashes; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; E4X fallback; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');
+console.log('PASS History: locked DOCX/XML/24 original image hashes; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; empty QName selector regression and namespace-aware direct children; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');

@@ -74,7 +74,29 @@ SHAN.historySource = {
         return result;
     },
     fileHash: function (file) { return this.sha256(this.read(file, "BINARY")); },
-    nodeName: function (node) { var q = node.name(); return q ? String(q.localName) : ""; },
+    nodeName: function (node) {
+        this.require(node !== undefined && node !== null && typeof node.name === "function", "Missing XML node/name()");
+        var q = node.name(); return q ? String(q.localName) : "";
+    },
+    wordChildren: function (node, wanted) {
+        // Inspect QName fields directly; do not rely on the host's elements(QName) selector.
+        this.require(node !== undefined && node !== null && typeof node.children === "function", "Missing XML children() for Word " + wanted);
+        var children = node.children(), i, child, q, out = [], seen = [];
+        this.require(children !== undefined && children !== null && typeof children.length === "function", "Missing XMLList for Word " + wanted);
+        var count = children.length();
+        this.require(typeof count === "number" && count >= 0, "Invalid XMLList length for Word " + wanted);
+        for (i = 0; i < count; i += 1) {
+            child = children[i];
+            this.require(child !== undefined && child !== null && typeof child.nodeKind === "function", "Missing XML child " + i + " for Word " + wanted);
+            if (child.nodeKind() !== "element") { continue; }
+            this.require(typeof child.name === "function", "Missing XML child name() for Word " + wanted);
+            q = child.name();
+            this.require(q && q.localName !== undefined && q.uri !== undefined, "Missing XML QName fields for Word " + wanted + " / child " + i);
+            seen.push(String(q.localName) + "{" + String(q.uri) + "}");
+            if (String(q.localName) === wanted && String(q.uri) === "http://schemas.openxmlformats.org/wordprocessingml/2006/main") { out.push(child); }
+        }
+        return { matches: out, seen: seen.join(", ") };
+    },
     walkText: function (node) {
         var name = this.nodeName(node), children, i, out = "";
         if (name === "Fallback" || name === "drawing" || name === "pict" || name === "pPr" || name === "rPr") { return ""; }
@@ -96,10 +118,15 @@ SHAN.historySource = {
         }
     },
     parse: function (xmlText) {
-        var previous = XML.ignoreWhitespace, root, w = new Namespace("http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+        var previous = XML.ignoreWhitespace, root;
         try { XML.ignoreWhitespace = false; root = new XML(xmlText); } finally { XML.ignoreWhitespace = previous; }
-        var ps = root.elements(new QName(w, "body"))[0].elements(new QName(w, "p")), out = [], boxes = [], i, local;
-        for (i = 0; i < ps.length(); i += 1) {
+        this.require(this.nodeName(root) === "document", "Expected Word document XML root; found " + this.nodeName(root));
+        var bodies = this.wordChildren(root, "body");
+        this.require(bodies.matches.length === 1, "Expected one Word XML body; found " + bodies.matches.length + "; direct children=" + bodies.seen);
+        var body = bodies.matches[0];
+        var ps = this.wordChildren(body, "p").matches, out = [], boxes = [], i, local;
+        this.require(ps.length > 0, "No direct Word paragraphs in XML body");
+        for (i = 0; i < ps.length; i += 1) {
             out.push(this.walkText(ps[i])); local = []; this.collect(ps[i], "txbxContent", local);
             if (local.length) { boxes.push({ source_paragraph: i + 1, text: this.walkText(local[0]) }); }
         }
