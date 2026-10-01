@@ -19,7 +19,14 @@ SHAN.history = {
         var key; for (key in detail) { if (detail.hasOwnProperty(key)) { this.runtime[key] = detail[key]; } }
     },
     valid: function (value, label) {
-        this.check(value !== undefined && value !== null && value.isValid !== false, "missing/invalid " + label);
+        this.check(value !== undefined && value !== null, "missing/invalid " + label);
+        var validity;
+        try { validity = value.isValid; }
+        catch (error) {
+            // InDesign collections lack isValid; their members still require validation.
+            if (error.number !== 55 || typeof value.length !== "number") { throw error; }
+        }
+        this.check(validity !== false, "missing/invalid " + label);
         return value;
     },
     field: function (object, key, label) {
@@ -173,6 +180,11 @@ SHAN.history = {
         var parent = this.field(anchor, "parent", "anchored image");
         var parentStory = this.field(parent, "parentStory", "anchor character");
         this.check(parentStory.id === targetStory.id, "anchor changed parentStory");
+        // Only the generated object character uses auto leading. Fixed body leading
+        // otherwise lets tall inline graphics overlap text or extend above the page.
+        // Inline mode also reserves separate lines for multiple images in one paragraph.
+        this.describe({ operation: "reserve inline image line height" });
+        parent.leading = Leading.AUTO;
         this.valid(rect, "rectangle after anchoring"); this.valid(graphic, "graphic after anchoring");
         if (captionFrame) { this.valid(captionFrame, "caption frame after anchoring"); }
         return { rect: rect, graphic: graphic, anchor: anchor, captionFrame: captionFrame, source: imageMap, asset: asset };

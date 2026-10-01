@@ -201,6 +201,17 @@ assert.throws(() => sourceModule.verifySource(root, { ...audit, source_sha256: '
 assert.equal(sourceModule.at(undefined, 0), null);
 assert.equal(sourceModule.at({ length: 0 }, -1), null);
 assert.equal(sourceModule.at({ length: 1, 0: { id: 1 } }, -2), null);
+const nativeCollection = { length: 1, 0: { isValid: true, id: 88 } };
+let collectionValidityReads = 0;
+Object.defineProperty(nativeCollection, 'isValid', { get() {
+    collectionValidityReads++;
+    throw Object.assign(new Error("Object does not support the property or method 'isValid'"), { number: 55 });
+} });
+assert.equal(sourceModule.at(nativeCollection, 0).id, 88);
+assert.equal(collectionValidityReads, 0, 'collection lookup must not read unsupported isValid');
+assert.equal(history.field({ paragraphs: nativeCollection }, 'paragraphs', 'native story'), nativeCollection);
+assert.equal(history.paragraph({ paragraphs: nativeCollection }, 0).id, 88);
+assert.throws(() => history.valid({ get isValid() { throw Object.assign(new Error('real host failure'), { number: 54 }); } }, 'DOM member'), /real host failure/);
 assert.throws(() => history.paragraph({ paragraphs: [{ isValid: false }] }, 0), /invalid.*paragraph/i);
 assert.throws(() => sourceModule.assertParagraphs({ paragraphs: undefined }, source, map), /paragraph/i);
 assert.throws(() => history.linePosition({ parentTextFrames: [] }), /line parent frame/);
@@ -229,6 +240,7 @@ assert.deepEqual(indexedCalls, [4]);
 
 ctx.FitOptions = { PROPORTIONALLY: 1, CENTER_CONTENT: 2 };
 ctx.AnchorPosition = { INLINE_POSITION: 1 };
+ctx.Leading = { AUTO: 1635019116 };
 function placementDOM() {
     const paragraph = { isValid: true, contents: 'text\r', insertionPoints: points };
     const graphic = { isValid: true }, rect = { isValid: true, allGraphics: [graphic], place() {}, fit() {} };
@@ -243,6 +255,8 @@ const imageMap = { image_index: 7, source_paragraph: 90, anchor: 'paragraph_star
 const place = (dom, caption = null) => history.image(dom.doc, dom.page, audit.assets[6], {}, dom.paragraph, imageMap, caption, tokens);
 let placement = placementDOM();
 assert.equal(place(placement).rect, placement.rect);
+assert.equal(placement.rect.parent.leading, ctx.Leading.AUTO, 'generated inline character must reserve image height');
+assert.equal(placement.paragraph.contents, 'text\r', 'line-height correction must not insert text controls');
 assert.equal(runtime.stage, 'history-create:image-7');
 placement = placementDOM(); placement.paragraph.insertionPoints = undefined;
 assert.throws(() => place(placement), error => imageContext.test(error.message) && /insertionPoints/.test(error.message));
@@ -430,16 +444,17 @@ assert.ok(!read('modules/history_runtime.jsx').includes('doc.stories'));
 
 // Exercise the real build's PASS path, both focus calls, and final report rewrite.
 story.contents = story.paragraphs.map(paragraph => paragraph.contents).join('');
-for (const mode of ['normal', 'stuck', 'throw']) {
-    const window = makeWindow(mode), writes = {}, alerts = [];
+for (const mode of ['normal', 'stuck', 'throw', 'silent']) {
+    const window = makeWindow(mode === 'silent' ? 'normal' : mode), writes = {}, alerts = [];
     doc.layoutWindows = [window];
     const state = vm.createContext({
         File: filename => ({ fsName: filename, parent: { parent: { fsName: root } }, open: () => true, close() {},
             write: text => { writes[path.basename(filename)] = text; } }),
         Folder: filename => ({ fsName: filename, exists: true }),
         $: { fileName: root + '/build/13_history_test.jsx', stack: 'MOCK STACK', writeln() {} },
-        alert: text => alerts.push(text), MeasurementUnits: { POINTS: 72 }, FontStatus: { INSTALLED: 1 }, LinkStatus: { NORMAL: 1 },
-        app: { scriptPreferences: { measurementUnit: 19 }, layoutWindows: [window], activeWindow: window },
+        alert: text => alerts.push(text), UserInteractionLevels: { NEVER_INTERACT: 0 },
+        MeasurementUnits: { POINTS: 72 }, FontStatus: { INSTALLED: 1 }, LinkStatus: { NORMAL: 1 },
+        app: { scriptPreferences: { measurementUnit: 19, userInteractionLevel: mode === 'silent' ? 0 : 1 }, layoutWindows: [window], activeWindow: window },
         SHAN: { chapter: { parseJSON: filename => ({
             'HISTORY_TOKENS.json': tokens, 'HISTORY_IMPORT_MAP.json': map, 'HISTORY_SOURCE_AUDIT.json': audit,
             'CONTENT_MANIFEST.json': { sections: [{ id: 'strata', chapter_index: 2, display_index: '贰' }] },
@@ -455,8 +470,9 @@ for (const mode of ['normal', 'stuck', 'throw']) {
     assert.ok(report.startsWith('PASS History data checks'));
     for (const field of ['documentPages=1', 'firstPageHistoryTextFrames=1', 'historyParagraphs=216', 'historyYears=21',
         'historyImages=24', 'historyOverset=false', 'historyTextEquality=PASS', '[focus:after-renderer]', '[focus:finally]']) assert.ok(report.includes(field), field);
-    assert.equal(alerts.length, 1); assert.ok(alerts[0].startsWith('PASS'));
-    if (mode === 'normal') assert.ok(report.includes('activePageAfter=1') && report.includes('activePageIsParent=false'));
+    assert.equal(alerts.length, mode === 'silent' ? 0 : 1);
+    if (mode !== 'silent') assert.ok(alerts[0].startsWith('PASS'));
+    if (mode === 'normal' || mode === 'silent') assert.ok(report.includes('activePageAfter=1') && report.includes('activePageIsParent=false'));
     else assert.ok(report.includes('activePageIsParent=true') && alerts[0].includes('WARNING: History rendered, but InDesign view remained on Parent spread.'));
 }
 

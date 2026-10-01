@@ -3,7 +3,8 @@
 SHAN.historySource = {
     lockedHash: "1beb214adf0372b61bb4ca312c20317f0c77b38812f1b17131e37e6bb5b9756f",
     at: function (collection, index) {
-        if (!collection || collection.isValid === false || typeof collection.length !== "number" || collection.length < 1) { return null; }
+        // Native Pages/ParagraphStyles collections expose length, but not isValid (Error 55).
+        if (!collection || typeof collection.length !== "number" || collection.length < 1) { return null; }
         if (index < 0) { index += collection.length; }
         if (index < 0 || index >= collection.length || Math.floor(index) !== index) { return null; }
         var value = collection[index];

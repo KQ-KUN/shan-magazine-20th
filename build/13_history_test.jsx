@@ -26,6 +26,14 @@
     }
     runtime.setStage = setStage;
     function readJSON(path) { return SHAN.chapter.parseJSON(SHAN.historySource.read(File(path))); }
+    function notify(message) {
+        // ExtendScript alert ignores NEVER_INTERACT. Native tests must return without a modal.
+        if (typeof UserInteractionLevels !== "undefined" &&
+            app.scriptPreferences.userInteractionLevel === UserInteractionLevels.NEVER_INTERACT) {
+            $.writeln(message); return;
+        }
+        alert(message);
+    }
     function focusDocumentPage(phase) {
         var entry = SHAN.historyRuntime.focusDocumentPage(doc || context.document,
             phase, !!result);
@@ -98,7 +106,7 @@
         setStage("write-report");
         successText = result.report + "\n\n" + doc.extractLabel("SHAN_VISUAL_FONTS") + "\n\n" + context.warnings.join("\n");
         var reportPath = writeReport("HISTORY_RUNTIME_REPORT.txt", successText + "\n\n" + documentDiagnostic());
-        alert(result.report + "\n" + focus.warnings.join("\n") + "\n\n未保存或导出；请人工检查并导出PDF。\n报告：" + reportPath);
+        notify(result.report + "\n" + focus.warnings.join("\n") + "\n\n未保存或导出；请人工检查并导出PDF。\n报告：" + reportPath);
     } catch (e) {
         // Capture the original stage/file/line BEFORE any diagnostic DOM or file I/O.
         var stack = "<unavailable>";
@@ -119,7 +127,7 @@
             diagnostic += logWarning; errorDiagnostic += logWarning;
         }
         try { $.writeln(diagnostic); } catch (consoleError) { /* Alert still carries the original location. */ }
-        alert("History 未通过\nstage=" + stage + "\n" + errorField(e, "message") +
+        notify("History 未通过\nstage=" + stage + "\n" + errorField(e, "message") +
             "\n原始行号=" + errorField(e, "line") + "\n原始文件=" + errorField(e, "fileName") +
             (runtime.image_index !== null ? "\nimage_index=" + runtime.image_index + " / source_paragraph=" + runtime.source_paragraph + " / anchor=" + runtime.anchor : "") +
             (errorPath ? "\n诊断：" + errorPath : "\n" + diagnostic));
