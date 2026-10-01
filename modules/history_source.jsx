@@ -74,53 +74,114 @@ SHAN.historySource = {
         return result;
     },
     fileHash: function (file) { return this.sha256(this.read(file, "BINARY")); },
+    xmlText: function (value) {
+        // Decode XML syntax ONCE; never trim or normalize the manuscript's Unicode.
+        this.require(!/&(?!(?:amp|lt|gt|quot|apos|#[0-9]+|#x[0-9a-fA-F]+);)/.test(value), "Unsupported XML entity");
+        var self = this, named = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+        return value.replace(/&([^;]+);/g, function (whole, name) {
+            if (named.hasOwnProperty(name)) { return named[name]; }
+            var code = name.charAt(1) === "x" ? parseInt(name.slice(2), 16) : parseInt(name.slice(1), 10);
+            self.require(code === 9 || code === 10 || code === 13 || (code >= 32 && code <= 0xD7FF) ||
+                (code >= 0xE000 && code <= 0xFFFD) || (code >= 0x10000 && code <= 0x10FFFF), "Invalid XML character reference: " + whole);
+            if (code <= 0xFFFF) { return String.fromCharCode(code); }
+            code -= 0x10000;
+            return String.fromCharCode(0xD800 + (code >> 10), 0xDC00 + (code & 1023));
+        });
+    },
+    xmlTree: function (text) {
+        // ES3 strings/arrays only, as in the existing source-fixture readers.
+        // This bounded reader accepts the locked Word XML; DTD/entities are not supported.
+        // No E4X globals or host XML method/property lookups participate in source verification.
+        var tokens = /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[[\s\S]*?\]\]>|<\/[A-Za-z_][A-Za-z0-9_.:-]*\s*>|<[A-Za-z_][A-Za-z0-9_.:-]*(?:\s+[A-Za-z_][A-Za-z0-9_.:-]*\s*=\s*(?:"[^"]*"|'[^']*'))*\s*\/?>|[^<]+/g;
+        var stack = [], root = null, cursor = 0, match, token, parent, node, name, prefix, colon, namespaces, copied, key, attr, attrs, attributes;
+        while ((match = tokens.exec(text)) !== null) {
+            this.require(match.index === cursor, "Unsupported/malformed XML at character " + cursor);
+            token = match[0]; cursor = tokens.lastIndex;
+            if (token.slice(0, 4) === "<!--" || token.slice(0, 2) === "<?") { continue; }
+            parent = stack.length ? stack[stack.length - 1] : null;
+            if (token.charAt(0) !== "<" || token.slice(0, 9) === "<![CDATA[") {
+                var data = token.slice(0, 9) === "<![CDATA[" ? token.slice(9, -3) : this.xmlText(token);
+                if (parent) { parent.children.push({ kind: "text", text: data }); }
+                else { this.require(/^[\s\uFEFF]*$/.test(data), "Text outside Word XML document"); }
+                continue;
+            }
+            if (token.slice(0, 2) === "</") {
+                name = /^<\/([^\s>]+)/.exec(token)[1];
+                this.require(parent && parent.qname === name, "Mismatched XML closing tag " + name + " at character " + match.index);
+                stack.pop(); continue;
+            }
+            name = /^<([^\s/>]+)/.exec(token)[1];
+            namespaces = parent ? parent.namespaces : { xml: "http://www.w3.org/XML/1998/namespace" }; copied = false;
+            attrs = /\s+([A-Za-z_][A-Za-z0-9_.:-]*)\s*=\s*("[^"]*"|'[^']*')/g; attributes = {};
+            while ((attr = attrs.exec(token)) !== null) {
+                this.require(!attributes.hasOwnProperty(attr[1]), "Duplicate XML attribute " + attr[1]);
+                attributes[attr[1]] = this.xmlText(attr[2].slice(1, -1));
+                if (attr[1] === "xmlns" || attr[1].slice(0, 6) === "xmlns:") {
+                    if (!copied) {
+                        var inherited = namespaces; namespaces = {};
+                        for (key in inherited) { if (inherited.hasOwnProperty(key)) { namespaces[key] = inherited[key]; } }
+                        copied = true;
+                    }
+                    namespaces[attr[1] === "xmlns" ? "" : attr[1].slice(6)] = attributes[attr[1]];
+                }
+            }
+            colon = name.indexOf(":"); prefix = colon < 0 ? "" : name.slice(0, colon);
+            this.require(colon < 0 || namespaces.hasOwnProperty(prefix), "Unbound XML namespace prefix " + prefix);
+            node = { kind: "element", qname: name, name: colon < 0 ? name : name.slice(colon + 1),
+                uri: namespaces.hasOwnProperty(prefix) ? namespaces[prefix] : "", namespaces: namespaces, children: [] };
+            if (parent) { parent.children.push(node); }
+            else { this.require(root === null, "Multiple XML document roots"); root = node; }
+            if (!/\/\s*>$/.test(token)) { stack.push(node); }
+        }
+        this.require(cursor === text.length && stack.length === 0 && root !== null, "Incomplete/malformed Word XML at character " + cursor);
+        return root;
+    },
     nodeName: function (node) {
-        this.require(node !== undefined && node !== null && typeof node.name === "function", "Missing XML node/name()");
-        var q = node.name(); return q ? String(q.localName) : "";
+        this.require(node && node.kind === "element" && typeof node.name === "string", "Missing parsed XML element name");
+        return node.name;
     },
     wordChildren: function (node, wanted) {
-        // Inspect QName fields directly; do not rely on the host's elements(QName) selector.
-        this.require(node !== undefined && node !== null && typeof node.children === "function", "Missing XML children() for Word " + wanted);
-        var children = node.children(), i, child, q, out = [], seen = [];
-        this.require(children !== undefined && children !== null && typeof children.length === "function", "Missing XMLList for Word " + wanted);
-        var count = children.length();
-        this.require(typeof count === "number" && count >= 0, "Invalid XMLList length for Word " + wanted);
-        for (i = 0; i < count; i += 1) {
+        this.require(node && node.children && typeof node.children.length === "number", "Missing parsed XML children for Word " + wanted);
+        var children = node.children, i, child, out = [], seen = [];
+        for (i = 0; i < children.length; i += 1) {
             child = children[i];
-            this.require(child !== undefined && child !== null && typeof child.nodeKind === "function", "Missing XML child " + i + " for Word " + wanted);
-            if (child.nodeKind() !== "element") { continue; }
-            this.require(typeof child.name === "function", "Missing XML child name() for Word " + wanted);
-            q = child.name();
-            this.require(q && q.localName !== undefined && q.uri !== undefined, "Missing XML QName fields for Word " + wanted + " / child " + i);
-            seen.push(String(q.localName) + "{" + String(q.uri) + "}");
-            if (String(q.localName) === wanted && String(q.uri) === "http://schemas.openxmlformats.org/wordprocessingml/2006/main") { out.push(child); }
+            this.require(child && typeof child.kind === "string", "Missing parsed XML child " + i + " for Word " + wanted);
+            if (child.kind !== "element") { continue; }
+            seen.push(child.name + "{" + child.uri + "}");
+            if (child.name === wanted && child.uri === "http://schemas.openxmlformats.org/wordprocessingml/2006/main") { out.push(child); }
         }
         return { matches: out, seen: seen.join(", ") };
     },
     walkText: function (node) {
         var name = this.nodeName(node), children, i, out = "";
         if (name === "Fallback" || name === "drawing" || name === "pict" || name === "pPr" || name === "rPr") { return ""; }
-        if (name === "t") { return String(node); }
+        if (name === "t") {
+            children = node.children;
+            for (i = 0; i < children.length; i += 1) {
+                this.require(children[i].kind === "text", "Unexpected element inside Word text"); out += children[i].text;
+            }
+            return out;
+        }
         if (name === "tab") { return "\t"; }
         if (name === "br") { return "\n"; }
-        children = node.children();
-        for (i = 0; i < children.length(); i += 1) {
-            if (children[i].nodeKind() === "element") { out += this.walkText(children[i]); }
+        children = node.children;
+        for (i = 0; i < children.length; i += 1) {
+            if (children[i].kind === "element") { out += this.walkText(children[i]); }
         }
         return out;
     },
     collect: function (node, wanted, out) {
         if (this.nodeName(node) === "Fallback") { return; }
         if (this.nodeName(node) === wanted) { out.push(node); return; }
-        var children = node.children(), i;
-        for (i = 0; i < children.length(); i += 1) {
-            if (children[i].nodeKind() === "element") { this.collect(children[i], wanted, out); }
+        var children = node.children, i;
+        for (i = 0; i < children.length; i += 1) {
+            if (children[i].kind === "element") { this.collect(children[i], wanted, out); }
         }
     },
     parse: function (xmlText) {
-        var previous = XML.ignoreWhitespace, root;
-        try { XML.ignoreWhitespace = false; root = new XML(xmlText); } finally { XML.ignoreWhitespace = previous; }
+        var root = this.xmlTree(xmlText);
         this.require(this.nodeName(root) === "document", "Expected Word document XML root; found " + this.nodeName(root));
+        this.require(root.uri === "http://schemas.openxmlformats.org/wordprocessingml/2006/main", "Unexpected Word XML root namespace " + root.uri);
         var bodies = this.wordChildren(root, "body");
         this.require(bodies.matches.length === 1, "Expected one Word XML body; found " + bodies.matches.length + "; direct children=" + bodies.seen);
         var body = bodies.matches[0];

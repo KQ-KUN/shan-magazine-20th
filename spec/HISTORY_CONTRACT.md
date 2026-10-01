@@ -20,7 +20,11 @@
 
 ## 导入方法
 
-不依赖 Word 原生导入器对浮动文本框的兼容性。构建先核验 DOCX、原始XML、24张图片哈希，再用 ExtendScript E4X 读取同一原始OOXML，建立 InDesign story 与随文图形。选择 AlternateContent 的 Choice，仅忽略其同一对象的 Fallback。主段落文字不包含浮动图注；图注从原XML文本框读取一次，放入与第一图组成的随文 Group。
+不依赖 Word 原生导入器对浮动文本框的兼容性。构建先核验 DOCX、原始XML、24张图片哈希，再用 ES3 字符串与数组读取同一原始OOXML，建立 InDesign story 与随文图形。源读取器不访问宿主 E4X 的 XML / XMLList / Namespace / QName；原来的静态 E4X 适配器不能代表 InDesign 中的 XML 对象行为，现已移除。
+
+读取器保留嵌套标签与命名空间作用域，只选 Word body 的直接段落，避免浮动文本框内的段落混入正文。XML 自身的五种预定义实体及数值字符引用只解码一次；这是 XML 语法解码，不做 trim、Unicode normalization 或文本自动纠错。DTD、自定义实体、不闭合标签及未知结构会明确失败，不尝试补全。生产读取器在静态测试中直接读取原始 XML 字节对应的 UTF-8 字符串，与独立 Python DOCX 读取器逐段比较；不再用模拟的 XML 对象代替生产解析。
+
+选择 AlternateContent 的 Choice，仅忽略其同一对象的 Fallback。主段落文字不包含浮动图注；图注从原XML文本框读取一次，放入与第一图组成的随文 Group。没有新增正文快照、正文 JSON 或新的事实来源。
 
 输出为216个主段落及1个原有图注子story。没有章节导语；独立章标从现有 CONTENT_MANIFEST 读取 `贰｜地层 / STRATA`，不修改清单、不调用 Chapter renderer、不做整刊装配。
 

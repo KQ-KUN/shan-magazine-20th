@@ -13,31 +13,17 @@ const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 assert.deepEqual(map, fixture.map);
 assert.deepEqual(audit, fixture.audit);
 
-function list(items) {
-    const result = { length: () => items.length };
-    items.forEach((value, i) => { result[i] = value; });
-    return result;
-}
-function node(data) {
-    const name = data.tag.slice(data.tag.indexOf('}') + 1);
-    const uri = data.tag.startsWith('{') ? data.tag.slice(1, data.tag.indexOf('}')) : '';
-    return {
-        name: () => ({ localName: name, uri }), nodeKind: () => 'element',
-        toString: () => data.text || '', children: () => list(data.children.map(node)),
-        // Regression: the real host returned an empty elements(QName) selection.
-        elements: () => list([]),
-    };
-}
-function XML(text) { assert.equal(text, read(audit.xml_file)); return node(fixture.tree); }
-XML.ignoreWhitespace = true;
 function File(filename) {
     return { fsName: filename, exists: fs.existsSync(filename), encoding: 'UTF-8',
         open() { return this.exists; }, close() {}, read() { return fs.readFileSync(filename, this.encoding === 'BINARY' ? 'latin1' : 'utf8'); } };
 }
-const ctx = vm.createContext({ XML, Namespace: function (uri) { this.uri = uri; },
-    QName: function (ns, name) { this.ns = ns; this.name = name; }, File,
+const ctx = vm.createContext({ File,
     SHAN: { utils: { pt: n => n * 72 / 25.4, moduleWidthMM: () => 122 / 6 }, spec: { gutterMM: 6 } },
     LinkStatus: { NORMAL: 1 }, FontStatus: { INSTALLED: 1 }, app: { version: 'MOCK_ONLY' } });
+// Do not simulate E4X as ordinary objects again: all E4X accesses must fail.
+for (const name of ['XML', 'XMLList', 'Namespace', 'QName']) {
+    Object.defineProperty(ctx, name, { get() { throw new Error('E4X must not participate in History source reading: ' + name); } });
+}
 for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'visual/history_skin.jsx', 'build/13_history_test.jsx']) {
     assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf', file);
     const code = read(file).replace(/^\uFEFF/, '').replace(/^#(?:target|include).*$/gm, '');
@@ -46,8 +32,6 @@ for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'visual
 }
 const sourceModule = ctx.SHAN.historySource;
 const history = ctx.SHAN.history;
-assert.throws(() => node(fixture.tree).elements({})[0].elements({}), TypeError,
-    'reproduce the empty body selector failure reported at history_source.jsx:101');
 for (const bytes of ['', 'abc', 'a'.repeat(55), 'a'.repeat(56), 'a'.repeat(63), 'a'.repeat(64), 'a'.repeat(65), '\x00\xff'.repeat(250)]) {
     assert.equal(sourceModule.sha256(bytes), hash(Buffer.from(bytes, 'latin1')));
 }
@@ -55,36 +39,40 @@ for (const text of [' 山东大学\u200e——\t', '😀', 'e\u0301', '\r\n']) {
     assert.equal(sourceModule.utf8(text), Buffer.from(text).toString('latin1'));
 }
 const source = sourceModule.verifySource(root, audit);
-assert.deepEqual(Array.from(source.paragraphs), fixture.paragraphs, 'E4X projection matches independent Python reader, every paragraph');
+assert.deepEqual(Array.from(source.paragraphs), fixture.paragraphs, 'production string parser reads actual locked XML and matches independent Python reader, every paragraph');
 assert.equal(source.textboxes[0].text, fixture.textbox);
-assert.equal(XML.ignoreWhitespace, true);
 const wordURI = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
-const bodyTree = fixture.tree.children.find(child => child.tag === `{${wordURI}}body`);
-assert.ok(bodyTree);
-function parseTree(tree) {
-    const originalXML = ctx.XML;
-    function MockXML() { return node(tree); }
-    MockXML.ignoreWhitespace = true;
-    ctx.XML = MockXML;
-    try { return sourceModule.parse('test XML'); }
-    finally { assert.equal(MockXML.ignoreWhitespace, true); ctx.XML = originalXML; }
+const documentXML = body => `<w:document xmlns:w="${wordURI}" xmlns:mc="urn:compat"><w:body>${body}</w:body></w:document>`;
+const paragraphs = xml => Array.from(sourceModule.parse(xml).paragraphs);
+assert.throws(() => sourceModule.parse(`<w:document xmlns:w="${wordURI}"/>`), /Expected one Word XML body; found 0/);
+assert.throws(() => sourceModule.parse(documentXML('<w:p/>').replace('</w:document>', '<w:body/></w:document>')), /body; found 2/);
+assert.throws(() => sourceModule.parse(documentXML('<w:p/>').replace('<w:body>', '<w:body xmlns:w="urn:not-word">')),
+    /body; found 0; direct children=.*body\{urn:not-word\}/);
+assert.throws(() => sourceModule.parse(documentXML('<w:p/>').replace(/w:document/g, 'w:body')), /XML root; found body/);
+assert.throws(() => sourceModule.parse(documentXML('<w:p/>').replace(wordURI, 'urn:not-word')), /root namespace/);
+assert.deepEqual(paragraphs(documentXML('<x:p xmlns:x="urn:not-word"><x:t>foreign</x:t></x:p><w:p/>')), ['']);
+assert.deepEqual(paragraphs(documentXML('<w:p/>').replace(/w:/g, 'z:').replace('xmlns:w=', 'xmlns:z=')), [''], 'prefix spelling does not determine identity');
+assert.deepEqual(paragraphs(`<document xmlns="${wordURI}"><body><p><r><t> A——\u200e\t </t></r></p></body></document>`), [' A——\u200e\t ']);
+assert.deepEqual(paragraphs(documentXML('<w:p/><w:p><w:r/></w:p>')), ['', ''], 'empty paragraphs survive');
+assert.deepEqual(paragraphs(documentXML('<w:p><w:r><w:t xml:space="preserve"> A&amp;lt;&lt;&gt;&quot;&apos;&#9;&#13;&#x1F600;e\u0301 </w:t><w:tab/><w:br/></w:r></w:p>')),
+    [' A&lt;<>"\'\t\r😀e\u0301 \t\n'], 'single entity decode, tabs, breaks, supplementary and combining characters unchanged');
+assert.deepEqual(paragraphs(documentXML('<w:p><w:r><w:t><![CDATA[ &not-an-entity; < > ]]></w:t></w:r></w:p>')), [' &not-an-entity; < > ']);
+assert.deepEqual(paragraphs('<?xml version="1.0"?>\n<!--before--> ' + documentXML('<w:p note="a > b"><!--inside--><w:r><w:t>A</w:t><w:t>B</w:t></w:r></w:p>')), ['AB']);
+const floatingXML = documentXML('<w:p><w:r><w:t>main</w:t><mc:AlternateContent><mc:Choice><w:drawing><w:txbxContent><w:p><w:r><w:t>caption</w:t></w:r></w:p></w:txbxContent></w:drawing></mc:Choice><mc:Fallback><w:p><w:r><w:t>duplicate</w:t></w:r></w:p></mc:Fallback></mc:AlternateContent></w:r></w:p><w:p/>');
+const floatingParsed = sourceModule.parse(floatingXML);
+assert.deepEqual(Array.from(floatingParsed.paragraphs), ['main', '']);
+assert.equal(floatingParsed.textboxes.length, 1); assert.equal(floatingParsed.textboxes[0].text, 'caption');
+for (const malformed of [documentXML('<w:p>').replace('</w:body>', '</w:p>'),
+    documentXML('<w:p>').slice(0, -5), '<!DOCTYPE document [<!ENTITY x "content">]>' + documentXML('<w:p/>'),
+    documentXML('<w:p><w:t>&unknown;</w:t></w:p>'), documentXML('<w:p><w:t>&#0;</w:t></w:p>'),
+    documentXML('<w:p><w:t>&#xD800;</w:t></w:p>'), documentXML('<w:p><w:t>&#1114112;</w:t></w:p>'),
+    documentXML('<unbound:p/>'), documentXML('<w:p key="1" key="2"/>'),
+    documentXML('<w:p/>') + documentXML('<w:p/>')]) {
+    assert.throws(() => sourceModule.parse(malformed), /XML/);
 }
-const withoutBody = structuredClone(fixture.tree);
-withoutBody.children = withoutBody.children.filter(child => child.tag !== `{${wordURI}}body`);
-assert.throws(() => parseTree(withoutBody), /Expected one Word XML body; found 0; direct children=/);
-const duplicateBody = structuredClone(fixture.tree); duplicateBody.children.push(structuredClone(bodyTree));
-assert.throws(() => parseTree(duplicateBody), /Expected one Word XML body; found 2/);
-const wrongBodyNamespace = structuredClone(fixture.tree);
-wrongBodyNamespace.children.find(child => child.tag === `{${wordURI}}body`).tag = '{urn:not-word}body';
-assert.throws(() => parseTree(wrongBodyNamespace), /found 0; direct children=.*body\{urn:not-word\}/);
-const wrongRoot = structuredClone(fixture.tree); wrongRoot.tag = `{${wordURI}}body`;
-assert.throws(() => parseTree(wrongRoot), /Expected Word document XML root; found body/);
-const mixedBody = structuredClone(fixture.tree);
-mixedBody.children.find(child => child.tag === `{${wordURI}}body`).children.unshift({ tag: '{urn:not-word}p', text: 'must not import', children: [] });
-assert.deepEqual(Array.from(parseTree(mixedBody).paragraphs), fixture.paragraphs, 'ignore same-name foreign namespace paragraphs');
-assert.throws(() => sourceModule.wordChildren(undefined, 'body'), /Missing XML children/);
-assert.throws(() => sourceModule.wordChildren({ children: () => undefined }, 'body'), /Missing XMLList/);
-assert.throws(() => sourceModule.wordChildren({ children: () => ({ length: () => 1 }) }, 'body'), /Missing XML child 0/);
+assert.throws(() => sourceModule.wordChildren(undefined, 'body'), /Missing parsed XML children/);
+assert.throws(() => sourceModule.wordChildren({ children: [undefined] }, 'body'), /Missing parsed XML child 0/);
+assert.ok(!/new\s+(?:XML|Namespace|QName)\b|\.nodeKind\(|\.elements\(/.test(read('modules/history_source.jsx')));
 sourceModule.validateMap(map, source);
 assert.equal(map.years.length, 21);
 assert.equal(map.paragraph_order.length, 216);
@@ -371,4 +359,4 @@ assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History: locked DOCX/XML/24 original image hashes; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; empty QName selector regression and namespace-aware direct children; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');
+console.log('PASS History: locked DOCX/XML/24 original image hashes; actual production ES3 parser with E4X globals forbidden; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; namespace/entity/CDATA/empty/floating/fallback/malformed XML regressions; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');
