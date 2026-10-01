@@ -93,7 +93,10 @@ SHAN.historySource = {
         // This bounded reader accepts the locked Word XML; DTD/entities are not supported.
         // No E4X globals or host XML method/property lookups participate in source verification.
         var tokens = /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[[\s\S]*?\]\]>|<\/[A-Za-z_][A-Za-z0-9_.:-]*\s*>|<[A-Za-z_][A-Za-z0-9_.:-]*(?:\s+[A-Za-z_][A-Za-z0-9_.:-]*\s*=\s*(?:"[^"]*"|'[^']*'))*\s*\/?>|[^<]+/g;
-        var stack = [], root = null, cursor = 0, match, token, parent, node, name, prefix, colon, namespaces, copied, key, attr, attrs, attributes;
+        // Avoid slash delimiters in the tag-name regex (host Error 23 at the old literal).
+        var openNamePattern = new RegExp("^<([A-Za-z_][A-Za-z0-9_.:-]*)");
+        var closeNamePattern = new RegExp("^</([A-Za-z_][A-Za-z0-9_.:-]*)");
+        var stack = [], root = null, cursor = 0, match, token, parent, node, name, nameMatch, prefix, colon, namespaces, copied, key, attr, attrs, attributes;
         while ((match = tokens.exec(text)) !== null) {
             this.require(match.index === cursor, "Unsupported/malformed XML at character " + cursor);
             token = match[0]; cursor = tokens.lastIndex;
@@ -106,11 +109,15 @@ SHAN.historySource = {
                 continue;
             }
             if (token.slice(0, 2) === "</") {
-                name = /^<\/([^\s>]+)/.exec(token)[1];
+                nameMatch = closeNamePattern.exec(token);
+                this.require(nameMatch && nameMatch.length > 1 && typeof nameMatch[1] === "string", "Missing XML closing tag name at character " + match.index);
+                name = nameMatch[1];
                 this.require(parent && parent.qname === name, "Mismatched XML closing tag " + name + " at character " + match.index);
                 stack.pop(); continue;
             }
-            name = /^<([^\s/>]+)/.exec(token)[1];
+            nameMatch = openNamePattern.exec(token);
+            this.require(nameMatch && nameMatch.length > 1 && typeof nameMatch[1] === "string", "Missing XML opening tag name at character " + match.index);
+            name = nameMatch[1];
             namespaces = parent ? parent.namespaces : { xml: "http://www.w3.org/XML/1998/namespace" }; copied = false;
             attrs = /\s+([A-Za-z_][A-Za-z0-9_.:-]*)\s*=\s*("[^"]*"|'[^']*')/g; attributes = {};
             while ((attr = attrs.exec(token)) !== null) {

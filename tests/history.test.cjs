@@ -73,6 +73,17 @@ for (const malformed of [documentXML('<w:p>').replace('</w:body>', '</w:p>'),
 assert.throws(() => sourceModule.wordChildren(undefined, 'body'), /Missing parsed XML children/);
 assert.throws(() => sourceModule.wordChildren({ children: [undefined] }, 'body'), /Missing parsed XML child 0/);
 assert.ok(!/new\s+(?:XML|Namespace|QName)\b|\.nodeKind\(|\.elements\(/.test(read('modules/history_source.jsx')));
+// The screenshot's failing literal must not return, even if Node accepts it.
+assert.ok(!read('modules/history_source.jsx').includes('/^<([^\\s/>]+)/'), 'avoid the tag-name literal rejected by the native compiler');
+assert.ok(!/\.exec\([^\n]*\)\[/.test(read('modules/history_source.jsx')), 'resolve and validate regex matches before indexing');
+const nativeRegExp = vm.runInContext('RegExp', ctx);
+for (const failedPattern of ['^<([A-Za-z_][A-Za-z0-9_.:-]*)', '^</([A-Za-z_][A-Za-z0-9_.:-]*)']) {
+    ctx.RegExp = function (pattern) {
+        return pattern === failedPattern ? { exec: () => null } : new nativeRegExp(pattern);
+    };
+    try { assert.throws(() => sourceModule.parse(documentXML('<w:p/>')), /Missing XML (opening|closing) tag name at character/); }
+    finally { ctx.RegExp = nativeRegExp; }
+}
 sourceModule.validateMap(map, source);
 assert.equal(map.years.length, 21);
 assert.equal(map.paragraph_order.length, 216);
