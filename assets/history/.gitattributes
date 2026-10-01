@@ -1,0 +1,3 @@
+source-document.xml binary
+*.jpeg -text
+*.png -text

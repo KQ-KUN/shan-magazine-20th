@@ -105,5 +105,17 @@
     "runtimeTested": false,
     "designValuesPending": true,
     "frozen": false
+  },
+  "history": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/history_source.jsx",
+      "modules/history.jsx",
+      "visual/history_skin.jsx",
+      "build/13_history_test.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }

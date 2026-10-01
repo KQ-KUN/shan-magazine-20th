@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "status": "PROTOTYPE_PENDING_USER_ACCEPTANCE",
+  "body_columns": 2,
+  "gutter_mm": 6,
+  "first_body_top_mm": 30,
+  "caption_gap_mm": 1.5,
+  "floating_caption_height_mm": 12,
+  "max_pages": 40,
+  "advisory_pages": [
+    9,
+    12
+  ],
+  "paragraph_styles": {
+    "P_History_Event": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8
+    },
+    "P_History_Event_Image": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8
+    },
+    "P_History_Year": {
+      "family": "sans_cn",
+      "size_pt": 12,
+      "leading_pt": 18,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8,
+      "color": "C_SDU_RED",
+      "weight_preference": "Medium",
+      "space_before_mm": 3,
+      "keep_with_next": 2
+    },
+    "P_History_Empty": {
+      "family": "serif_cn",
+      "size_pt": 3,
+      "leading_pt": 5,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0
+    },
+    "P_History_Media": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0
+    },
+    "P_History_Media_Caption": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0,
+      "keep_with_next": 1
+    },
+    "P_History_Media_Wide": {
+      "family": "serif_cn",
+      "size_pt": 9.3,
+      "leading_pt": 15,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0,
+      "keep_with_next": 1
+    },
+    "P_History_Caption": {
+      "family": "sans_cn",
+      "size_pt": 7.5,
+      "leading_pt": 11,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8,
+      "color": "C_MUTED"
+    },
+    "P_History_Caption_Wide": {
+      "family": "sans_cn",
+      "size_pt": 7.5,
+      "leading_pt": 11,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8,
+      "color": "C_MUTED"
+    },
+    "P_History_Chapter_Marker": {
+      "family": "sans_cn",
+      "size_pt": 9.2,
+      "leading_pt": 13,
+      "first_line_indent_em": 0,
+      "space_after_mm": 0.8,
+      "color": "C_SDU_RED",
+      "weight_preference": "Medium"
+    }
+  }
+}
