@@ -24,7 +24,7 @@ const ctx = vm.createContext({ File,
 for (const name of ['XML', 'XMLList', 'Namespace', 'QName']) {
     Object.defineProperty(ctx, name, { get() { throw new Error('E4X must not participate in History source reading: ' + name); } });
 }
-for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'visual/history_skin.jsx', 'build/13_history_test.jsx']) {
+for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'modules/history_runtime.jsx', 'visual/history_skin.jsx', 'build/13_history_test.jsx']) {
     assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf', file);
     const code = read(file).replace(/^\uFEFF/, '').replace(/^#(?:target|include).*$/gm, '');
     new vm.Script(code, { filename: file });
@@ -306,10 +306,11 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
     if (withoutSource) delete nativeError.source;
     const fail = stage => { if (stage === failStage) throw nativeError; };
     let closeCount = 0, focusedPage = null;
-    const document = { isValid: true, pages: [{ isValid: true, id: 17 }], extractLabel: () => '',
+    const document = { id: 71, isValid: true, pages: [{ isValid: true, id: 17, name: '1', textFrames: [] }], masterSpreads: [], extractLabel: () => '',
         insertLabel() { if (failCleanup) throw new Error('secondary label failure'); },
         close() { closeCount++; throw new Error('must retain failed document'); } };
     const preferences = { measurementUnit: 19 };
+    const window = { parent: document, get activePage() { return focusedPage; }, set activePage(page) { focusedPage = page; } };
     function MockFile(filename) { return { fsName: filename, parent: { parent: { fsName: root } },
         open() { if (failLog) throw new Error('secondary log failure'); return true; },
         write(text) { if (filename.endsWith('HISTORY_RUNTIME_REPORT.txt')) fail('write-report');
@@ -319,7 +320,7 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
         alert: text => alerts.push(text), MeasurementUnits: { POINTS: 72 },
         app: { scriptPreferences: preferences, layoutWindows: [1],
             get activeWindow() { if (failCleanup) throw new Error('secondary focus failure'); fail('focus-document-page');
-                return { set activePage(page) { focusedPage = page; } }; } },
+                return window; } },
         SHAN: { chapter: { parseJSON: filename => filename.endsWith('CONTENT_MANIFEST.json') ?
                 { sections: [{ id: 'strata', chapter_index: 2, display_index: '贰' }] } : {} },
             historySource: { require: sourceModule.require, at: sourceModule.at, read: file => file.fsName,
@@ -335,6 +336,7 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
                     frame_label: 'SHAN_HISTORY:image:7', operation: 'insert anchored object' });
                 throw nativeError;
             } } } });
+    vm.runInContext(read('modules/history_runtime.jsx').replace(/^\uFEFF/, ''), state);
     assert.doesNotThrow(() => vm.runInContext(buildCode, state), 'top-level catch must not rethrow original error');
     assert.equal(preferences.measurementUnit, 19);
     assert.equal(closeCount, 0);
@@ -349,25 +351,124 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
     }
     if (withoutSource) assert.ok(!/^source=/m.test(diagnostic));
     else assert.ok(diagnostic.includes('source=native DOM failure'));
+    if (!failLog) {
+        for (const field of ['documentPages=', 'historyStoryExists=false', 'firstPageHistoryTextFrames=0',
+            '[focus:finally]', 'activePageAfter=', 'activePageIsParent=']) assert.ok(diagnostic.includes(field), field);
+    }
     return { writes, alerts, diagnostic };
 }
 for (const stage of ['read-json', 'verify-source', 'create-document', 'create-foundation-styles', 'create-parents',
     'apply-typography', 'apply-running-system', 'apply-history-skin', 'history-create:text', 'history-create:styles',
-    'history-create:image-7', 'history-flow', 'history-validate', 'focus-document-page', 'write-report']) diagnosticRun(stage);
+    'history-create:image-7', 'history-flow', 'history-validate', 'write-report']) diagnosticRun(stage);
 for (const options of [{}, { failCleanup: true }, { failLog: true, failCleanup: true }, { withoutSource: true }]) {
     const { diagnostic } = diagnosticRun('history-create:image-7', options);
     for (const field of ['image_index=7', 'source_paragraph=90', 'anchor=paragraph_start',
         'frame_label=SHAN_HISTORY:image:7', 'operation=insert anchored object']) assert.ok(diagnostic.includes(field));
 }
 
+// Parent-view state is independent of complete, page-local History data.
+const runtimeProbe = ctx.SHAN.historyRuntime;
+const documentSpread = { id: 801, name: 'document spread' };
+const parentSpread = { id: 901, name: 'I-FRONT', pages: [] };
+const parentPage = { id: 902, name: 'I', parent: parentSpread };
+parentSpread.pages.push(parentPage);
+page.name = '1'; page.parent = documentSpread;
+story.label = 'SHAN_HISTORY:main';
+page.textFrames = [{ label: 'SHAN_HISTORY:body', parentPage: page, parentStory: story }];
+doc.id = 71; doc.masterSpreads = [parentSpread];
+let firstPageRequests = 0;
+doc.pages.item = index => { assert.equal(index, 0); firstPageRequests++; return page; };
+for (const collection of [doc.pages, page.textFrames, story.paragraphs, story.allGraphics, doc.fonts, doc.masterSpreads]) {
+    Object.defineProperty(collection, 'isValid', { get() { throw new Error('collection does not support isValid'); } });
+}
+const snapshot = runtimeProbe.snapshot(doc, result, source, map);
+assert.equal(snapshot.documentPages, 1); assert.equal(snapshot.firstPageHistoryTextFrames, 1);
+assert.equal(snapshot.historyStoryExists, true); assert.ok(snapshot.historyCharacters > 100);
+assert.equal(snapshot.historyParagraphs, 216); assert.equal(snapshot.historyTextEquality, 'PASS');
+assert.equal(snapshot.historyYears, 21); assert.equal(snapshot.historyImages, 24); assert.equal(snapshot.historyOverset, false);
+assert.equal(snapshot.historyFontsInstalled, true); assert.equal(snapshot.historyLinksNormal, true);
+assert.equal(snapshot.errors.length, 0);
+function makeWindow(mode = 'normal') {
+    let visible = parentPage, spread = parentSpread, writes = 0;
+    return { parent: doc, get writes() { return writes; }, bringToFront() { ctx.app.activeWindow = this; },
+        get activePage() { return visible; }, set activePage(value) {
+            writes++; if (mode === 'throw') throw new Error('activePage setter rejected');
+            if (mode !== 'stuck') { visible = value; spread = value.parent; }
+        }, get activeSpread() { return spread; }, set activeSpread(value) { if (mode !== 'stuck') spread = value; } };
+}
+let window = makeWindow(); ctx.app.layoutWindows = [window]; ctx.app.activeWindow = window; doc.layoutWindows = [window];
+const afterRenderer = runtimeProbe.focusDocumentPage(doc, 'after-renderer', true);
+const afterFinally = runtimeProbe.focusDocumentPage(doc, 'finally', true);
+assert.equal(afterRenderer.activePageBefore, 'I-FRONT'); assert.equal(afterRenderer.activePageAfter, '1');
+assert.equal(afterRenderer.activePageIsParent, false); assert.equal(afterRenderer.focusSucceeded, true);
+assert.equal(afterFinally.focusSucceeded, true); assert.ok(window.writes >= 2 && firstPageRequests >= 3);
+const focusedReport = runtimeProbe.format(snapshot, [afterRenderer, afterFinally]);
+for (const field of ['documentPages=1', 'targetPage=1', 'activePageBefore=I-FRONT', 'activePageAfter=1',
+    'activePageIsParent=false', '[focus:after-renderer]', '[focus:finally]', 'historyParagraphs=216', 'historyImages=24']) assert.ok(focusedReport.includes(field));
+for (const mode of ['stuck', 'throw']) {
+    window = makeWindow(mode); ctx.app.activeWindow = window; ctx.app.layoutWindows = [window]; doc.layoutWindows = [window];
+    const view = runtimeProbe.focusDocumentPage(doc, 'after-renderer', true);
+    assert.equal(view.focusSucceeded, false); assert.equal(view.activePageIsParent, true); assert.equal(view.activePageAfter, 'I-FRONT');
+    assert.ok(view.warnings.includes('WARNING: History rendered, but InDesign view remained on Parent spread.'));
+    const completeButParent = runtimeProbe.format(runtimeProbe.snapshot(doc, result, source, map), [view]);
+    assert.ok(completeButParent.includes('historyTextEquality=PASS') && completeButParent.includes('historyImages=24'));
+    assert.ok(!completeButParent.includes('FAIL'), 'view failure cannot turn complete content into a data failure');
+}
+window = makeWindow(); doc.layoutWindows = [window];
+const otherWindow = { parent: { id: 999 }, activePage: { id: 1000, name: '99' }, activeSpread: { id: 1001 } };
+ctx.app.activeWindow = otherWindow; ctx.app.layoutWindows = [otherWindow, window];
+const differentDocumentFocus = runtimeProbe.focusDocumentPage(doc, 'after-renderer', true);
+assert.equal(differentDocumentFocus.focusSucceeded, true); assert.equal(ctx.app.activeWindow, window);
+assert.equal(otherWindow.activePage.name, '99', 'never assign a build page to an unrelated document window');
+ctx.app.layoutWindows = [];
+const headlessFocus = runtimeProbe.focusDocumentPage(doc, 'finally', true);
+assert.equal(headlessFocus.focusSucceeded, false); assert.ok(headlessFocus.warnings.some(text => text.includes('no layout window')));
+const emptyData = runtimeProbe.snapshot({ isValid: true, pages: [{ id: 1234, name: '1', textFrames: [] }] }, null, source, map);
+assert.equal(emptyData.documentPages, 1); assert.equal(emptyData.historyStoryExists, false); assert.equal(emptyData.historyImages, 0);
+assert.equal(emptyData.firstPageHistoryTextFrames, 0, 'empty actual pages are distinguishable from a Parent-only view');
+assert.ok(!read('modules/history_runtime.jsx').includes('doc.stories'));
+
+// Exercise the real build's PASS path, both focus calls, and final report rewrite.
+story.contents = story.paragraphs.map(paragraph => paragraph.contents).join('');
+for (const mode of ['normal', 'stuck', 'throw']) {
+    const window = makeWindow(mode), writes = {}, alerts = [];
+    doc.layoutWindows = [window];
+    const state = vm.createContext({
+        File: filename => ({ fsName: filename, parent: { parent: { fsName: root } }, open: () => true, close() {},
+            write: text => { writes[path.basename(filename)] = text; } }),
+        Folder: filename => ({ fsName: filename, exists: true }),
+        $: { fileName: root + '/build/13_history_test.jsx', stack: 'MOCK STACK', writeln() {} },
+        alert: text => alerts.push(text), MeasurementUnits: { POINTS: 72 }, FontStatus: { INSTALLED: 1 }, LinkStatus: { NORMAL: 1 },
+        app: { scriptPreferences: { measurementUnit: 19 }, layoutWindows: [window], activeWindow: window },
+        SHAN: { chapter: { parseJSON: filename => ({
+            'HISTORY_TOKENS.json': tokens, 'HISTORY_IMPORT_MAP.json': map, 'HISTORY_SOURCE_AUDIT.json': audit,
+            'CONTENT_MANIFEST.json': { sections: [{ id: 'strata', chapter_index: 2, display_index: '贰' }] },
+        }[path.basename(filename)]) },
+        historySource: { require: sourceModule.require, read: file => file.fsName, verifySource: () => source, paragraphText: sourceModule.paragraphText },
+        visualTokens: { read: () => ({}) }, document: { create(context) { context.document = doc; return doc; } },
+        styles: { create() {} }, parents: { create() {} }, typography: { apply() {} }, runningSystem: { apply() {} }, historySkin: { apply() {} },
+        history: { create() { return { ...result, report: 'PASS History data checks; pages=1; paragraphs=216; entries=21; images=24; overset=false' }; } } } });
+    vm.runInContext(read('modules/history_runtime.jsx').replace(/^\uFEFF/, ''), state);
+    assert.doesNotThrow(() => vm.runInContext(buildCode, state));
+    assert.ok(!writes['HISTORY_RUNTIME_ERROR.txt'], 'focus failure is a WARNING, never a render failure');
+    const report = writes['HISTORY_RUNTIME_REPORT.txt'];
+    assert.ok(report.startsWith('PASS History data checks'));
+    for (const field of ['documentPages=1', 'firstPageHistoryTextFrames=1', 'historyParagraphs=216', 'historyYears=21',
+        'historyImages=24', 'historyOverset=false', 'historyTextEquality=PASS', '[focus:after-renderer]', '[focus:finally]']) assert.ok(report.includes(field), field);
+    assert.equal(alerts.length, 1); assert.ok(alerts[0].startsWith('PASS'));
+    if (mode === 'normal') assert.ok(report.includes('activePageAfter=1') && report.includes('activePageIsParent=false'));
+    else assert.ok(report.includes('activePageIsParent=true') && alerts[0].includes('WARNING: History rendered, but InDesign view remained on Parent spread.'));
+}
+
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.equal(status.history.runtimeTested, false); assert.equal(status.history.frozen, false);
 assert.equal(status.history.status, 'IMPLEMENTED_PENDING_IND2026_TEST');
 const build = read('build/13_history_test.jsx');
-assert.ok(build.includes('focusDocumentPage();'));
+assert.ok(build.includes('focusDocumentPage("after-renderer")'));
+assert.ok(build.includes('focusDocumentPage("finally")'));
 assert.ok(build.includes('HISTORY_RUNTIME_REPORT.txt'));
 assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History: locked DOCX/XML/24 original image hashes; actual production ES3 parser with E4X globals forbidden; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; namespace/entity/CDATA/empty/floating/fallback/malformed XML regressions; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');
+console.log('PASS History: locked DOCX/XML/24 original image hashes; actual production ES3 parser with E4X globals forbidden; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; namespace/entity/CDATA/empty/floating/fallback/malformed XML regressions; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; page-local data vs Parent view; two focus attempts, final report, stuck/throwing setters and other-document window; focus failure remains WARNING; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');

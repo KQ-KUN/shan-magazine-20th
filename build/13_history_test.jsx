@@ -9,12 +9,14 @@
 #include "../visual/running_system.jsx"
 #include "../modules/history_source.jsx"
 #include "../modules/history.jsx"
+#include "../modules/history_runtime.jsx"
 #include "../visual/history_skin.jsx"
 
 (function () {
     var stage = "initialise", root = "", unit = null, preferences = null, doc = null;
     var runtime = { stage: stage, image_index: null, source_paragraph: null, anchor: null, frame_label: null, operation: null };
     var context = { warnings: [], document: null, runtime: runtime };
+    var result = null, data = null, focusReports = [], successText = "", errorDiagnostic = "";
     function setStage(name, detail) {
         stage = name; runtime.stage = name;
         runtime.image_index = null; runtime.source_paragraph = null; runtime.anchor = null;
@@ -24,13 +26,14 @@
     }
     runtime.setStage = setStage;
     function readJSON(path) { return SHAN.chapter.parseJSON(SHAN.historySource.read(File(path))); }
-    function focusDocumentPage() {
-        var document = doc || context.document;
-        if (!document || document.isValid === false) { return; }
-        var windows = app.layoutWindows, pages = document.pages;
-        if (!windows || windows.length < 1 || !pages) { return; }
-        var page = SHAN.historySource.at(pages, 0), window = app.activeWindow;
-        if (page && page.isValid !== false && window) { window.activePage = page; }
+    function focusDocumentPage(phase) {
+        var entry = SHAN.historyRuntime.focusDocumentPage(doc || context.document,
+            phase, !!result);
+        focusReports.push(entry); return entry;
+    }
+    function documentDiagnostic() {
+        data = SHAN.historyRuntime.snapshot(doc || context.document, result, source, map);
+        return SHAN.historyRuntime.format(data, focusReports);
     }
     function errorField(error, field) {
         try { return error && error[field] !== undefined ? String(error[field]) : "<unavailable>"; }
@@ -87,23 +90,34 @@
         SHAN.runningSystem.apply(doc, base);
         setStage("apply-history-skin");
         SHAN.historySkin.apply(doc, tokens, base, context);
-        var result = SHAN.history.create(doc, root, source, map, audit, tokens, section, context);
+        result = SHAN.history.create(doc, root, source, map, audit, tokens, section, context);
+        setStage("document-data");
+        documentDiagnostic();
         setStage("focus-document-page");
-        focusDocumentPage();
+        var focus = focusDocumentPage("after-renderer");
         setStage("write-report");
-        var reportPath = writeReport("HISTORY_RUNTIME_REPORT.txt", result.report + "\n\n" + doc.extractLabel("SHAN_VISUAL_FONTS") + "\n\n" + context.warnings.join("\n"));
-        alert(result.report + "\n\n未保存或导出；请人工检查并导出PDF。\n报告：" + reportPath);
+        successText = result.report + "\n\n" + doc.extractLabel("SHAN_VISUAL_FONTS") + "\n\n" + context.warnings.join("\n");
+        var reportPath = writeReport("HISTORY_RUNTIME_REPORT.txt", successText + "\n\n" + documentDiagnostic());
+        alert(result.report + "\n" + focus.warnings.join("\n") + "\n\n未保存或导出；请人工检查并导出PDF。\n报告：" + reportPath);
     } catch (e) {
         // Capture the original stage/file/line BEFORE any diagnostic DOM or file I/O.
         var stack = "<unavailable>";
         try { stack = String($.stack); } catch (stackError) { /* original error takes precedence */ }
         var diagnostic = formatError(e, stack), errorPath = "";
+        errorDiagnostic = diagnostic;
+        try { diagnostic += "\n\n" + documentDiagnostic(); } catch (dataError) { diagnostic += "\nData diagnostic failure=" + errorField(dataError, "message"); }
         try {
             var failedDoc = doc || context.document;
             if (failedDoc && failedDoc.isValid !== false) { failedDoc.insertLabel("SHAN_HISTORY_REPORT", "FAIL\n" + diagnostic); }
-        } catch (labelError) { diagnostic += "\nDiagnostic label failure=" + errorField(labelError, "message"); }
+        } catch (labelError) {
+            var labelWarning = "\nDiagnostic label failure=" + errorField(labelError, "message");
+            diagnostic += labelWarning; errorDiagnostic += labelWarning;
+        }
         try { errorPath = writeReport("HISTORY_RUNTIME_ERROR.txt", diagnostic); }
-        catch (logError) { diagnostic += "\nError log write failure=" + errorField(logError, "message"); }
+        catch (logError) {
+            var logWarning = "\nError log write failure=" + errorField(logError, "message");
+            diagnostic += logWarning; errorDiagnostic += logWarning;
+        }
         try { $.writeln(diagnostic); } catch (consoleError) { /* Alert still carries the original location. */ }
         alert("History 未通过\nstage=" + stage + "\n" + errorField(e, "message") +
             "\n原始行号=" + errorField(e, "line") + "\n原始文件=" + errorField(e, "fileName") +
@@ -112,7 +126,15 @@
         // Do not rethrow: InDesign would replace the original location with this catch line.
     } finally {
         // Cleanup cannot mask the original diagnostic or close the partially rendered document.
-        try { focusDocumentPage(); } catch (focusError) { try { $.writeln("History cleanup focus: " + errorField(focusError, "message")); } catch (ignoreFocus) {} }
+        try { focusDocumentPage("finally"); } catch (focusError) { try { $.writeln("History cleanup focus: " + errorField(focusError, "message")); } catch (ignoreFocus) {} }
+        // Persist the second focus attempt and actual page/story data, even after a renderer error.
+        try {
+            if (root) {
+                var finalDiagnostic = documentDiagnostic();
+                if (errorDiagnostic) { writeReport("HISTORY_RUNTIME_ERROR.txt", errorDiagnostic + "\n\n" + finalDiagnostic); }
+                else if (successText) { writeReport("HISTORY_RUNTIME_REPORT.txt", successText + "\n\n" + finalDiagnostic); }
+            }
+        } catch (finalReportError) { try { $.writeln("History final diagnostic: " + errorField(finalReportError, "message")); } catch (ignoreReport) {} }
         try { if (preferences && unit !== null) { preferences.measurementUnit = unit; } }
         catch (unitError) { try { $.writeln("History cleanup units: " + errorField(unitError, "message")); } catch (ignoreUnit) {} }
     }
