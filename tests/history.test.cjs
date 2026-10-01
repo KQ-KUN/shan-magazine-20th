@@ -129,8 +129,8 @@ assert.throws(() => history.yearChecks(yearStory, map), /Orphan year/);
 // No-progress and bounded overset guards run with a minimal DOM double.
 ctx.LocationOptions = { AT_END: 1 };
 const savedAdd = history.addFrame;
-history.addFrame = () => ({ insertionPoints: { item: () => ({ index: 10 }) } });
-const oversetStory = { overflows: true }, frame = { insertionPoints: { item: () => ({ index: 10 }) } };
+history.addFrame = () => ({ insertionPoints: [{ index: 10 }] });
+const oversetStory = { overflows: true }, frame = { insertionPoints: [{ index: 10 }] };
 const mockDoc = { recompose() {}, pages: { add() { return {}; } } };
 assert.throws(() => history.flow(mockDoc, oversetStory, frame, { max_pages: 5 }), /no progress/);
 assert.throws(() => history.flow(mockDoc, oversetStory, frame, { max_pages: 1 }), /safety limit/);
@@ -168,12 +168,177 @@ for (const mutation of [
 }
 assert.throws(() => sourceModule.verifySource(root, { ...audit, source_sha256: 'wrong' }), /identity/);
 
+// Host collections/specifiers can be absent or expire after an anchor insertion.
+assert.equal(sourceModule.at(undefined, 0), null);
+assert.equal(sourceModule.at({ length: 0 }, -1), null);
+assert.equal(sourceModule.at({ length: 1, 0: { id: 1 } }, -2), null);
+assert.throws(() => history.paragraph({ paragraphs: [{ isValid: false }] }, 0), /invalid.*paragraph/i);
+assert.throws(() => sourceModule.assertParagraphs({ paragraphs: undefined }, source, map), /paragraph/i);
+assert.throws(() => history.linePosition({ parentTextFrames: [] }), /line parent frame/);
+assert.throws(() => history.linePosition({ parentTextFrames: [{ parentPage: null }] }), /parentPage/);
+assert.throws(() => history.yearChecks({ paragraphs: map.paragraph_order.map(() => ({ lines: undefined })) }, map), /lines/);
+assert.throws(() => history.graphicsOf({}, 'source paragraph 90'), /source paragraph 90 graphics/);
+
+const runtime = { setStage(name, detail) { this.stage = name; Object.assign(this, detail); } };
+history.runtime = runtime;
+Object.assign(runtime, { image_index: 7, source_paragraph: 90, anchor: 'paragraph_start' });
+const imageContext = /History image 7 \/ source paragraph 90 \/ anchor paragraph_start:/;
+assert.throws(() => history.insertion({ contents: 'text\r', insertionPoints: [] }, 'paragraph_start'), error =>
+    imageContext.test(error.message) && /missing insertion point/.test(error.message));
+const points = Array.from({ length: 6 }, (_, index) => ({ index, parentStory: { id: 456 } }));
+points.item = () => { throw new Error('array-like points must use a legal positive bracket index'); };
+assert.equal(history.insertion({ contents: 'text\r', insertionPoints: points }, 'after_text').index, 4);
+assert.equal(history.insertion({ contents: 'text', insertionPoints: points }, 'after_text').index, 5);
+assert.equal(history.insertion({ contents: '\r', insertionPoints: [points[0], points[1]] }, 'after_text').index, 0);
+assert.equal(history.insertion({ contents: 'text\r', insertionPoints: points }, 'paragraph_start').index, 0);
+assert.throws(() => history.insertion({ contents: '\r', insertionPoints: [points[0]] }, 'after_text'), /before paragraph delimiter/);
+const indexedCalls = [];
+assert.equal(history.insertion({ contents: 'text\r', insertionPoints: { length: 6, item(index) {
+    indexedCalls.push(index); return points[index];
+} } }, 'after_text').index, 4);
+assert.deepEqual(indexedCalls, [4]);
+
+ctx.FitOptions = { PROPORTIONALLY: 1, CENTER_CONTENT: 2 };
+ctx.AnchorPosition = { INLINE_POSITION: 1 };
+function placementDOM() {
+    const paragraph = { isValid: true, contents: 'text\r', insertionPoints: points };
+    const graphic = { isValid: true }, rect = { isValid: true, allGraphics: [graphic], place() {}, fit() {} };
+    rect.anchoredObjectSettings = { insertAnchoredObject(point) { rect.parent = { parentStory: point.parentStory }; } };
+    const captionFrame = { isValid: true, textFramePreferences: {}, parentStory: { paragraphs: [{ applyParagraphStyle() {} }] } };
+    const page = { rectangles: { add: () => rect }, textFrames: { add: () => captionFrame } };
+    const named = { length: 1, 0: {}, itemByName: () => ({ isValid: true }) };
+    const doc = { objectStyles: named, paragraphStyles: named, swatches: [{}], groups: { add: () => undefined } };
+    return { paragraph, graphic, rect, page, doc, captionFrame };
+}
+const imageMap = { image_index: 7, source_paragraph: 90, anchor: 'paragraph_start' };
+const place = (dom, caption = null) => history.image(dom.doc, dom.page, audit.assets[6], {}, dom.paragraph, imageMap, caption, tokens);
+let placement = placementDOM();
+assert.equal(place(placement).rect, placement.rect);
+assert.equal(runtime.stage, 'history-create:image-7');
+placement = placementDOM(); placement.paragraph.insertionPoints = undefined;
+assert.throws(() => place(placement), error => imageContext.test(error.message) && /insertionPoints/.test(error.message));
+placement = placementDOM(); placement.rect.allGraphics = undefined;
+assert.throws(() => place(placement), error => imageContext.test(error.message) && /graphics/.test(error.message));
+placement = placementDOM(); placement.rect.anchoredObjectSettings = undefined;
+assert.throws(() => place(placement), error => imageContext.test(error.message) && /anchoredObjectSettings/.test(error.message));
+placement = placementDOM();
+assert.throws(() => place(placement, 'existing caption'), error => imageContext.test(error.message) && /floating caption group/.test(error.message));
+assert.equal(runtime.operation, 'create floating caption group');
+placement = placementDOM(); placement.rect.anchoredObjectSettings.insertAnchoredObject = () => { placement.rect.isValid = false; };
+assert.throws(() => place(placement), error => imageContext.test(error.message) && /anchored rectangle\/group/.test(error.message));
+placement = placementDOM(); placement.rect.anchoredObjectSettings.insertAnchoredObject = () => { placement.rect.parent = {}; };
+assert.throws(() => place(placement), error => imageContext.test(error.message) && /parentStory/.test(error.message));
+history.runtime = null;
+
+// Execute the real create loop with specifiers that expire on EACH insertion.
+// The image double simulates mutation; this does not certify native anchoring.
+const savedMethods = Object.fromEntries(['addFrame', 'chapterMarker', 'image', 'flow', 'validate'].map(key => [key, history[key]]));
+const currentStory = { id: 999, paragraphs: [] };
+function liveParagraph(contents) {
+    return { isValid: true, contents, applyParagraphStyle() {},
+        insertionPoints: Array.from({ length: contents.length + 1 }, (_, index) => ({ index, parentStory: currentStory })) };
+}
+const bodyFrame = { parentStory: currentStory };
+Object.defineProperty(bodyFrame, 'contents', { set(text) {
+    currentStory.paragraphs = text.slice(0, -1).split('\r').map(text => liveParagraph(text + '\r'));
+} });
+const created = [], stages = [];
+const createRuntime = { setStage(name, detail) { this.stage = name; Object.assign(this, detail); stages.push(name); } };
+history.addFrame = () => bodyFrame; history.chapterMarker = () => ({});
+history.image = (doc, page, asset, file, paragraph, imageMap) => {
+    assert.equal(paragraph.isValid, true, `image ${imageMap.image_index} got an expired paragraph`);
+    const index = map.paragraph_order.indexOf(imageMap.source_paragraph);
+    assert.equal(paragraph, currentStory.paragraphs[index]);
+    paragraph.isValid = false;
+    paragraph.insertionPoints.forEach(point => { point.isValid = false; });
+    currentStory.paragraphs[index] = liveParagraph(paragraph.contents.replace(/\r$/, '\ufffc\r'));
+    created.push(imageMap.image_index);
+    return { source: imageMap };
+};
+history.flow = () => [bodyFrame]; history.validate = () => 'mock validation';
+const createDoc = { pages: [{ textFrames: [] }], textPreferences: {},
+    masterSpreads: { itemByName: () => ({ isValid: true }) }, paragraphStyles: { itemByName: () => ({ isValid: true }) }, insertLabel() {} };
+try {
+    const result = history.create(createDoc, root, source, map, audit, tokens, {}, { runtime: createRuntime });
+    assert.deepEqual(created, Array.from({ length: 24 }, (_, i) => 24 - i));
+    assert.equal(result.images.length, 24);
+    assert.equal(stages[0], 'history-create:text'); assert.equal(stages[1], 'history-create:styles');
+    assert.ok(stages.includes('history-create:image-24') && stages.includes('history-create:image-1'));
+    assert.deepEqual(stages.slice(-2), ['history-flow', 'history-validate']);
+    sourceModule.assertParagraphs(currentStory, source, map);
+} finally { Object.assign(history, savedMethods); history.runtime = null; }
+
+// Run the top-level build in a VM with failure-injected APIs, never InDesign.
+// Check original locations survive label/log/focus failures and no rethrow occurs.
+const buildCode = read('build/13_history_test.jsx').replace(/^\uFEFF/, '').replace(/^#(?:target|include).*$/gm, '');
+function diagnosticRun(failStage, { failLog = false, failCleanup = false, withoutSource = false } = {}) {
+    const writes = {}, alerts = [], consoleLines = [], nativeError = new TypeError('undefined is not an object');
+    Object.assign(nativeError, { fileName: 'modules/history.jsx', line: 173, source: 'native DOM failure' });
+    if (withoutSource) delete nativeError.source;
+    const fail = stage => { if (stage === failStage) throw nativeError; };
+    let closeCount = 0, focusedPage = null;
+    const document = { isValid: true, pages: [{ isValid: true, id: 17 }], extractLabel: () => '',
+        insertLabel() { if (failCleanup) throw new Error('secondary label failure'); },
+        close() { closeCount++; throw new Error('must retain failed document'); } };
+    const preferences = { measurementUnit: 19 };
+    function MockFile(filename) { return { fsName: filename, parent: { parent: { fsName: root } },
+        open() { if (failLog) throw new Error('secondary log failure'); return true; },
+        write(text) { if (filename.endsWith('HISTORY_RUNTIME_REPORT.txt')) fail('write-report');
+            writes[path.basename(filename)] = text; }, close() {} }; }
+    const state = vm.createContext({ File: MockFile, Folder: filename => ({ fsName: filename, exists: true }),
+        $: { fileName: root + '/build/13_history_test.jsx', stack: 'ORIGINAL MOCK STACK', writeln: text => consoleLines.push(text) },
+        alert: text => alerts.push(text), MeasurementUnits: { POINTS: 72 },
+        app: { scriptPreferences: preferences, layoutWindows: [1],
+            get activeWindow() { if (failCleanup) throw new Error('secondary focus failure'); fail('focus-document-page');
+                return { set activePage(page) { focusedPage = page; } }; } },
+        SHAN: { chapter: { parseJSON: filename => filename.endsWith('CONTENT_MANIFEST.json') ?
+                { sections: [{ id: 'strata', chapter_index: 2, display_index: '贰' }] } : {} },
+            historySource: { require: sourceModule.require, at: sourceModule.at, read: file => file.fsName,
+                verifySource() { fail('verify-source'); return {}; } },
+            visualTokens: { read() { fail('read-json'); return {}; } },
+            document: { create(context) { context.document = document; fail('create-document'); return document; } },
+            styles: { create() { fail('create-foundation-styles'); } }, parents: { create() { fail('create-parents'); } },
+            typography: { apply() { fail('apply-typography'); } }, runningSystem: { apply() { fail('apply-running-system'); } },
+            historySkin: { apply() { fail('apply-history-skin'); } },
+            history: { create(doc, root, source, map, audit, tokens, section, context) {
+                if (['focus-document-page', 'write-report'].includes(failStage)) return { report: 'mock data checks' };
+                context.runtime.setStage(failStage, { image_index: 7, source_paragraph: 90, anchor: 'paragraph_start',
+                    frame_label: 'SHAN_HISTORY:image:7', operation: 'insert anchored object' });
+                throw nativeError;
+            } } } });
+    assert.doesNotThrow(() => vm.runInContext(buildCode, state), 'top-level catch must not rethrow original error');
+    assert.equal(preferences.measurementUnit, 19);
+    assert.equal(closeCount, 0);
+    if (failStage === 'create-document' && !failCleanup) assert.equal(focusedPage, document.pages[0], 'retain and focus partially created document');
+    assert.equal(alerts.length, 1);
+    assert.ok(alerts[0].includes('stage=' + failStage));
+    assert.ok(alerts[0].includes('undefined is not an object') && alerts[0].includes('原始行号=173'));
+    const diagnostic = writes['HISTORY_RUNTIME_ERROR.txt'] || consoleLines.join('\n');
+    for (const expected of ['stage=' + failStage, 'name=TypeError', 'message=undefined is not an object',
+        'fileName=modules/history.jsx', 'line=173', '$.stack=ORIGINAL MOCK STACK']) {
+        assert.ok(diagnostic.includes(expected), expected);
+    }
+    if (withoutSource) assert.ok(!/^source=/m.test(diagnostic));
+    else assert.ok(diagnostic.includes('source=native DOM failure'));
+    return { writes, alerts, diagnostic };
+}
+for (const stage of ['read-json', 'verify-source', 'create-document', 'create-foundation-styles', 'create-parents',
+    'apply-typography', 'apply-running-system', 'apply-history-skin', 'history-create:text', 'history-create:styles',
+    'history-create:image-7', 'history-flow', 'history-validate', 'focus-document-page', 'write-report']) diagnosticRun(stage);
+for (const options of [{}, { failCleanup: true }, { failLog: true, failCleanup: true }, { withoutSource: true }]) {
+    const { diagnostic } = diagnosticRun('history-create:image-7', options);
+    for (const field of ['image_index=7', 'source_paragraph=90', 'anchor=paragraph_start',
+        'frame_label=SHAN_HISTORY:image:7', 'operation=insert anchored object']) assert.ok(diagnostic.includes(field));
+}
+
 const status = JSON.parse(read('workflow/MODULE_STATUS.json'));
 assert.equal(status.history.runtimeTested, false); assert.equal(status.history.frozen, false);
 assert.equal(status.history.status, 'IMPLEMENTED_PENDING_IND2026_TEST');
 const build = read('build/13_history_test.jsx');
 assert.ok(build.includes('focusDocumentPage();'));
 assert.ok(build.includes('HISTORY_RUNTIME_REPORT.txt'));
+assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
+assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History: locked DOCX/XML/24 original image hashes; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; E4X fallback; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');
+console.log('PASS History: locked DOCX/XML/24 original image hashes; every 216 source paragraphs and blanks; one approved move; 21 years; 5 caption relations; E4X fallback; SHA/Unicode; corruption/reorder/anchor/orphan/overset negative cases; missing/expired DOM and legal insertion indices; re-resolved paragraphs after all 24 anchors; original stage/file/line/context despite diagnostic cleanup failures; JSX syntax+BOM; frozen scope checked by Python. Native InDesign/PDF acceptance pending.');

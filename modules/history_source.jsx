@@ -3,8 +3,9 @@
 SHAN.historySource = {
     lockedHash: "1beb214adf0372b61bb4ca312c20317f0c77b38812f1b17131e37e6bb5b9756f",
     at: function (collection, index) {
-        if (!collection || !collection.length) { return null; }
+        if (!collection || collection.isValid === false || typeof collection.length !== "number" || collection.length < 1) { return null; }
         if (index < 0) { index += collection.length; }
+        if (index < 0 || index >= collection.length || Math.floor(index) !== index) { return null; }
         var value = collection[index];
         if (value !== undefined && value !== null) { return value; }
         return typeof collection.item === "function" ? collection.item(index) : null;
@@ -148,13 +149,20 @@ SHAN.historySource = {
         if (value.charAt(value.length - 1) === "\r") { value = value.slice(0, -1); }
         return value;
     },
-    assertParagraphs: function (story, source, map) {
-        this.require(story.paragraphs.length === map.paragraph_order.length, "Output paragraph count mismatch: " + story.paragraphs.length);
+    assertParagraphs: function (story, source, map, runtime) {
+        this.require(story && story.isValid !== false, "Missing/invalid History story for paragraph comparison");
+        var paragraphs = story.paragraphs;
+        this.require(paragraphs && typeof paragraphs.length === "number", "Missing History paragraph collection");
+        this.require(paragraphs.length === map.paragraph_order.length, "Output paragraph count mismatch: " + paragraphs.length);
         var i, j, p, anchorCount;
         for (i = 0; i < map.paragraph_order.length; i += 1) {
             p = map.paragraph_order[i]; anchorCount = 0;
+            if (runtime) { runtime.source_paragraph = p; runtime.operation = "compare paragraph contents"; }
             for (j = 0; j < map.images.length; j += 1) { if (map.images[j].source_paragraph === p) { anchorCount += 1; } }
-            this.require(this.paragraphText(this.at(story.paragraphs, i).contents, anchorCount) === source.paragraphs[p - 1], "Text/order changed at source paragraph " + p);
+            var paragraph = this.at(paragraphs, i);
+            this.require(paragraph && paragraph.isValid !== false && paragraph.contents !== undefined,
+                "Missing/invalid paragraph for source paragraph " + p);
+            this.require(this.paragraphText(paragraph.contents, anchorCount) === source.paragraphs[p - 1], "Text/order changed at source paragraph " + p);
         }
     }
 };
