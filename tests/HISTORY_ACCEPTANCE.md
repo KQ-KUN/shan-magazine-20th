@@ -1,20 +1,27 @@
-# History Ending Refinement（6页优先 / 7页收束，待实机验收）
+# History fixed tail override（恢复未命名-9基线，仅固定第6—7页）
 
-用户已反馈 v3 基本通过。本轮只处理尾部：正文、年份、名单样式、5mm名单间距及全局24图优选尺寸不变；不修改 DOCX、两个 import/display map、源 XML 或图片字节；不启动 InDesign/COM/GUI。
+本轮停止并移除 `2049cfc` 的尾页自动压缩方向。该提交只改过4个History文件，均先从其父提交 `617e033ddfa832f0a64015bddd243ed5009e6dca` 恢复，再添加本轮明确布局；没有整仓库revert/reset，没有回滚任何FROZEN模块或其他项目文件。保留更早的ExtendScript保留字修复。
 
-新增独立 `ending_layout` 视觉策略。普通 v3 续排与栏尾缩图完成后，按实际 document page 判断是否还有第7页内容。若已完整落入6页，直接保留；否则只选第6页及之后的图16–24（星海邀约/月曜杯/颁奖/迎新/2026尾图），依次尝试以本轮开始时实际宽度的90%、80%显示，不累计缩成72%。落在前5页的这些图也跳过；全部保持单栏、原比例、原裁切。目标页数6、备选7仅为advisory，不能靠删除内容达成。20%缩图允许低于v3常规栏尾下限，这是本轮明确授权的尾部例外。若第7页仍只剩尾图，图23/24再按2mm步进尝试最多3次，合影不低于45mm、海报不低于30mm；已回到第6页的图不继续缩小。
+参考PDF实物：桌面 `未命名-9.pdf`，SHA-256=`f472357839f6ca21fb01fb26d82f15a2495cb9f9ad3e40d6085e77c30efe3b16`，7页，InDesign21.5导出元数据CreationDate=2026-10-03 00:07:13 +08:00。git的617e033在2026-10-02 23:17:37，2049cfc在2026-10-03 00:31:00；现有runtime report同样记录7页。PDF没有嵌入commit，本次据这一时间链、源码历史和用户“上一版”指向选择617e033作为恢复基线。读取并渲染了参考PDF第5—7页：第5页结束于P186/P187的2024年末星海邀约及海报，P188月曜杯从第6页开始。渲染缓存在ignored exports/history，仅用于本轮读取参考，不是新版本验收产物。
 
-每轮检查前5页正文框contents完全一致及其图片四边坐标容差；第6页只允许上述尾部缩图与自然回流。最后再次检查完整story字符串一致与无overset；既有216段逐段可逆验收、21条编年、24张图、5处图注继续执行。空白末页仍沿用v3安全删除逻辑，并在尾部优化前后各执行一次，防止B模式文字意外流入已有空白续页而掩盖overset。
+新建 `content/HISTORY_TAIL_LAYOUT.json`，只存源段落索引、图索引、固定页面/栏、段落布局属性和参考文件哈希；不存正文副本。四个固定栏块连续覆盖全部P188—P216：
 
-若仍需要第7页，仅对实际最后内容页局部处理：尾页合影优选54mm、文创海报40mm；3月条目P212如果已在该页左栏，则以段落 `startParagraph=NEXT_COLUMN` 开始右栏；若3月仍在第6页，则选择已在尾页的4月条目P215。已处于右栏的段落不再次强制跳栏，避免误生第8页。若3月和4月文字都在第6页、尾页只剩海报，B模式才将P212开始的完整2026收束块置于第7页（NEXT_PAGE），P215开始右栏；第6页此前内容保持原顺序和样式。仅增加局部keepWithNext=1和P216海报前12–28mm的收束间距，不插入任何正文字符、空段或控制符，不拆原P210，不改图文顺序。两栏是否包含真实文字/FFFC必须通过检查，空段不算右栏内容。
+| 页面/栏 | 源段落 | 原图片 | 显示宽度 |
+| --- | --- | --- | --- |
+| 6左 | P188—P193，月曜杯与颁奖，含原图注P190/P193 | 17徽章、18海报、19颁奖照片 | 30、40、54mm |
+| 6右 | P194—P208，年度标题、全部名单、原5mm名单间距、星海邀约 | 20海报 | 42mm |
+| 7左 | P209—P211，2025年10月文字和两张迎新活动合影 | 21、22 | 各52mm，沿原LF两行纵向排列 |
+| 7右 | P212—P216，2026年3月电影院与4月文创 | 23合影、24蓝色海报 | 56、42mm；P215段前12mm形成上下两组 |
 
-尾页正文框从原版心高度65%开始，必要时每次增加5%直至无overset（上限原高度）。根据实际有内容的行测量内容深度；不足55%时，仅在允许间距内调整海报位置，失败恢复间距。报告记录 `ending_plan`、缩小比例、最后内容页、分栏源段落、正文框高度比例、实际内容深度比例及左右栏使用状态；55%–65%审美目标不设fatal assertion，超出目标写WARNING后交由PDF验收。
+前5页使用恢复后的正文样式、名单样式、所有图1—16参数和原2栏/6mm几何，均保持一致。flow只生成五页前段，然后在P188/P194/P209/P212设置display-only NEXT_FRAME/NEXT_COLUMN边界，追加两个固定正文页。没有插入CR/LF/新空段，原空段、24图顺序、年份、原图注及名单顺序不变；主story始终同一条，216段复原规则未放宽。
 
-源图归属保持：图21/22为2025年迎新，图23为2026年3月合影，图24为2026年4月海报；不把迎新照片改标为2026。原稿P212在图23之前、P215在图24之前，本轮继续保留这个顺序，文字与对应图片作为相邻小单元。
+固定尾部不调用 `compactImages`，不做缩图试探，不添加第8页承接overset，不以6页或任何页数进行优化。四个栏块必须落入指定slot；如无法容纳，则明确报告固定尾部overset/slot错误，保留失败文档供人工检查，不自动动前5页。对创建尾页前后的前5页frame.contents、frame几何、逐行contents/基线/horizontalOffset做module-local比较（几何容差0.2mm），防止尾部keep/换栏牵动锁定区域。引用PDF的前5页能否与新宿主输出完全一致仍需用户实机确认，静态模型不能证明视觉锁定。
 
-静态回归覆盖：10%足够即停止、20%相对原尺寸、有6页不动、前页正文/图片异常、source变化失败；B模式图片尺寸/比例、前6页已落位图片不修改、左栏转右栏与已在右栏不再次跳栏、3月在前页时选4月、少量尾图进一步缩小、海报单独尾页时完整收束块分页、空右栏/无可用边界/overset错误、有限高度重试、原有错误诊断/焦点聚焦和ES3保留字扫描。实机需重新运行 `build/13_history_test.jsx`，确认是否达到6页，或第7页确为左右栏视觉收束；不得据静态模型声称实际页数/布局通过。History未冻结。
+全局验收仍检查216源段落逐段一致、21编年、24图/源字节、5图注、比例/链接/字体/重叠、无overset/空尾页、最后focus真实document page。新增tail slot检查全部P188—P216每一行及图17—24的实际page/column/可见layer/anchor lines；图23必须在7右且可见，图24必须在7右且可见，隐藏或误落第6页直接失败。没有丢图/图注或资料缺失文本豁免。
 
-使用的宿主属性已对照 Adobe DOM 文档：[Paragraph.startParagraph / keepWithNext](https://developer.adobe.com/indesign/uxp/dom/api/p/paragraph/)、[StartParagraph.NEXT_COLUMN](https://developer.adobe.com/indesign/uxp/dom/api/s/start-paragraph/)。这里仍需InDesign 2026实机验证。
+静态测试覆盖恢复的文字/名单和图1—16参数、sidecar事实映射/连续段落、固定4slot、仅追加2页、禁用自动fit、前5页文字/基线变化失败、tail从锁定页开始失败、overset不自动追加页、电影院段无行/海报错栏/照片隐藏/海报错页等失败路径，以及原有诊断/BOM/ES3保留字/字体链接/Parent focus回归。仅运行静态测试、source/frozen检查和diff check；未启动InDesign/COM/GUI，History未冻结。下一步用户同步Scripts Panel后运行 `build/13_history_test.jsx` 并导出PDF。
+
+段落布局属性已核对[Adobe Paragraph DOM](https://developer.adobe.com/indesign/uxp/dom/api/p/paragraph/)与[StartParagraph NEXT_FRAME/NEXT_COLUMN](https://developer.adobe.com/indesign/uxp/dom/api/s/start-paragraph/)；宿主行为仍需实机验证。
 
 # History Compact Image Layout v3（本轮仅静态验证）
 

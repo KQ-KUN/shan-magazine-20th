@@ -216,11 +216,14 @@ SHAN.history = {
         if (captionFrame) { this.valid(captionFrame, "caption frame after anchoring"); }
         return { rect: rect, graphic: graphic, anchor: anchor, captionFrame: captionFrame, source: imageMap, asset: asset, layout: layout };
     },
-    flow: function (doc, story, first, tokens) {
+    flow: function (doc, story, first, tokens, map) {
         this.valid(doc, "flow document"); this.valid(story, "flow story"); this.valid(first, "first flow frame");
         var frames = [first], last = first, end = -1, next, current;
         doc.recompose();
         while (story.overflows) {
+            if (map && map.history_tail && frames.length === map.history_tail.locked_prefix_pages) {
+                return this.fixedTail(doc, story, frames, map, tokens);
+            }
             this.check(frames.length < tokens.max_pages, "Overset exceeded page safety limit");
             this.describe({ frame_label: last.label, operation: "resolve flow end insertion point" });
             var points = this.field(last, "insertionPoints", "last body frame");
@@ -234,7 +237,121 @@ SHAN.history = {
             next = this.addFrame(doc, page, false, tokens);
             last.nextTextFrame = next; frames.push(next); last = next; doc.recompose();
         }
+        this.check(!(map && map.history_tail), "Locked History prefix did not occupy its approved five pages");
         return frames;
+    },
+    validateTailMap: function (tail, map) {
+        this.check(tail && tail.locked_prefix_pages === 5 && tail.blocks && tail.blocks.length === 4, "Invalid fixed History tail contract");
+        var expectedStart = 188, i, j, block, actual;
+        for (i = 0; i < tail.blocks.length; i += 1) {
+            block = this.valid(tail.blocks[i], "tail block " + i); actual = [];
+            this.check(block.page === 6 + Math.floor(i / 2) && block.column === i % 2 && block.start_source_paragraph === expectedStart,
+                "Fixed tail block order/boundary mismatch");
+            this.check(block.start === (i % 2 ? "NEXT_COLUMN" : "NEXT_FRAME"), "Invalid fixed tail boundary mode");
+            this.check(block.end_source_paragraph >= expectedStart && this.indexOf(map.paragraph_order, block.end_source_paragraph) >= 0,
+                "Missing fixed tail source boundary");
+            for (j = 0; j < map.images.length; j += 1) {
+                if (map.images[j].source_paragraph >= expectedStart && map.images[j].source_paragraph <= block.end_source_paragraph) { actual.push(map.images[j].image_index); }
+            }
+            this.check(block.image_indices && typeof block.image_indices.join === "function" && actual.join(",") === block.image_indices.join(","), "Tail image fact mapping mismatch at block " + i);
+            expectedStart = block.end_source_paragraph + 1;
+        }
+        this.check(expectedStart === 217, "Fixed tail must retain every paragraph through source 216");
+        this.check(tail.paragraph_spacing && tail.paragraph_spacing.length === 1 && tail.paragraph_spacing[0] && tail.paragraph_spacing[0].source_paragraph === 215, "Unexpected tail spacing override");
+    },
+    prefixSnapshot: function (frames) {
+        var snapshot = [], i, j, frame, lines, line, entry;
+        for (i = 0; i < frames.length; i += 1) {
+            frame = this.domAt(frames, i, "locked prefix frames"); lines = this.field(frame, "lines", "locked prefix frame");
+            entry = { frame: frame, contents: String(this.field(frame, "contents", "locked prefix frame")),
+                bounds: this.field(frame, "geometricBounds", "locked prefix frame").slice(0), lines: [] };
+            for (j = 0; j < lines.length; j += 1) {
+                line = this.domAt(lines, j, "locked prefix lines");
+                entry.lines.push([String(this.field(line, "contents", "locked prefix line")), Number(this.field(line, "baseline", "locked prefix line")), Number(this.field(line, "horizontalOffset", "locked prefix line"))]);
+            }
+            snapshot.push(entry);
+        }
+        return snapshot;
+    },
+    checkPrefixSnapshot: function (snapshot) {
+        var i, j, line, lines, b, entry, tolerance = SHAN.utils.pt(0.2);
+        for (i = 0; i < snapshot.length; i += 1) {
+            entry = snapshot[i]; b = this.field(entry.frame, "geometricBounds", "locked prefix frame");
+            this.check(String(entry.frame.contents) === entry.contents, "Fixed tail changed locked prefix text/pagination at page " + (i + 1));
+            for (j = 0; j < 4; j += 1) { this.check(Math.abs(Number(b[j]) - Number(entry.bounds[j])) < tolerance, "Fixed tail changed locked prefix frame geometry"); }
+            lines = this.field(entry.frame, "lines", "locked prefix frame");
+            this.check(lines.length === entry.lines.length, "Fixed tail changed locked prefix composed lines");
+            for (j = 0; j < lines.length; j += 1) {
+                line = this.domAt(lines, j, "locked prefix lines");
+                this.check(String(line.contents) === entry.lines[j][0] && Math.abs(Number(line.baseline) - entry.lines[j][1]) < tolerance &&
+                    Math.abs(Number(line.horizontalOffset) - entry.lines[j][2]) < tolerance, "Fixed tail moved a locked prefix line/image anchor");
+            }
+        }
+    },
+    fixedTail: function (doc, story, frames, map, tokens) {
+        var tail = map.history_tail, snapshot = this.prefixSnapshot(frames), before = String(story.contents), i, block, paragraph, page, next;
+        this.validateTailMap(tail, map);
+        paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, tail.blocks[0].start_source_paragraph), "first tail paragraph");
+        var lines = this.field(paragraph, "lines", "first tail paragraph");
+        this.check(lines.length === 0, "Tail starts inside the locked five-page prefix; check baseline/fonts rather than repaginating prefix");
+        this.stage("history-tail:boundaries", { operation: "apply fixed source-paragraph frame/column boundaries" });
+        for (i = 0; i < tail.blocks.length; i += 1) {
+            block = tail.blocks[i];
+            this.describe({ source_paragraph: block.start_source_paragraph, operation: "set fixed tail block boundary" });
+            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, block.start_source_paragraph), "tail boundary paragraph");
+            paragraph.startParagraph = block.start === "NEXT_FRAME" ? StartParagraph.NEXT_FRAME : StartParagraph.NEXT_COLUMN;
+        }
+        for (i = 0; i < tail.paragraph_spacing.length; i += 1) {
+            var spacing = tail.paragraph_spacing[i];
+            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, spacing.source_paragraph), "tail lower event paragraph");
+            paragraph.spaceBefore = SHAN.utils.pt(spacing.space_before_mm);
+        }
+        // Append exactly the two contracted body pages. Never search for fewer pages,
+        // shrink a tail archive, or spill a block into an extra auto-flow page.
+        for (i = 0; i < 2; i += 1) {
+            this.stage("history-tail:page-" + (6 + i), { operation: "append fixed two-column tail page", frame_label: "SHAN_HISTORY:body" });
+            var pages = this.field(doc, "pages", "fixed tail document");
+            this.check(typeof pages.add === "function", "Missing fixed-tail document.pages.add");
+            page = this.valid(pages.add(LocationOptions.AT_END), "fixed tail page"); next = this.addFrame(doc, page, false, tokens);
+            this.domAt(frames, -1, "preceding body frames").nextTextFrame = next; frames.push(next); doc.recompose();
+        }
+        this.check(!story.overflows, "Fixed History tail overset: preserve locked pages and inspect fixed page-6/7 block; automatic compression disabled");
+        this.check(String(story.contents) === before, "Fixed tail changed source story contents");
+        this.checkPrefixSnapshot(snapshot); this.tailChecks(doc, story, map);
+        frames.tailLog = ["tail_layout=fixed_two_pages; locked_prefix_pages=5; source_boundary=188; automatic_compaction=false; prefix_text_geometry=PASS"];
+        return frames;
+    },
+    tailChecks: function (doc, story, map, images) {
+        var tail = map.history_tail, pages = this.field(doc, "pages", "tail check document"), i, j, k, block, paragraph, lines, line, position, target;
+        for (i = 0; i < tail.blocks.length; i += 1) {
+            block = tail.blocks[i]; target = this.domAt(pages, block.page - 1, "fixed actual tail pages");
+            for (j = block.start_source_paragraph; j <= block.end_source_paragraph; j += 1) {
+                this.describe({ source_paragraph: j, operation: "verify fixed tail paragraph slot", frame_label: "SHAN_HISTORY:body" });
+                paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, j), "fixed tail source paragraph");
+                lines = this.field(paragraph, "lines", "fixed tail source paragraph");
+                this.check(lines.length > 0, "Invisible fixed tail source paragraph " + j);
+                for (k = 0; k < lines.length; k += 1) {
+                    line = this.domAt(lines, k, "fixed tail paragraph lines"); position = this.linePosition(line);
+                    this.check(position.page === target.id && position.column === block.column, "Fixed tail block escaped assigned page/column at source " + j);
+                }
+            }
+            if (images) {
+                for (j = 0; j < block.image_indices.length; j += 1) {
+                    var imageIndex = block.image_indices[j], record = this.domAt(images, imageIndex - 1, "fixed tail image records");
+                    var imageSource = this.field(record, "source", "fixed tail image record");
+                    this.describe({ image_index: imageIndex, source_paragraph: imageSource.source_paragraph, operation: "verify tail image visible in assigned slot" });
+                    var rect = this.field(record, "rect", "fixed tail image"), imagePage = this.field(rect, "parentPage", "fixed tail image rectangle");
+                    var layer = this.field(rect, "itemLayer", "fixed tail image rectangle");
+                    this.check(layer.visible && imagePage.id === target.id, "Fixed tail image hidden/on wrong page: " + imageIndex);
+                    var anchor = this.field(record, "anchor", "fixed tail image");
+                    var character = this.field(anchor, "parent", "fixed tail image anchor");
+                    var anchorLines = this.field(character, "lines", "fixed tail anchor character");
+                    this.check(anchorLines.length > 0, "Invisible fixed tail image anchor: " + imageIndex);
+                    position = this.linePosition(this.domAt(anchorLines, 0, "fixed tail anchor lines"));
+                    this.check(position.page === target.id && position.column === block.column, "Fixed tail image escaped assigned slot: " + imageIndex);
+                }
+            }
+        }
     },
     resizeImage: function (record, widthMM, tokens) {
         record = this.valid(record, "compact image record");
@@ -381,194 +498,6 @@ SHAN.history = {
             removed += 1;
         }
         return removed;
-    },
-    pageOrdinal: function (doc, page) {
-        var pages = this.field(doc, "pages", "ending document"), i;
-        page = this.valid(page, "ending actual page");
-        for (i = 0; i < pages.length; i += 1) {
-            if (this.domAt(pages, i, "ending actual pages").id === page.id) { return i + 1; }
-        }
-        this.check(false, "Ending object is not on an actual document page");
-    },
-    endingPrefix: function (doc, frames, images, firstEditable) {
-        var snapshot = { frames: [], images: [] }, i, frame, page, rect;
-        for (i = 0; i < frames.length; i += 1) {
-            frame = this.domAt(frames, i, "ending protected frames"); page = this.field(frame, "parentPage", "ending protected frame");
-            if (this.pageOrdinal(doc, page) < firstEditable) {
-                snapshot.frames.push({ frame: frame, contents: String(this.field(frame, "contents", "ending protected frame")) });
-            }
-        }
-        for (i = 0; i < images.length; i += 1) {
-            rect = this.field(images[i], "rect", "ending protected image"); page = this.field(rect, "parentPage", "ending protected rectangle");
-            if (this.pageOrdinal(doc, page) < firstEditable) {
-                snapshot.images.push({ rect: rect, bounds: this.field(rect, "geometricBounds", "ending protected rectangle").slice(0) });
-            }
-        }
-        return snapshot;
-    },
-    checkEndingPrefix: function (snapshot) {
-        var i, j, b;
-        for (i = 0; i < snapshot.frames.length; i += 1) {
-            this.check(String(this.field(snapshot.frames[i].frame, "contents", "ending protected frame")) === snapshot.frames[i].contents,
-                "Ending refinement changed an earlier protected page");
-        }
-        for (i = 0; i < snapshot.images.length; i += 1) {
-            b = this.field(snapshot.images[i].rect, "geometricBounds", "ending protected rectangle");
-            for (j = 0; j < 4; j += 1) {
-                this.check(Math.abs(Number(b[j]) - Number(snapshot.images[i].bounds[j])) < SHAN.utils.pt(0.2),
-                    "Ending refinement moved an earlier protected image");
-            }
-        }
-    },
-    lastContentPage: function (doc, frames) {
-        var i, frame;
-        for (i = frames.length - 1; i >= 0; i -= 1) {
-            frame = this.domAt(frames, i, "ending body frames");
-            if (this.hasVisibleContent(frame)) { return this.pageOrdinal(doc, this.field(frame, "parentPage", "ending body frame")); }
-        }
-        return 0;
-    },
-    refineEnding: function (doc, story, frames, images, map, tokens) {
-        var policy = tokens.ending_layout, log = [], i, pass, record, rect, page, b, selected = [], pt = SHAN.utils.pt;
-        if (!policy) { return log; }
-        this.check(policy.first_editable_page === policy.target_pages && policy.shrink_factors.length <= 2,
-            "Invalid bounded History ending policy");
-        var before = String(this.field(story, "contents", "ending source story"));
-        var prefix = this.endingPrefix(doc, frames, images, policy.first_editable_page);
-        if (this.lastContentPage(doc, frames) <= policy.target_pages) { return ["ending_plan=A; already fits target; no changes"]; }
-        for (i = 0; i < policy.image_indices.length; i += 1) {
-            record = this.domAt(images, policy.image_indices[i] - 1, "ending archive images");
-            rect = this.field(record, "rect", "ending image"); page = this.field(rect, "parentPage", "ending image rectangle");
-            if (this.pageOrdinal(doc, page) < policy.first_editable_page) { continue; }
-            b = this.field(rect, "geometricBounds", "ending image rectangle");
-            selected.push({ record: record, width: (Number(b[3]) - Number(b[1])) / pt(1) });
-        }
-        for (pass = 0; pass < policy.shrink_factors.length; pass += 1) {
-            var factor = policy.shrink_factors[pass];
-            this.check(factor >= 0.8 && factor <= 0.9, "Ending shrink must stay within authorized 10-20 percent");
-            for (i = 0; i < selected.length; i += 1) { this.resizeImage(selected[i].record, selected[i].width * factor, tokens); }
-            doc.recompose(); this.checkEndingPrefix(prefix);
-            log.push("ending_plan=A; shrink_factor=" + factor + "; last_content_page=" + this.lastContentPage(doc, frames));
-            if (this.lastContentPage(doc, frames) <= policy.target_pages) { break; }
-        }
-        // A nearly empty seventh page gets a final bounded attempt on its last
-        // two archives only. Already composed page-six images are left as they are.
-        for (pass = 0; pass < policy.last_fit_passes && this.lastContentPage(doc, frames) === policy.target_pages + 1; pass += 1) {
-            var shrunk = false;
-            for (i = 0; i < policy.last_image_indices.length; i += 1) {
-                record = this.domAt(images, policy.last_image_indices[i] - 1, "remaining tail archive");
-                rect = this.field(record, "rect", "remaining tail archive");
-                if (this.pageOrdinal(doc, this.field(rect, "parentPage", "remaining tail rectangle")) <= policy.target_pages) { continue; }
-                b = this.field(rect, "geometricBounds", "remaining tail rectangle");
-                var currentWidth = (Number(b[3]) - Number(b[1])) / pt(1);
-                var smallerWidth = Math.max(Math.min(currentWidth, policy.last_image_floor_mm[i]), currentWidth - policy.last_fit_step_mm);
-                if (currentWidth - smallerWidth > 0.01) { this.resizeImage(record, smallerWidth, tokens); shrunk = true; }
-            }
-            if (!shrunk) { break; }
-            doc.recompose(); this.checkEndingPrefix(prefix);
-            log.push("ending_plan=A; remaining_tail_fit_pass=" + (pass + 1) + "; last_content_page=" + this.lastContentPage(doc, frames));
-        }
-        if (this.lastContentPage(doc, frames) === policy.target_pages + 1) {
-            this.stage("history-ending-tail", { operation: "compose two-column closing page", frame_label: "SHAN_HISTORY:body" });
-            log = log.concat(this.designEndingTail(doc, story, frames, images, map, tokens));
-        } else if (this.lastContentPage(doc, frames) > policy.target_pages) {
-            log.push("WARNING: Ending still exceeds target/fallback pages; inspect actual layout. Earlier pages preserved.");
-        }
-        this.check(String(story.contents) === before, "Ending refinement changed source story contents");
-        this.checkEndingPrefix(prefix); this.check(!story.overflows, "Ending refinement produced overset");
-        return log;
-    },
-    designEndingTail: function (doc, story, frames, images, map, tokens) {
-        var policy = tokens.ending_layout, pt = SHAN.utils.pt, frame, i, record, rect, page, original, paragraph, lines, position, chosen = null, closingImages = [];
-        // Only the last actual content page gets local overrides. No controls or copy are inserted.
-        for (i = frames.length - 1; i >= 0; i -= 1) {
-            frame = this.domAt(frames, i, "closing body frames");
-            if (this.hasVisibleContent(frame)) { break; }
-        }
-        this.check(i >= 0, "Closing page has no body content");
-        page = this.field(frame, "parentPage", "closing body frame");
-        for (i = 0; i < images.length; i += 1) {
-            record = this.domAt(images, i, "closing images"); rect = this.field(record, "rect", "closing image");
-            if (this.field(rect, "parentPage", "closing image rectangle").id !== page.id) { continue; }
-            if (record.source.image_index >= 21 && record.source.image_index <= 24) { closingImages.push(record); }
-        }
-        // Resolve membership before resizing: a later object may temporarily be overset.
-        for (i = 0; i < closingImages.length; i += 1) {
-            record = closingImages[i];
-            this.resizeImage(record, record.source.image_index === 24 ? policy.fallback_poster_width_mm : policy.fallback_photo_width_mm, tokens);
-        }
-        doc.recompose();
-        // March starts the right column if already on this page after an earlier photo;
-        // otherwise April forms the right column. The original March-before-photo order stays intact.
-        for (i = 0; i < policy.fallback_column_starts.length; i += 1) {
-            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, policy.fallback_column_starts[i]), "closing event paragraph");
-            lines = this.field(paragraph, "lines", "closing event paragraph");
-            if (!lines.length) { continue; }
-            position = this.linePosition(this.domAt(lines, 0, "closing event lines"));
-            if (position.page !== page.id) { continue; }
-            var preceding = this.characterLine(story, this.domAt(this.field(paragraph, "insertionPoints", "closing event paragraph"), 0, "closing event insertion").index - 1, true);
-            if (!preceding || this.linePosition(preceding).page !== page.id) { continue; }
-            this.describe({ source_paragraph: policy.fallback_column_starts[i], operation: "apply closing event column boundary", frame_label: frame.label });
-            // Already in the right column: another NEXT_COLUMN could create page eight.
-            if (position.column === 0) { paragraph.startParagraph = StartParagraph.NEXT_COLUMN; }
-            paragraph.keepWithNext = 1;
-            chosen = policy.fallback_column_starts[i]; break;
-        }
-        if (chosen === null) {
-            // Only a poster may remain on seven after A. Move the complete 2026
-            // closing block at a source paragraph boundary, preserving everything before it.
-            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, policy.fallback_column_starts[0]), "closing block start");
-            lines = this.field(paragraph, "lines", "closing block start");
-            this.check(lines.length > 0, "Closing page needs a visible event boundary within the tail");
-            position = this.linePosition(this.domAt(lines, 0, "closing block lines"));
-            var blockLine = this.domAt(lines, 0, "closing block line");
-            var blockFrames = this.field(blockLine, "parentTextFrames", "closing block line");
-            var blockFrame = this.domAt(blockFrames, 0, "closing block frames");
-            var startPage = this.pageOrdinal(doc, this.field(blockFrame, "parentPage", "closing block frame"));
-            this.check(startPage === policy.target_pages, "Closing block boundary is outside the authorized ending pages");
-            paragraph.startParagraph = StartParagraph.NEXT_PAGE; paragraph.keepWithNext = 1;
-            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, policy.fallback_column_starts[1]), "closing right-column event");
-            paragraph.startParagraph = StartParagraph.NEXT_COLUMN; paragraph.keepWithNext = 1;
-            chosen = policy.fallback_column_starts[1];
-            doc.recompose();
-        }
-        var poster = this.paragraph(story, this.indexOf(map.paragraph_order, policy.fallback_poster_paragraph), "closing poster paragraph");
-        poster.spaceBefore = pt(policy.fallback_poster_gap_mm);
-        original = this.field(frame, "geometricBounds", "closing body frame").slice(0);
-        var ratio = policy.fallback_body_height_ratio;
-        while (true) {
-            frame.geometricBounds = [original[0],original[1],Number(original[0]) + (Number(original[2]) - Number(original[0])) * ratio,original[3]];
-            doc.recompose();
-            if (!story.overflows || ratio >= 1) { break; }
-            ratio = Math.min(1, ratio + 0.05);
-        }
-        this.check(!story.overflows, "Closing-page arrangement cannot fit without overset");
-        var stats = this.endingTailStats(frame, original);
-        var needed = (Number(original[2]) - Number(original[0])) * policy.fallback_min_content_ratio - stats.depth;
-        if (needed > pt(0.2)) {
-            poster.spaceBefore = Math.min(pt(policy.fallback_max_poster_gap_mm), Number(poster.spaceBefore) + needed);
-            doc.recompose();
-            if (story.overflows) { poster.spaceBefore = pt(policy.fallback_poster_gap_mm); doc.recompose(); }
-            stats = this.endingTailStats(frame, original);
-        }
-        this.check(stats.columns[0] && stats.columns[1], "Closing page still has an empty column");
-        var log = ["ending_plan=B; column_start_source=" + chosen + "; body_height_ratio=" + ratio.toFixed(2) +
-            "; content_depth_ratio=" + stats.ratio.toFixed(2) + "; left_used=true; right_used=true"];
-        if (stats.ratio < policy.fallback_min_content_ratio - 0.01 || ratio > 0.65 + 0.01) {
-            log.push("WARNING: Closing-page 55-65 percent visual-depth target needs PDF review; no text or earlier pages changed.");
-        }
-        return log;
-    },
-    endingTailStats: function (frame, fullBounds) {
-        var lines = this.field(frame, "lines", "closing body frame"), columns = [false,false], bottom = Number(fullBounds[0]), i, line, position;
-        for (i = 0; i < lines.length; i += 1) {
-            line = this.domAt(lines, i, "closing body lines"); position = this.linePosition(line);
-            if (/[^\r\n\t \f]/.test(String(this.field(line, "contents", "closing body line")))) {
-                columns[position.column] = true;
-                bottom = Math.max(bottom, Number(this.field(line, "baseline", "closing body line")) + Number(this.field(line, "descent", "closing body line")));
-            }
-        }
-        return { columns: columns, depth: bottom - Number(fullBounds[0]), ratio: (bottom - Number(fullBounds[0])) / (Number(fullBounds[2]) - Number(fullBounds[0])) };
     },
     columnDiagnostics: function (frames) {
         var log = [], i, j, frame, bounds, lines, line, position, bottom, ends, isEndOfStory;
@@ -769,6 +698,7 @@ SHAN.history = {
             this.check(b[2] > b[0] && b[3] > b[1] && b[0] < p[2] && b[2] > p[0] && b[1] < p[3] && b[3] > p[1], "Body frame outside page");
             this.check(this.hasVisibleContent(frame), "Empty generated History page: " + page.name);
         }
+        if (map.history_tail) { this.tailChecks(doc, story, map, images); }
         this.yearChecks(story, map);
         for (i = 0; i < images.length; i += 1) { this.graphicChecks(images[i], source, map); }
         this.anchorOrderChecks(story, images);
@@ -821,14 +751,13 @@ SHAN.history = {
         var bleeds = ["documentBleedTopOffset", "documentBleedBottomOffset", "documentBleedInsideOrLeftOffset", "documentBleedOutsideOrRightOffset"];
         for (i = 0; i < bleeds.length; i += 1) { this.check(Math.abs(Number(documentPreferences[bleeds[i]]) - SHAN.utils.pt(3)) < 0.1, "Wrong bleed"); }
         // Visual targets are advisory; never fail on an estimated page count.
-        if (pages.length < tokens.advisory_pages[0] || pages.length > tokens.advisory_pages[1]) { warnings.push("页数超出" + tokens.advisory_pages.join("–") + "页参考范围，仅供PDF视觉检查；不是内容完整性失败。"); }
         warnings.push("图片与图注均为单栏；连续大块留白及页面密度仍需PDF视觉验收。");
         return "PASS History data checks; pages=" + pages.length + "; paragraphs=" + map.paragraph_order.length +
             "; entries=21; images=24; captions=5; overset=false; source SHA-256=PASS; paragraph equality=PASS" +
             "; display transforms reversible=PASS; roster splits=4; paragraph-boundary image blocks=PASS; image overlap=false" +
             "; images_single_column=24; blank_tail=false; removed_empty_tail_pages=" + (result.removedEmptyTailPages || 0) +
             "; source already includes approved deletion; import omissions=0; approved moves=1; runtime=InDesign " + app.version +
-            "\n" + (result.compactLog || []).join("\n") + "\n" + (result.endingLog || []).join("\n") + "\n" + (result.columnLog || []).join("\n") + "\n" + warnings.join("\n") + "\nPDF视觉验收待用户确认。";
+            "\n" + (result.compactLog || []).join("\n") + "\n" + (result.columnLog || []).join("\n") + "\n" + warnings.join("\n") + "\nPDF视觉验收待用户确认。";
     },
     create: function (doc, root, source, map, audit, tokens, section, context) {
         this.runtime = context && context.runtime ? context.runtime : null;
@@ -844,6 +773,11 @@ SHAN.history = {
         SHAN.historySource.validateDisplay(display, source, map);
         // In-memory adjunct only; HISTORY_IMPORT_MAP.json remains the immutable fact mapping.
         map.history_display = display;
+        if (tokens.tail_layout_file) {
+            this.stage("history-create:tail-map", { operation: "read fixed tail display-only override" });
+            map.history_tail = SHAN.chapter.parseJSON(SHAN.historySource.read(File(root + "/" + tokens.tail_layout_file)));
+            this.validateTailMap(map.history_tail, map);
+        }
         this.check(tokens.image_policy.preferences.length === 24, "Incomplete image size policy");
         for (var policyIndex = 0; policyIndex < tokens.image_policy.preferences.length; policyIndex += 1) {
             this.check(tokens.image_policy.preferences[policyIndex].span_columns === 1, "History image policy must be single-column");
@@ -879,18 +813,12 @@ SHAN.history = {
             this.insertion(currentParagraph, map.images[i].anchor, display.image_layouts[i]);
         }
         this.stage("history-flow", { operation: "thread History body frames", frame_label: "SHAN_HISTORY:body" });
-        var frames = this.flow(doc, story, first, tokens);
+        var frames = this.flow(doc, story, first, tokens, map);
         var result = { story: story, frames: frames, images: images, marker: marker };
         this.stage("history-compact-images", { operation: "fit small archive blocks in available columns" });
-        result.compactLog = this.compactImages(doc, story, images, map, tokens);
-        // Remove an empty continuation before B: otherwise its spare frame can hide
-        // tail overset by accepting content on an unintended eighth page.
-        this.stage("history-trim-empty-tail", { operation: "remove empty continuation before ending composition" });
-        result.removedEmptyTailPages = this.trimEmptyTail(doc, story, frames, images, tokens);
-        this.stage("history-ending-compact", { operation: "refine only ending archives and pagination" });
-        result.endingLog = this.refineEnding(doc, story, frames, images, map, tokens);
+        result.compactLog = map.history_tail ? (frames.tailLog || ["fixed tail; automatic image fitting disabled"]) : this.compactImages(doc, story, images, map, tokens);
         this.stage("history-trim-empty-tail", { operation: "remove only empty generated document pages" });
-        result.removedEmptyTailPages += this.trimEmptyTail(doc, story, frames, images, tokens);
+        result.removedEmptyTailPages = this.trimEmptyTail(doc, story, frames, images, tokens);
         this.stage("history-column-diagnostics", { operation: "measure actual body-column tails", frame_label: "SHAN_HISTORY:body" });
         result.columnLog = this.columnDiagnostics(frames);
         this.stage("history-validate", { operation: "compare source and document paragraphs" });

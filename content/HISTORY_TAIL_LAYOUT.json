@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "reference": {
+    "file_name": "未命名-9.pdf",
+    "sha256": "f472357839f6ca21fb01fb26d82f15a2495cb9f9ad3e40d6085e77c30efe3b16",
+    "creation_date": "2026-10-03T00:07:13+08:00",
+    "pages": 7,
+    "restored_commit": "617e033ddfa832f0a64015bddd243ed5009e6dca",
+    "replaced_commit": "2049cfc080781407371540abb0de39933b0fb83b"
+  },
+  "locked_prefix_pages": 5,
+  "blocks": [
+    {
+      "page": 6,
+      "column": 0,
+      "start_source_paragraph": 188,
+      "end_source_paragraph": 193,
+      "start": "NEXT_FRAME",
+      "image_indices": [
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "page": 6,
+      "column": 1,
+      "start_source_paragraph": 194,
+      "end_source_paragraph": 208,
+      "start": "NEXT_COLUMN",
+      "image_indices": [
+        20
+      ]
+    },
+    {
+      "page": 7,
+      "column": 0,
+      "start_source_paragraph": 209,
+      "end_source_paragraph": 211,
+      "start": "NEXT_FRAME",
+      "image_indices": [
+        21,
+        22
+      ]
+    },
+    {
+      "page": 7,
+      "column": 1,
+      "start_source_paragraph": 212,
+      "end_source_paragraph": 216,
+      "start": "NEXT_COLUMN",
+      "image_indices": [
+        23,
+        24
+      ]
+    }
+  ],
+  "paragraph_spacing": [
+    {
+      "source_paragraph": 215,
+      "space_before_mm": 12
+    }
+  ]
+}
