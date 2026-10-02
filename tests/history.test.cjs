@@ -25,9 +25,27 @@ const ctx = vm.createContext({ File,
 for (const name of ['XML', 'XMLList', 'Namespace', 'QName']) {
     Object.defineProperty(ctx, name, { get() { throw new Error('E4X must not participate in History source reading: ' + name); } });
 }
+// Node accepts ES3 future-reserved identifiers such as final; ExtendScript rejects them.
+// This conservative token scan ignores comments/quoted strings, but is not a native compiler.
+const es3FutureReserved = new Set(('abstract boolean byte char class const double enum export extends final float goto ' +
+    'implements import int interface long native package private protected public short static super synchronized throws transient volatile').split(' '));
+function assertNoES3ReservedIdentifiers(code, filename) {
+    const stripped = code.replace(/\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'/g,
+        match => match.replace(/[^\r\n]/g, ' '));
+    for (const match of stripped.matchAll(/[A-Za-z_$][A-Za-z0-9_$]*/g)) {
+        assert.ok(!es3FutureReserved.has(match[0]), `${filename}: ES3 reserved identifier '${match[0]}' at line ${stripped.slice(0, match.index).split('\n').length}`);
+    }
+}
+for (const word of es3FutureReserved) {
+    assert.throws(() => assertNoES3ReservedIdentifiers(`var first, ${word};`, 'negative.jsx'), /ES3 reserved identifier/);
+}
+assert.throws(() => assertNoES3ReservedIdentifiers('var log = [], i, j, frame, bounds, lines, line, position, bottom, ends, final;', 'screenshot.jsx'),
+    /reserved identifier 'final' at line 1/);
+assert.doesNotThrow(() => assertNoES3ReservedIdentifiers('var isEndOfStory, finalReportError; // final\n/* native */ var text = "final"; var other = \'private\';', 'valid.jsx'));
 for (const file of ['modules/history_source.jsx', 'modules/history.jsx', 'modules/history_runtime.jsx', 'visual/history_skin.jsx', 'build/13_history_test.jsx']) {
     assert.equal(fs.readFileSync(path.join(root, file)).subarray(0, 3).toString('hex'), 'efbbbf', file);
     const code = read(file).replace(/^\uFEFF/, '').replace(/^#(?:target|include).*$/gm, '');
+    assertNoES3ReservedIdentifiers(code, file);
     new vm.Script(code, { filename: file });
     if (!file.startsWith('build/')) vm.runInContext(code, ctx);
 }
@@ -748,4 +766,4 @@ assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History v3: all 216 source paragraphs reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years, 24 original images, 5 captions; source SHA/BOM/parser/DOM/diagnostic/focus regressions; roster splits and 5mm gaps unchanged; all History media/caption styles single-column with no Wide mapping; max70mm + column geometry tolerance; no stretching/new crop; bounded previous-column fit, failed-fit restore, shared-caption unit; empty-tail deletion, control-only overset shrink, no deletion of content/images/unrelated items, no-progress/text-loss failures; density WARNING vs natural EOF; 7–9 pages advisory; frozen scope PASS. InDesign/PDF v3 acceptance pending; host not launched.');
+console.log('PASS History v3: all 216 source paragraphs reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years, 24 original images, 5 captions; source SHA/BOM/ES3 reserved-word/parser/DOM/diagnostic/focus regressions; roster splits and 5mm gaps unchanged; all History media/caption styles single-column with no Wide mapping; max70mm + column geometry tolerance; no stretching/new crop; bounded previous-column fit, failed-fit restore, shared-caption unit; empty-tail deletion, control-only overset shrink, no deletion of content/images/unrelated items, no-progress/text-loss failures; density WARNING vs natural EOF; 7–9 pages advisory; frozen scope PASS. InDesign/PDF v3 acceptance pending; host not launched.');

@@ -383,7 +383,7 @@ SHAN.history = {
         return removed;
     },
     columnDiagnostics: function (frames) {
-        var log = [], i, j, frame, bounds, lines, line, position, bottom, ends, final;
+        var log = [], i, j, frame, bounds, lines, line, position, bottom, ends, isEndOfStory;
         for (i = 0; i < frames.length; i += 1) {
             frame = this.domAt(frames, i, "density body frames");
             this.describe({ frame_label: frame.label || "SHAN_HISTORY:body", operation: "measure composed body-column tails" });
@@ -395,10 +395,10 @@ SHAN.history = {
                 ends[position.column] = Math.max(ends[position.column], bottom);
             }
             for (j = 0; j < 2; j += 1) {
-                final = i === frames.length - 1 && (j === 1 || ends[1] <= Number(bounds[0]) + 0.1);
+                isEndOfStory = i === frames.length - 1 && (j === 1 || ends[1] <= Number(bounds[0]) + 0.1);
                 var gap = Math.max(0, Number(bounds[2]) - ends[j]), page = this.field(frame, "parentPage", "density body frame");
-                log.push("page=" + page.name + "; column=" + (j + 1) + "; unused_tail_mm=" + (gap / SHAN.utils.pt(1)).toFixed(1) + "; end_of_story=" + final);
-                if (!final && gap > (Number(bounds[2]) - Number(bounds[0])) / 2) {
+                log.push("page=" + page.name + "; column=" + (j + 1) + "; unused_tail_mm=" + (gap / SHAN.utils.pt(1)).toFixed(1) + "; end_of_story=" + isEndOfStory);
+                if (!isEndOfStory && gap > (Number(bounds[2]) - Number(bounds[0])) / 2) {
                     log.push("WARNING: Half-column unused tail before continuing content; inspect page " + page.name + " column " + (j + 1) + " in PDF.");
                 }
             }
