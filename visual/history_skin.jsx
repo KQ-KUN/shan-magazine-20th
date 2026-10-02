@@ -1,7 +1,7 @@
 ﻿var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
 SHAN.historySkin = {
     apply: function (doc, tokens, base, context) {
-        var key, style, prior = doc.extractLabel("SHAN_VISUAL_FONTS");
+        var key, style, def, prior = doc.extractLabel("SHAN_VISUAL_FONTS");
         for (key in tokens.paragraph_styles) {
             if (tokens.paragraph_styles.hasOwnProperty(key)) {
                 style = SHAN.utils.ensureNamed(doc.paragraphStyles, key);
@@ -13,14 +13,18 @@ SHAN.historySkin = {
         for (key in tokens.paragraph_styles) {
             if (!tokens.paragraph_styles.hasOwnProperty(key)) { continue; }
             style = doc.paragraphStyles.itemByName(key);
+            def = tokens.paragraph_styles[key];
             style.spanColumnType = SpanColumnTypeOptions.SINGLE_COLUMN;
-            style.keepLinesTogether = true; style.keepFirstLines = 2; style.keepLastLines = 2;
-            style.keepAllLinesTogether = key !== "P_History_Event";
-            style.keepWithNext = tokens.paragraph_styles[key].keep_with_next || 0;
+            style.keepLinesTogether = true;
+            style.keepFirstLines = def.keep_first_lines || 2; style.keepLastLines = def.keep_last_lines || 2;
+            style.keepAllLinesTogether = def.keep_all_lines_together !== undefined ? def.keep_all_lines_together : key !== "P_History_Event";
+            style.keepWithNext = def.keep_with_next || 0;
             style.justification = Justification.LEFT_ALIGN;
+            if (key.indexOf("P_History_Media") === 0) { style.justification = Justification.CENTER_ALIGN; }
+            if (key.indexOf("P_History_Media_Wide") === 0) {
+                style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
+            }
         }
-        style = doc.paragraphStyles.itemByName("P_History_Media_Wide");
-        style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
         style = doc.paragraphStyles.itemByName("P_History_Caption_Wide");
         style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
         style = doc.paragraphStyles.itemByName("P_Article_Title");

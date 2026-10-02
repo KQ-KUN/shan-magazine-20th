@@ -55,7 +55,7 @@ SHAN.history = {
         this.check(typeof graphics.length === "number", "missing graphics count: " + label);
         return graphics;
     },
-    insertion: function (paragraph, anchorMode) {
+    insertion: function (paragraph, anchorMode, layout) {
         paragraph = this.valid(paragraph, "image paragraph");
         var points = this.field(paragraph, "insertionPoints", "image paragraph");
         this.check(typeof points.length === "number" && points.length > 0, "missing insertion point");
@@ -66,11 +66,45 @@ SHAN.history = {
             var hasDelimiter = contents.charAt(contents.length - 1) === "\r";
             index = points.length - (hasDelimiter ? 2 : 1);
             this.check(index >= 0 && index < points.length, "missing insertion point before paragraph delimiter");
-        } else { this.check(anchorMode === "paragraph_start", "unsupported anchor mode"); }
+        } else {
+            this.check(anchorMode === "paragraph_start", "unsupported anchor mode");
+            // Multiple images in one empty source paragraph get separate display lines.
+            // Re-resolve from current contents after each prior reverse-order mutation.
+            var line = 0, text = String(this.field(paragraph, "contents", "image paragraph"));
+            while (layout && line < layout.display_line) {
+                index = text.indexOf("\n", index);
+                this.check(index >= 0, "missing media block display break"); index += 1; line += 1;
+            }
+        }
+        this.check(index < points.length, "image block insertion point outside paragraph");
         return this.domAt(points, index, "image insertion point");
     },
     indexOf: function (items, value) {
         var i; for (i = 0; i < items.length; i += 1) { if (items[i] === value) { return i; } } return -1;
+    },
+    styleName: function (sourceParagraph, map, tokens) {
+        var display = map.history_display, i, j, gap, name = map.paragraphs[sourceParagraph - 1].style;
+        if (!display) { return name; }
+        if (this.indexOf(display.roster_paragraphs, sourceParagraph) >= 0 || this.indexOf(display.roster_tail_paragraphs, sourceParagraph) >= 0) { name = "P_History_Roster"; }
+        for (i = 0; i < display.roster_activity_gaps.length; i += 1) {
+            gap = display.roster_activity_gaps[i];
+            if (gap.last_roster === sourceParagraph) { name = "P_History_Roster_Last"; }
+            if (this.indexOf(gap.empty_paragraphs, sourceParagraph) >= 0) { name = "P_History_Empty_Roster_Gap"; }
+        }
+        for (i = 0; i < display.image_layouts.length; i += 1) {
+            if (display.image_layouts[i].source_paragraph === sourceParagraph && tokens.image_policy.preferences[i].span_columns === 2) { name = "P_History_Media_Wide"; }
+        }
+        // Existing caption blocks retain their source text and span with their image.
+        for (i = 0; i < map.captions.length; i += 1) {
+            if (map.captions[i].source_paragraph === 6) { continue; }
+            for (j = 0; j < map.captions[i].image_indices.length; j += 1) {
+                var imageIndex = map.captions[i].image_indices[j] - 1;
+                if (tokens.image_policy.preferences[imageIndex].span_columns !== 2) { continue; }
+                if (map.captions[i].source_paragraph === sourceParagraph) { name = "P_History_Caption_Wide"; }
+                if (map.images[imageIndex].source_paragraph === sourceParagraph) { name = "P_History_Media_Wide_Caption"; }
+            }
+        }
+        return name;
     },
     addFrame: function (doc, page, first, tokens) {
         this.describe({ frame_label: "SHAN_HISTORY:body", operation: "create body frame" });
@@ -112,17 +146,20 @@ SHAN.history = {
         markerParagraph.applyParagraphStyle(this.named(doc, "paragraphStyles", "P_History_Chapter_Marker"), true);
         return frame;
     },
-    imageSize: function (asset) {
-        var width = asset.modules * SHAN.utils.moduleWidthMM() + (asset.modules - 1) * SHAN.spec.gutterMM;
-        // Grid-sized viewport; do not enlarge a small low-resolution original to fill it.
-        var contentWidth = asset.modules === 2 ? Math.min(width, asset.original_width_mm) : width;
+    imageSize: function (asset, preference, policy) {
+        // Publication display dimensions, independent of Word physical dimensions.
+        var available = preference.span_columns === 2 ? policy.double_column_max_mm : policy.single_column_max_mm;
+        var viewportWidth = Math.min(preference.width_mm, available,
+            asset.pixel_width * (1 - asset.crop.l - asset.crop.r) * 25.4 / policy.minimum_effective_ppi);
+        var contentWidth = viewportWidth / (1 - asset.crop.l - asset.crop.r);
         var fullHeight = contentWidth * asset.pixel_height / asset.pixel_width;
-        return { width: width, contentWidth: contentWidth, fullHeight: fullHeight, height: fullHeight * (1 - asset.crop.t - asset.crop.b) };
+        return { width: viewportWidth, contentWidth: contentWidth,
+            fullHeight: fullHeight, height: fullHeight * (1 - asset.crop.t - asset.crop.b) };
     },
-    image: function (doc, page, asset, file, paragraph, imageMap, caption, tokens) {
+    image: function (doc, page, asset, file, paragraph, imageMap, caption, tokens, layout) {
         this.stage("history-create:image-" + imageMap.image_index, { image_index: imageMap.image_index,
             source_paragraph: imageMap.source_paragraph, anchor: imageMap.anchor, operation: "create rectangle" });
-        var size = this.imageSize(asset), pt = SHAN.utils.pt;
+        var size = this.imageSize(asset, tokens.image_policy.preferences[imageMap.image_index - 1], tokens.image_policy), pt = SHAN.utils.pt;
         paragraph = this.valid(paragraph, "image paragraph before placement");
         var rectangles = this.field(page, "rectangles", "image page");
         this.check(typeof rectangles.add === "function", "missing rectangles.add");
@@ -136,8 +173,8 @@ SHAN.history = {
         rect.place(file, false); rect.fit(FitOptions.PROPORTIONALLY); rect.fit(FitOptions.CENTER_CONTENT);
         this.describe({ operation: "resolve placed graphic" });
         var graphic = this.domAt(this.graphicsOf(rect, "image rectangle"), 0, "placed graphic");
-        // Original crop and proportional content, with optional transparent side padding.
-        var inset = (size.width - size.contentWidth) / 2;
+        // Proportional content and only the original DOCX crop.
+        var inset = -size.contentWidth * asset.crop.l;
         graphic.geometricBounds = [-pt(size.fullHeight * asset.crop.t),pt(inset),
             pt(size.fullHeight * (1 - asset.crop.t)),pt(inset + size.contentWidth)];
         var anchor = rect, captionFrame = null;
@@ -166,7 +203,7 @@ SHAN.history = {
         }
         this.describe({ operation: "resolve current insertion point" });
         // Resolve immediately before insertion; never reuse an insertion point from a previous image.
-        var insertion = this.insertion(paragraph, imageMap.anchor);
+        var insertion = this.insertion(paragraph, imageMap.anchor, layout);
         var targetStory = this.field(insertion, "parentStory", "image insertion point");
         var settings = this.field(anchor, "anchoredObjectSettings", "image anchor");
         this.check(typeof settings.insertAnchoredObject === "function", "missing insertAnchoredObject");
@@ -187,7 +224,7 @@ SHAN.history = {
         parent.leading = Leading.AUTO;
         this.valid(rect, "rectangle after anchoring"); this.valid(graphic, "graphic after anchoring");
         if (captionFrame) { this.valid(captionFrame, "caption frame after anchoring"); }
-        return { rect: rect, graphic: graphic, anchor: anchor, captionFrame: captionFrame, source: imageMap, asset: asset };
+        return { rect: rect, graphic: graphic, anchor: anchor, captionFrame: captionFrame, source: imageMap, asset: asset, layout: layout };
     },
     flow: function (doc, story, first, tokens) {
         this.valid(doc, "flow document"); this.valid(story, "flow story"); this.valid(first, "first flow frame");
@@ -272,6 +309,71 @@ SHAN.history = {
             previous = parent.index;
         }
     },
+    displayChecks: function (story, images, map, tokens, warnings) {
+        var display = map.history_display, i, j, paragraph, lines, gap, record, parent, points, text, local, before, after, a, b;
+        if (!display) { return; }
+        for (i = 0; i < display.transforms.length; i += 1) {
+            var transform = display.transforms[i];
+            if (transform.kind !== "roster_split") { continue; }
+            this.describe({ image_index: null, source_paragraph: transform.source_paragraph, operation: "validate roster visual lines" });
+            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, transform.source_paragraph), "split roster paragraph");
+            lines = this.field(paragraph, "lines", "split roster paragraph");
+            this.check(lines.length >= transform.insert_lf_offsets_utf16.length + 1, "Roster roles still share a composed line");
+            points = this.field(paragraph, "insertionPoints", "split roster paragraph");
+            var paragraphStart = this.domAt(points, 0, "roster insertion points").index;
+            for (j = 0; j < transform.insert_lf_offsets_utf16.length; j += 1) {
+                var roleStart = paragraphStart + transform.insert_lf_offsets_utf16[j] + j + 1, foundStart = false, k;
+                for (k = 0; k < lines.length; k += 1) {
+                    var rosterLine = this.domAt(lines, k, "roster lines");
+                    var linePoints = this.field(rosterLine, "insertionPoints", "roster line");
+                    if (this.domAt(linePoints, 0, "roster line insertion points").index === roleStart) { foundStart = true; }
+                }
+                this.check(foundStart, "Roster role does not start a composed line");
+            }
+        }
+        for (i = 0; i < display.roster_activity_gaps.length; i += 1) {
+            gap = display.roster_activity_gaps[i];
+            this.describe({ source_paragraph: gap.last_roster, operation: "validate roster/activity style gap" });
+            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, gap.last_roster), "last roster paragraph");
+            var style = this.field(paragraph, "appliedParagraphStyle", "last roster paragraph");
+            this.check(Math.abs(Number(paragraph.spaceAfter) - Number(style.spaceAfter)) < 0.1, "Roster/activity spacing overridden");
+        }
+        for (i = 0; i < images.length; i += 1) {
+            record = this.valid(images[i], "display image record");
+            var layout = this.valid(record.layout, "image display layout");
+            var imageSource = this.valid(record.source, "image source mapping");
+            this.describe({ image_index: i + 1, source_paragraph: layout.source_paragraph, anchor: imageSource.anchor, operation: "validate complete paragraph image block" });
+            var anchor = this.valid(record.anchor, "display image anchor"); parent = this.field(anchor, "parent", "display image anchor");
+            paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, layout.source_paragraph), "image block paragraph");
+            points = this.field(paragraph, "insertionPoints", "image block paragraph");
+            local = parent.index - this.domAt(points, 0, "image block insertion points").index;
+            text = String(this.field(paragraph, "contents", "image block paragraph"));
+            this.check(local >= 0 && text.charAt(local) === "\uFFFC", "Image anchor outside mapped paragraph");
+            before = text.slice(0, local); before = before.slice(before.lastIndexOf("\n") + 1);
+            after = text.slice(local + 1); after = after.split("\n")[0].split("\r")[0];
+            this.check(before === "" && after === "", "Image interrupts a sentence or shares another image line");
+            var yearParagraph = this.paragraph(story, this.indexOf(map.paragraph_order, layout.year_paragraph), "image year paragraph");
+            var yearPoints = this.field(yearParagraph, "insertionPoints", "image year paragraph");
+            this.check(parent.index > this.domAt(yearPoints, 0, "year insertion points").index, "Image precedes its year");
+            var yearIndex = this.indexOf(map.years, layout.year_paragraph);
+            if (yearIndex + 1 < map.years.length) {
+                var nextYear = this.paragraph(story, this.indexOf(map.paragraph_order, map.years[yearIndex + 1]), "next year paragraph");
+                var nextPoints = this.field(nextYear, "insertionPoints", "next year paragraph");
+                this.check(parent.index < this.domAt(nextPoints, 0, "next year insertion points").index, "Image escaped its year");
+            }
+            // Geometry collisions are real defects; desired size/ppi/page count are advisory.
+            var rect = this.valid(record.rect, "display image rectangle"), page = this.field(rect, "parentPage", "display image rectangle");
+            a = this.field(rect, "geometricBounds", "display image rectangle");
+            for (j = 0; j < i; j += 1) {
+                var other = this.valid(images[j].rect, "earlier image rectangle"), otherPage = this.field(other, "parentPage", "earlier image rectangle");
+                b = this.field(other, "geometricBounds", "earlier image rectangle");
+                this.check(page.id !== otherPage.id || Math.min(a[2], b[2]) - Math.max(a[0], b[0]) <= SHAN.utils.pt(0.2) ||
+                    Math.min(a[3], b[3]) - Math.max(a[1], b[1]) <= SHAN.utils.pt(0.2), "Archive image blocks overlap");
+            }
+            var ppi = this.field(record.graphic, "effectivePpi", "display graphic");
+            if (Math.min(Number(ppi[0]), Number(ppi[1])) < tokens.image_policy.minimum_effective_ppi - 1) { warnings.push("WARNING: image " + (i + 1) + " effective ppi below preferred minimum."); }
+        }
+    },
     validate: function (doc, result, source, map, tokens, context) {
         this.valid(doc, "validation document"); this.valid(result, "History result");
         var story = this.valid(result.story, "validation story"), i, j, caption, paragraph, pos, record, samePage, warnings = [];
@@ -280,7 +382,7 @@ SHAN.history = {
             this.describe({ source_paragraph: map.paragraph_order[i], operation: "validate paragraph style" });
             paragraph = this.paragraph(story, i, "style validation paragraph");
             var appliedStyle = this.field(paragraph, "appliedParagraphStyle", "paragraph");
-            this.check(appliedStyle.name === map.paragraphs[map.paragraph_order[i] - 1].style,
+            this.check(appliedStyle.name === this.styleName(map.paragraph_order[i], map, tokens),
                 "Paragraph style mapping changed at source paragraph " + map.paragraph_order[i]);
         }
         this.check(!story.overflows, "Main story overset");
@@ -308,6 +410,7 @@ SHAN.history = {
         this.yearChecks(story, map);
         for (i = 0; i < images.length; i += 1) { this.graphicChecks(images[i], source, map); }
         this.anchorOrderChecks(story, images);
+        this.displayChecks(story, images, map, tokens, warnings);
         // Inspect actual local paragraph graphics, including the first nested group.
         for (i = 0; i < map.paragraph_order.length; i += 1) {
             this.describe({ image_index: null, anchor: null, source_paragraph: map.paragraph_order[i], operation: "validate local paragraph graphics" });
@@ -356,9 +459,10 @@ SHAN.history = {
         var bleeds = ["documentBleedTopOffset", "documentBleedBottomOffset", "documentBleedInsideOrLeftOffset", "documentBleedOutsideOrRightOffset"];
         for (i = 0; i < bleeds.length; i += 1) { this.check(Math.abs(Number(documentPreferences[bleeds[i]]) - SHAN.utils.pt(3)) < 0.1, "Wrong bleed"); }
         // Visual targets are advisory; never fail on an estimated page count.
-        if (pages.length < tokens.advisory_pages[0] || pages.length > tokens.advisory_pages[1]) { warnings.push("页数超出预估范围，需PDF视觉检查；不是内容完整性失败。"); }
+        warnings.push("页数自然续排，无目标页数；图片密度、末页留白及名单间距需PDF视觉验收。");
         return "PASS History data checks; pages=" + pages.length + "; paragraphs=" + map.paragraph_order.length +
             "; entries=21; images=24; captions=5; overset=false; source SHA-256=PASS; paragraph equality=PASS" +
+            "; display transforms reversible=PASS; roster splits=4; paragraph-boundary image blocks=PASS; image overlap=false" +
             "; source already includes approved deletion; import omissions=0; approved moves=1; runtime=InDesign " + app.version +
             "\n" + warnings.join("\n") + "\nPDF视觉验收待用户确认。";
     },
@@ -371,10 +475,16 @@ SHAN.history = {
         this.check(pages.length === 1 && textFrames.length === 0, "Fresh document required");
         this.named(doc, "masterSpreads", "C-HISTORY");
         SHAN.historySource.validateMap(map, source);
+        this.stage("history-create:display-map", { operation: "read reversible display mapping" });
+        var display = SHAN.chapter.parseJSON(SHAN.historySource.read(File(root + "/content/HISTORY_DISPLAY_MAP.json")));
+        SHAN.historySource.validateDisplay(display, source, map);
+        // In-memory adjunct only; HISTORY_IMPORT_MAP.json remains the immutable fact mapping.
+        map.history_display = display;
+        this.check(tokens.image_policy.preferences.length === 24, "Incomplete image size policy");
         var textPreferences = this.field(doc, "textPreferences", "History document"); textPreferences.smartTextReflow = false;
         var first = this.addFrame(doc, page, true, tokens);
         var marker = this.chapterMarker(doc, page, section), text = [], i, j, index;
-        for (i = 0; i < map.paragraph_order.length; i += 1) { text.push(source.paragraphs[map.paragraph_order[i] - 1]); }
+        for (i = 0; i < map.paragraph_order.length; i += 1) { text.push(SHAN.historySource.displayText(source.paragraphs[map.paragraph_order[i] - 1], map.paragraph_order[i], display)); }
         first.contents = text.join("\r") + "\r";
         var story = this.field(first, "parentStory", "first body frame"); story.label = "SHAN_HISTORY:main";
         var paragraphs = this.field(story, "paragraphs", "initial History story");
@@ -382,7 +492,7 @@ SHAN.history = {
         this.stage("history-create:styles", { operation: "apply paragraph style mappings", frame_label: "SHAN_HISTORY:body" });
         for (i = 0; i < map.paragraph_order.length; i += 1) {
             this.describe({ source_paragraph: map.paragraph_order[i] });
-            var style = this.named(doc, "paragraphStyles", map.paragraphs[map.paragraph_order[i] - 1].style);
+            var style = this.named(doc, "paragraphStyles", this.styleName(map.paragraph_order[i], map, tokens));
             var styledParagraph = this.paragraph(story, i, "style mapping paragraph");
             this.check(typeof styledParagraph.applyParagraphStyle === "function", "missing source paragraph.applyParagraphStyle");
             styledParagraph.applyParagraphStyle(style, true);
@@ -395,11 +505,11 @@ SHAN.history = {
             index = this.indexOf(map.paragraph_order, map.images[i].source_paragraph);
             this.check(index >= 0, "source paragraph missing from import order");
             paragraph = this.paragraph(story, index, "current image paragraph"); caption = i === 0 ? source.textboxes[0].text : null;
-            images[i] = this.image(doc, page, audit.assets[i], File(root + "/" + audit.assets[i].file), paragraph, map.images[i], caption, tokens);
+            images[i] = this.image(doc, page, audit.assets[i], File(root + "/" + audit.assets[i].file), paragraph, map.images[i], caption, tokens, display.image_layouts[i]);
             // Retrieve again after mutation: the old paragraph/insertion point specifier may have expired.
             this.describe({ operation: "resolve paragraph after anchoring" });
             var currentParagraph = this.paragraph(story, index, "image paragraph after anchoring");
-            this.insertion(currentParagraph, map.images[i].anchor);
+            this.insertion(currentParagraph, map.images[i].anchor, display.image_layouts[i]);
         }
         this.stage("history-flow", { operation: "thread History body frames", frame_label: "SHAN_HISTORY:body" });
         var frames = this.flow(doc, story, first, tokens);

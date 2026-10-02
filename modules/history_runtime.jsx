@@ -119,7 +119,10 @@ SHAN.historyRuntime = {
                     sourceIndex = map.paragraph_order[i]; anchors = 0; paragraph = this.at(paragraphs, i);
                     for (j = 0; map.images && j < map.images.length; j += 1) { if (map.images[j].source_paragraph === sourceIndex) { anchors += 1; } }
                     try {
-                        if (!paragraph || SHAN.historySource.paragraphText(paragraph.contents, anchors) !== source.paragraphs[sourceIndex - 1]) {
+                        var displayed = paragraph ? SHAN.historySource.paragraphText(paragraph.contents, anchors) : null;
+                        var restored = displayed;
+                        if (paragraph && map.history_display) { restored = SHAN.historySource.restoreDisplayText(displayed, sourceIndex, map.history_display); }
+                        if (!paragraph || restored !== source.paragraphs[sourceIndex - 1]) {
                             data.historyTextEquality = "FAIL"; data.errors.push("Text mismatch at source paragraph " + sourceIndex);
                         }
                     } catch (textError) {

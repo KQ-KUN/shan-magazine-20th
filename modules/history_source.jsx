@@ -236,6 +236,71 @@ SHAN.historySource = {
             this.require(map.captions[i].source_paragraph === captionPs[i] && map.captions[i].image_indices.join(",") === captionImages[i], "Caption relationship mismatch");
         }
     },
+    displayTransform: function (display, sourceParagraph) {
+        var i;
+        if (!display) { return null; }
+        for (i = 0; i < display.transforms.length; i += 1) {
+            if (display.transforms[i].source_paragraph === sourceParagraph) { return display.transforms[i]; }
+        }
+        return null;
+    },
+    displayText: function (text, sourceParagraph, display) {
+        var transform = this.displayTransform(display, sourceParagraph), i, offsets;
+        if (!transform) { return text; }
+        offsets = transform.insert_lf_offsets_utf16;
+        for (i = offsets.length - 1; i >= 0; i -= 1) {
+            this.require(offsets[i] >= 0 && offsets[i] <= text.length && Math.floor(offsets[i]) === offsets[i], "Illegal display break offset");
+            text = text.slice(0, offsets[i]) + "\n" + text.slice(offsets[i]);
+        }
+        return text;
+    },
+    restoreDisplayText: function (text, sourceParagraph, display) {
+        var transform = this.displayTransform(display, sourceParagraph), i, offset;
+        if (!transform) { return text; }
+        // Remove ONLY recorded generated LFs at their exact UTF-16 positions.
+        // Other LFs, spaces, source controls and all punctuation remain comparable.
+        for (i = transform.insert_lf_offsets_utf16.length - 1; i >= 0; i -= 1) {
+            offset = transform.insert_lf_offsets_utf16[i] + i;
+            this.require(text.charAt(offset) === "\n", "Missing/moved display break at source paragraph " + sourceParagraph);
+            text = text.slice(0, offset) + text.slice(offset + 1);
+        }
+        return text;
+    },
+    validateDisplay: function (display, source, map) {
+        this.require(display && display.schema_version === 2 && display.source_sha256 === this.lockedHash, "Wrong History display map identity");
+        var i, j, p, previous, transform, layout, counts = {}, seen = {};
+        for (i = 0; i < display.transforms.length; i += 1) {
+            transform = display.transforms[i]; p = transform.source_paragraph;
+            this.require(p >= 1 && p <= 216 && !seen[p], "Duplicate/invalid display paragraph"); seen[p] = true; previous = -1;
+            this.require(transform.kind === "roster_split" || transform.kind === "media_block", "Unsupported display transform");
+            for (j = 0; j < transform.insert_lf_offsets_utf16.length; j += 1) {
+                this.require(transform.insert_lf_offsets_utf16[j] > previous, "Unordered display offsets"); previous = transform.insert_lf_offsets_utf16[j];
+            }
+            this.require(this.restoreDisplayText(this.displayText(source.paragraphs[p - 1], p, display), p, display) === source.paragraphs[p - 1], "Display transform is not reversible");
+        }
+        for (i = 0; i < display.roster_paragraphs.length; i += 1) {
+            p = display.roster_paragraphs[i];
+            this.require(p >= 1 && p <= 216 && source.paragraphs[p - 1].indexOf("：") >= 0, "Invalid roster paragraph");
+        }
+        for (i = 0; i < display.roster_activity_gaps.length; i += 1) {
+            var gap = display.roster_activity_gaps[i];
+            this.require(gap.activity_paragraph > gap.last_roster, "Invalid roster/activity gap");
+            for (j = 0; j < gap.empty_paragraphs.length; j += 1) {
+                this.require(source.paragraphs[gap.empty_paragraphs[j] - 1] === "", "Roster gap would hide source text");
+            }
+        }
+        this.require(display.image_layouts.length === 24, "Incomplete image display mapping");
+        for (i = 0; i < display.image_layouts.length; i += 1) {
+            layout = display.image_layouts[i]; p = map.images[i].source_paragraph;
+            this.require(layout.image_index === i + 1 && layout.source_paragraph === p, "Image display changed source mapping");
+            previous = 0;
+            for (j = 0; j < map.years.length; j += 1) { if (map.years[j] <= p) { previous = map.years[j]; } }
+            this.require(layout.year_paragraph === previous, "Image display changed year ownership");
+            counts[p] = counts[p] || 0;
+            this.require(layout.display_line === (p === 6 ? 1 : counts[p]), "Unordered image display line"); counts[p] += 1;
+            this.require(p === 6 || source.paragraphs[p - 1] === "", "Media block would interrupt source text");
+        }
+    },
     /* Only generated anchor markers and ONE terminal paragraph delimiter.
        No trim, dash conversion, whitespace collapse, NFC, or control cleanup. */
     paragraphText: function (contents, expectedAnchors) {
@@ -258,7 +323,8 @@ SHAN.historySource = {
             var paragraph = this.at(paragraphs, i);
             this.require(paragraph && paragraph.isValid !== false && paragraph.contents !== undefined,
                 "Missing/invalid paragraph for source paragraph " + p);
-            this.require(this.paragraphText(paragraph.contents, anchorCount) === source.paragraphs[p - 1], "Text/order changed at source paragraph " + p);
+            var displayed = this.paragraphText(paragraph.contents, anchorCount);
+            this.require(this.restoreDisplayText(displayed, p, map.history_display) === source.paragraphs[p - 1], "Text/order changed at source paragraph " + p);
         }
     }
 };
