@@ -309,7 +309,7 @@ assert.equal(tokens.paragraph_styles.P_History_Empty_Roster_Gap.leading_pt,0.1);
 assert.equal(tokens.paragraph_styles.P_History_Media_Wide.keep_with_next,0);
 assert.equal(tokens.paragraph_styles.P_History_Media_Wide_Caption.keep_with_next,1);
 assert.ok(tokens.image_policy.preferences.every(p=>p.span_columns===1));
-assert.deepEqual(tokens.advisory_pages,[7,9],'page count stays advisory');
+assert.deepEqual(tokens.advisory_pages,[6,7],'page count stays advisory');
 assert.equal(tokens.image_policy.double_column_max_mm,undefined);
 for (const [i,pref] of tokens.image_policy.preferences.entries()) {
     assert.equal(pref.image_index,i+1);assert.ok(pref.width_mm<=70);
@@ -414,6 +414,126 @@ assert.equal(history.compactImages({recompose(){}},pairStory,pairRecords,{paragr
 assert.ok(Math.abs(pairRecords[0].rect.geometricBounds[3]/pt(1)-41)<0.001);
 assert.ok(Math.abs(pairRecords[1].rect.geometricBounds[3]/pt(1)-51)<0.001);
 assert.equal(pairStory.contents,pairBefore);
+// Actual ending code, with recomposition models: these are not host/visual acceptance.
+ctx.StartParagraph={NEXT_COLUMN:77,NEXT_PAGE:78};
+assert.deepEqual(tokens.advisory_pages,[6,7]);
+assert.deepEqual(tokens.ending_layout.shrink_factors,[0.9,0.8]);
+function endingModel(threshold=0.91) {
+    const pages=Array.from({length:7},(_,i)=>({id:i+1,name:String(i+1)}));
+    const frames=pages.map((page,i)=>({id:200+i,label:'SHAN_HISTORY:body',parentPage:page,
+        contents:i===6?'尾部文字\ufffc':'页面'+i,allGraphics:[],geometricBounds:[0,0,pt(200),pt(152)]}));
+    const images=Array.from({length:24},(_,i)=>{
+        const asset=audit.assets[i],w=tokens.image_policy.preferences[i].width_mm;
+        const rect={parentPage:pages[i<15?0:i===15?4:5],label:'SHAN_HISTORY:image:'+(i+1),
+            geometricBounds:[0,0,pt(w*asset.pixel_height/asset.pixel_width),pt(w)]};
+        return {source:map.images[i],asset,rect,graphic:{geometricBounds:rect.geometricBounds.slice()},anchor:{}};
+    });
+    images[23].rect.parentPage=pages[6];
+    const before='不变的全部正文\r\ufffc\r',story={contents:before,overflows:false};
+    let recomposes=0;
+    const doc={pages,recompose(){
+        recomposes++;
+        if(images[23].rect.geometricBounds[3]/pt(1)<=44*threshold+0.001)frames[6].contents='\r';
+    }};
+    return {doc,story,frames,images,before,get recomposes(){return recomposes;}};
+}
+let ending=endingModel();const earlyBounds=ending.images.slice(0,16).map(r=>r.rect.geometricBounds.slice());
+let endingLog=history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens);
+assert.ok(endingLog.some(s=>s.includes('shrink_factor=0.9')));
+assert.ok(!endingLog.some(s=>s.includes('shrink_factor=0.8')),'stop after sufficient 10 percent shrink');
+assert.ok(Math.abs(ending.images[23].rect.geometricBounds[3]/pt(1)-39.6)<0.001);
+assert.deepEqual(ending.images.slice(0,16).map(r=>r.rect.geometricBounds),earlyBounds,'actual pages 1-5 images untouched, including requested image 16 if it landed there');
+assert.equal(ending.story.contents,ending.before);
+ending=endingModel(0.81);history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens);
+assert.ok(Math.abs(ending.images[23].rect.geometricBounds[3]/pt(1)-35.2)<0.001,'20 percent is relative to original, not cumulative 28 percent');
+assert.equal(ending.recomposes,2);
+ending=endingModel();ending.frames[6].contents='\r';
+assert.match(history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens)[0],/already fits/);
+assert.equal(ending.recomposes,0,'already six pages remains unchanged');
+ending=endingModel();const normalCompose=ending.doc.recompose;
+ending.doc.recompose=()=>{normalCompose();ending.frames[0].contents='changed';};
+assert.throws(()=>history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens),/earlier protected page/);
+ending=endingModel();ending.doc.recompose=()=>{ending.images[0].rect.geometricBounds[0]+=pt(1);};
+assert.throws(()=>history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens),/earlier protected image/);
+ending=endingModel();ending.doc.recompose=()=>{ending.story.contents='changed source';ending.frames[6].contents='\r';};
+assert.throws(()=>history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens),/changed source story/);
+ending=endingModel(0.72);
+endingLog=history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens);
+assert.ok(endingLog.some(s=>s.includes('remaining_tail_fit_pass=')),'few remaining archives get smaller bounded sizes before fallback');
+assert.equal(history.lastContentPage(ending.doc,ending.frames),6);
+assert.ok(ending.images[23].rect.geometricBounds[3]/pt(1)>=30-0.001);
+// Preserve earlier frames when arranging B; event local overrides change no characters.
+function closingModel({overflowUntil=0.65,emptyRight=false,noBoundary=false,marchOnPrevious=false,marchAlreadyRight=false,eventsOnPrevious=false,depthMM=112,gapOverset=false}={}) {
+    const page6={id:6},page7={id:7};
+    const body={id:77,label:'SHAN_HISTORY:body',parentPage:page7,contents:'迎新\ufffc2026年3月\ufffc2026年4月\ufffc',allGraphics:[],
+        geometricBounds:[0,0,pt(200),pt(152)],textFramePreferences:{textColumnGutter:pt(6)}};
+    const previous={id:76,parentPage:page6,contents:'第6页原样',geometricBounds:[0,0,pt(200),pt(152)],textFramePreferences:{textColumnGutter:pt(6)}};
+    const mkLine=(column,baseline,contents='正文')=>({baseline:pt(baseline),descent:0,contents,horizontalOffset:pt(column?79:0),parentTextFrames:[body]});
+    body.lines=[mkLine(0,50),mkLine(1,112,emptyRight?'\r':'\ufffc')];
+    const story={contents:'原稿与所有控制字符完全一致',overflows:false,paragraphs:[],characters:[]};
+    const p212={contents:'2026年3月份…\r',lines:[mkLine(0,60)],insertionPoints:[{index:1}],startParagraph:0,keepWithNext:0};
+    const p215={contents:'2026年4月…\r',lines:[mkLine(1,90)],insertionPoints:[{index:2}],startParagraph:0,keepWithNext:0};
+    const poster={contents:'\ufffc\r',spaceBefore:0,lines:[mkLine(1,112,'\ufffc')]};
+    if(marchAlreadyRight)p212.lines=[mkLine(1,60)];
+    if(noBoundary)p212.lines=p215.lines=[];
+    if(marchOnPrevious)p212.lines=[{...mkLine(0,160),parentTextFrames:[previous]}];
+    if(eventsOnPrevious){p212.lines=[{...mkLine(0,170),parentTextFrames:[previous]}];p215.lines=[{...mkLine(1,185),parentTextFrames:[previous]}];}
+    story.paragraphs=[p212,p215,poster];story.characters=[{lines:[mkLine(0,50)]},{lines:[mkLine(1,80)]}];
+    const records=[21,22,23,24].map(index=>{
+        const asset=audit.assets[index-1],width=44;
+        const rect={parentPage:index===21?page6:page7,label:'SHAN_HISTORY:image:'+index,geometricBounds:[0,0,pt(35),pt(width)]};
+        return {source:map.images[index-1],asset,rect,graphic:{},anchor:{}};
+    });
+    let recomposes=0;
+    const doc={pages:Array.from({length:5},(_,i)=>({id:i+1})).concat(page6,page7),recompose(){
+        recomposes++;
+        body.lines[1].baseline=pt(depthMM+Math.max(0,poster.spaceBefore/pt(1)-12));
+        story.overflows=(body.geometricBounds[2]/pt(1)/200)<overflowUntil-0.001 || (gapOverset&&poster.spaceBefore>pt(12)+0.01);
+    }};
+    return {doc,story,frames:[previous,body],images:records,body,poster,p212,p215,map:{paragraph_order:[212,215,216]},get recomposes(){return recomposes;}};
+}
+let closing=closingModel();const closingCopy=closing.story.contents;
+const protectedPhoto=closing.images[0].rect.geometricBounds.slice();
+const closingLog=history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens);
+assert.ok(closingLog[0].includes('ending_plan=B')&&closingLog[0].includes('column_start_source=212'));
+assert.equal(closing.p212.startParagraph,77);assert.equal(closing.p212.keepWithNext,1);
+assert.deepEqual(closing.images[0].rect.geometricBounds,protectedPhoto,'never resize page6 image in fallback');
+assert.ok(Math.abs(closing.images[1].rect.geometricBounds[3]/pt(1)-54)<0.001);
+assert.ok(Math.abs(closing.images[3].rect.geometricBounds[3]/pt(1)-40)<0.001);
+assert.equal(closing.body.geometricBounds[2],pt(130));assert.equal(closing.story.contents,closingCopy);
+assert.equal(closing.story.overflows,false);assert.equal(closing.poster.spaceBefore,pt(12));
+closing=closingModel({marchOnPrevious:true});
+assert.ok(history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens)[0].includes('column_start_source=215'));
+assert.equal(closing.p212.startParagraph,0,'March text already on page6 stays there');
+closing=closingModel({marchAlreadyRight:true});
+history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens);
+assert.equal(closing.p212.startParagraph,0,'do not push an already-right-column event into an eighth page');
+closing=closingModel({overflowUntil:0.8});
+assert.ok(history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens).some(s=>s.includes('WARNING:')));
+assert.equal(closing.story.overflows,false);assert.ok(closing.recomposes<=8,'bounded tail height retries');
+closing=closingModel({depthMM:100});
+history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens);
+assert.ok(Math.abs(closing.poster.spaceBefore/pt(1)-22)<0.001,'poster shifts down within the bounded closing gap to reach 55 percent depth');
+assert.equal(closing.story.overflows,false);
+closing=closingModel({depthMM:100,gapOverset:true});
+assert.ok(history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens).some(s=>s.includes('WARNING:')));
+assert.ok(Math.abs(closing.poster.spaceBefore/pt(1)-12)<0.001,'failed density adjustment restores the safe gap');
+assert.equal(closing.story.overflows,false);
+closing=closingModel({emptyRight:true});
+assert.throws(()=>history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens),/empty column/);
+closing=closingModel({eventsOnPrevious:true});
+history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens);
+assert.equal(closing.p212.startParagraph,78,'poster-only fallback moves the original complete 2026 closing block at its boundary');
+assert.equal(closing.p215.startParagraph,77);assert.equal(closing.story.contents,closingCopy);
+closing=closingModel({noBoundary:true});
+assert.throws(()=>history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens),/event boundary/);
+closing=closingModel({overflowUntil:1.1});
+assert.throws(()=>history.designEndingTail(closing.doc,closing.story,closing.frames,closing.images,closing.map,tokens),/without overset/);
+const savedTail=history.designEndingTail;
+ending=endingModel(0.6);let fallbackCalls=0;
+history.designEndingTail=()=>{fallbackCalls++;return ['ending_plan=B'];};
+try { assert.ok(history.refineEnding(ending.doc,ending.story,ending.frames,ending.images,map,tokens).includes('ending_plan=B'));assert.equal(fallbackCalls,1); }
+finally { history.designEndingTail=savedTail;history.runtime=null; }
 function tailModel({text='',graphics=[],extraItem=false,unthreaded=false,overflow=false,loseText=false}={}) {
     const before='完整首段\r\ufffc完整末段\r';let shrinkCount=0;
     const story={contents:before,overflows:false};
@@ -550,7 +670,7 @@ history.runtime = null;
 
 // Execute the real create loop with specifiers that expire on EACH insertion.
 // The image double simulates mutation; this does not certify native anchoring.
-const savedMethods = Object.fromEntries(['addFrame', 'chapterMarker', 'image', 'flow', 'compactImages', 'trimEmptyTail', 'columnDiagnostics', 'validate'].map(key => [key, history[key]]));
+const savedMethods = Object.fromEntries(['addFrame', 'chapterMarker', 'image', 'flow', 'compactImages', 'refineEnding', 'trimEmptyTail', 'columnDiagnostics', 'validate'].map(key => [key, history[key]]));
 const currentStory = { id: 999, paragraphs: [] };
 function liveParagraph(contents) {
     return { isValid: true, contents, applyParagraphStyle() {},
@@ -575,7 +695,7 @@ history.image = (doc, page, asset, file, paragraph, imageMap, caption, tokens, l
     return { source: imageMap };
 };
 history.flow = () => [bodyFrame]; history.validate = () => 'mock validation';
-history.compactImages = () => ['mock compact'];history.trimEmptyTail = () => 0;
+history.compactImages = () => ['mock compact']; history.refineEnding = () => ['mock ending'];history.trimEmptyTail = () => 0;
 history.columnDiagnostics=()=>['mock column diagnostics'];
 const createDoc = { pages: [{ textFrames: [] }], textPreferences: {},
     masterSpreads: { itemByName: () => ({ isValid: true }) }, paragraphStyles: { itemByName: () => ({ isValid: true }) }, insertLabel() {} };
@@ -585,7 +705,7 @@ try {
     assert.equal(result.images.length, 24);
     assert.equal(stages[0], 'history-create:text'); assert.equal(stages[1], 'history-create:display-map'); assert.equal(stages[2], 'history-create:styles');
     assert.ok(stages.includes('history-create:image-24') && stages.includes('history-create:image-1'));
-    assert.deepEqual(stages.slice(-5), ['history-flow', 'history-compact-images', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate']);
+    assert.deepEqual(stages.slice(-7), ['history-flow', 'history-compact-images', 'history-trim-empty-tail', 'history-ending-compact', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate']);
     sourceModule.assertParagraphs(currentStory, source, map);
 } finally { Object.assign(history, savedMethods); history.runtime = null; }
 
@@ -651,7 +771,7 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
 }
 for (const stage of ['read-json', 'verify-source', 'create-document', 'create-foundation-styles', 'create-parents',
     'apply-typography', 'apply-running-system', 'apply-history-skin', 'history-create:text', 'history-create:styles',
-    'history-create:image-7', 'history-flow', 'history-compact-images', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate', 'write-report']) diagnosticRun(stage);
+    'history-create:image-7', 'history-flow', 'history-compact-images', 'history-ending-compact', 'history-ending-tail', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate', 'write-report']) diagnosticRun(stage);
 for (const options of [{}, { failCleanup: true }, { failLog: true, failCleanup: true }, { withoutSource: true }]) {
     const { diagnostic } = diagnosticRun('history-create:image-7', options);
     for (const field of ['image_index=7', 'source_paragraph=90', 'anchor=paragraph_start',
@@ -766,4 +886,4 @@ assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History v3: all 216 source paragraphs reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years, 24 original images, 5 captions; source SHA/BOM/ES3 reserved-word/parser/DOM/diagnostic/focus regressions; roster splits and 5mm gaps unchanged; all History media/caption styles single-column with no Wide mapping; max70mm + column geometry tolerance; no stretching/new crop; bounded previous-column fit, failed-fit restore, shared-caption unit; empty-tail deletion, control-only overset shrink, no deletion of content/images/unrelated items, no-progress/text-loss failures; density WARNING vs natural EOF; 7–9 pages advisory; frozen scope PASS. InDesign/PDF v3 acceptance pending; host not launched.');
+console.log('PASS History v3: all 216 source paragraphs reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years, 24 original images, 5 captions; source SHA/BOM/ES3 reserved-word/parser/DOM/diagnostic/focus regressions; roster splits and 5mm gaps unchanged; all History media/caption styles single-column with no Wide mapping; max70mm + column geometry tolerance; no stretching/new crop; bounded previous-column fit, failed-fit restore, shared-caption unit; empty-tail deletion, control-only overset shrink, no deletion of content/images/unrelated items, no-progress/text-loss failures; density WARNING vs natural EOF; 6–7 pages advisory; ending-only 10/20-percent passes + source/prefix guard + two-column fallback regressions; frozen scope PASS. InDesign/PDF v3 acceptance pending; host not launched.');
