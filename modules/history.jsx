@@ -83,26 +83,16 @@ SHAN.history = {
         var i; for (i = 0; i < items.length; i += 1) { if (items[i] === value) { return i; } } return -1;
     },
     styleName: function (sourceParagraph, map, tokens) {
-        var display = map.history_display, i, j, gap, name = map.paragraphs[sourceParagraph - 1].style;
+        var display = map.history_display, i, gap, name = map.paragraphs[sourceParagraph - 1].style;
+        // Original import-map names stay immutable; Wide is a disabled legacy alias.
+        if (name === "P_History_Media_Wide" || name === "P_History_Media_Wide_Caption") { name = "P_History_Media_Caption"; }
+        if (name === "P_History_Caption_Wide") { name = "P_History_Caption"; }
         if (!display) { return name; }
         if (this.indexOf(display.roster_paragraphs, sourceParagraph) >= 0 || this.indexOf(display.roster_tail_paragraphs, sourceParagraph) >= 0) { name = "P_History_Roster"; }
         for (i = 0; i < display.roster_activity_gaps.length; i += 1) {
             gap = display.roster_activity_gaps[i];
             if (gap.last_roster === sourceParagraph) { name = "P_History_Roster_Last"; }
             if (this.indexOf(gap.empty_paragraphs, sourceParagraph) >= 0) { name = "P_History_Empty_Roster_Gap"; }
-        }
-        for (i = 0; i < display.image_layouts.length; i += 1) {
-            if (display.image_layouts[i].source_paragraph === sourceParagraph && tokens.image_policy.preferences[i].span_columns === 2) { name = "P_History_Media_Wide"; }
-        }
-        // Existing caption blocks retain their source text and span with their image.
-        for (i = 0; i < map.captions.length; i += 1) {
-            if (map.captions[i].source_paragraph === 6) { continue; }
-            for (j = 0; j < map.captions[i].image_indices.length; j += 1) {
-                var imageIndex = map.captions[i].image_indices[j] - 1;
-                if (tokens.image_policy.preferences[imageIndex].span_columns !== 2) { continue; }
-                if (map.captions[i].source_paragraph === sourceParagraph) { name = "P_History_Caption_Wide"; }
-                if (map.images[imageIndex].source_paragraph === sourceParagraph) { name = "P_History_Media_Wide_Caption"; }
-            }
         }
         return name;
     },
@@ -148,7 +138,7 @@ SHAN.history = {
     },
     imageSize: function (asset, preference, policy) {
         // Publication display dimensions, independent of Word physical dimensions.
-        var available = preference.span_columns === 2 ? policy.double_column_max_mm : policy.single_column_max_mm;
+        var available = policy.single_column_max_mm;
         var viewportWidth = Math.min(preference.width_mm, available,
             asset.pixel_width * (1 - asset.crop.l - asset.crop.r) * 25.4 / policy.minimum_effective_ppi);
         var contentWidth = viewportWidth / (1 - asset.crop.l - asset.crop.r);
@@ -245,6 +235,175 @@ SHAN.history = {
             last.nextTextFrame = next; frames.push(next); last = next; doc.recompose();
         }
         return frames;
+    },
+    resizeImage: function (record, widthMM, tokens) {
+        record = this.valid(record, "compact image record");
+        var source = this.field(record, "source", "compact image record"), rect = this.field(record, "rect", "compact image record");
+        this.describe({ image_index: source.image_index, source_paragraph: source.source_paragraph, anchor: source.anchor,
+            operation: "resize proportional single-column image", frame_label: rect.label });
+        var asset = this.field(record, "asset", "compact image record"), graphic = this.field(record, "graphic", "compact image record");
+        var size = this.imageSize(asset, { width_mm: widthMM }, tokens.image_policy), b = this.field(rect, "geometricBounds", "compact image rectangle"), pt = SHAN.utils.pt;
+        var top = Number(b[0]), left = Number(b[1]);
+        rect.geometricBounds = [top,left,top + pt(size.height),left + pt(size.width)];
+        graphic.geometricBounds = [top - pt(size.fullHeight * asset.crop.t),left - pt(size.contentWidth * asset.crop.l),
+            top + pt(size.fullHeight * (1 - asset.crop.t)),left + pt(size.contentWidth * (1 - asset.crop.l))];
+        if (record.captionFrame) {
+            var caption = this.valid(record.captionFrame, "compact floating caption");
+            caption.geometricBounds = [top + pt(size.height + tokens.caption_gap_mm),left,
+                top + pt(size.height + tokens.caption_gap_mm + tokens.floating_caption_height_mm),left + pt(size.width)];
+        }
+    },
+    characterLine: function (story, index, last) {
+        var characters = this.field(story, "characters", "compact History story");
+        if (index < 0 || index >= characters.length) { return null; }
+        var character = this.domAt(characters, index, "compact story character");
+        var lines = this.field(character, "lines", "compact story character");
+        return lines.length ? this.domAt(lines, last ? -1 : 0, "compact character lines") : null;
+    },
+    sameColumn: function (a, b) {
+        if (!a || !b) { return false; }
+        var first = this.linePosition(a), second = this.linePosition(b);
+        return first.page === second.page && first.frame === second.frame && first.column === second.column;
+    },
+    unitFitsPreviousColumn: function (story, unit, captionParagraph) {
+        var firstParent = this.field(unit[0].anchor, "parent", "compact first image anchor");
+        var previous = this.characterLine(story, firstParent.index - 1, true), i, parent, line;
+        if (!previous) { return true; }
+        for (i = 0; i < unit.length; i += 1) {
+            parent = this.field(unit[i].anchor, "parent", "compact image anchor");
+            line = this.characterLine(story, parent.index, false);
+            if (!this.sameColumn(previous, line)) { return false; }
+        }
+        if (captionParagraph) {
+            var lines = this.field(captionParagraph, "lines", "compact source caption");
+            if (!lines.length || !this.sameColumn(previous, this.domAt(lines, -1, "compact caption lines"))) { return false; }
+        }
+        return true;
+    },
+    compactImages: function (doc, story, images, map, tokens) {
+        var log = [], pass, i, j, unit, captionParagraph, caption, parent, previous, frame, bounds, budget, minimumHeight, original, candidate, changed, fits;
+        var policy = tokens.image_policy, pt = SHAN.utils.pt;
+        this.check(policy.fit_step_mm > 0 && policy.fit_passes > 0, "Invalid bounded compact-fit policy");
+        // A bounded second composition pass tries smaller permitted sizes against the
+        // actual preceding column. It never inserts breaks, relocates anchors or grows images.
+        for (pass = 0; pass < policy.fit_passes; pass += 1) {
+            changed = false;
+            for (i = 0; i < images.length; i += 1) {
+                unit = [this.valid(images[i], "compact image")]; captionParagraph = null;
+                for (j = 1; j < map.captions.length; j += 1) {
+                    caption = map.captions[j];
+                    if (caption.image_indices[0] !== i + 1) { continue; }
+                    unit = [];
+                    var k;
+                    for (k = 0; k < caption.image_indices.length; k += 1) { unit.push(this.valid(images[caption.image_indices[k] - 1], "compact caption image")); }
+                    captionParagraph = this.paragraph(story, this.indexOf(map.paragraph_order, caption.source_paragraph), "compact source caption");
+                }
+                this.describe({ image_index: i + 1, source_paragraph: unit[0].source.source_paragraph,
+                    anchor: unit[0].source.anchor, operation: "try compact block in preceding column" });
+                if (this.unitFitsPreviousColumn(story, unit, captionParagraph)) { i += unit.length - 1; continue; }
+                parent = this.field(unit[0].anchor, "parent", "compact first image anchor");
+                previous = this.characterLine(story, parent.index - 1, true);
+                frame = this.domAt(this.field(previous, "parentTextFrames", "preceding image line"), 0, "preceding image frame");
+                bounds = this.field(frame, "geometricBounds", "preceding image frame");
+                budget = Number(bounds[2]) - Number(previous.baseline) - pt(policy.fit_clearance_mm);
+                minimumHeight = 0; original = []; candidate = [];
+                for (j = 0; j < unit.length; j += 1) {
+                    var preference = policy.preferences[unit[j].source.image_index - 1];
+                    var rectBounds = this.field(unit[j].rect, "geometricBounds", "compact image rectangle");
+                    original[j] = (Number(rectBounds[3]) - Number(rectBounds[1])) / pt(1); candidate[j] = original[j];
+                    minimumHeight += pt(this.imageSize(unit[j].asset, { width_mm: preference.min_width_mm }, policy).height);
+                    if (unit[j].captionFrame) { minimumHeight += pt(tokens.caption_gap_mm + tokens.floating_caption_height_mm); }
+                }
+                if (captionParagraph) {
+                    var captionLines = this.field(captionParagraph, "lines", "compact source caption");
+                    minimumHeight += captionLines.length * tokens.paragraph_styles.P_History_Caption.leading_pt;
+                }
+                if (minimumHeight > budget + pt(0.2)) { i += unit.length - 1; continue; }
+                fits = false;
+                while (!fits) {
+                    var smaller = false;
+                    for (j = 0; j < unit.length; j += 1) {
+                        var floor = Math.min(original[j], policy.preferences[unit[j].source.image_index - 1].min_width_mm);
+                        var nextWidth = Math.max(floor, candidate[j] - policy.fit_step_mm);
+                        if (candidate[j] - nextWidth > 0.01) { smaller = true; candidate[j] = nextWidth; this.resizeImage(unit[j], nextWidth, tokens); }
+                    }
+                    if (!smaller) { break; }
+                    doc.recompose(); fits = this.unitFitsPreviousColumn(story, unit, captionParagraph);
+                }
+                if (!fits) {
+                    for (j = 0; j < unit.length; j += 1) { this.resizeImage(unit[j], original[j], tokens); }
+                    doc.recompose();
+                } else {
+                    changed = true; log.push("compact image " + (i + 1) + ": width_mm=" + candidate.join(",") + "; preceding_column_fit=true");
+                }
+                i += unit.length - 1;
+            }
+            if (!changed) { break; }
+        }
+        return log;
+    },
+    hasVisibleContent: function (frame) {
+        var contents = String(this.field(frame, "contents", "History body frame"));
+        // Visibility predicate only: NEVER normalize or write this back to the story.
+        return /[^\r\n\t \f]/.test(contents) || this.graphicsOf(frame, "History body frame").length > 0;
+    },
+    trimEmptyTail: function (doc, story, frames, images, tokens) {
+        var removed = 0, pt = SHAN.utils.pt;
+        doc.recompose();
+        while (this.field(doc, "pages", "tail cleanup document").length > 1) {
+            var page = this.domAt(doc.pages, -1, "tail document pages"), frame = this.domAt(frames, -1, "tail body frames");
+            var framePage = this.field(frame, "parentPage", "tail body frame"), attached = framePage.id === page.id;
+            if (attached && this.hasVisibleContent(frame)) { break; }
+            var items = this.field(page, "pageItems", "tail document page"), i, item, removable = true;
+            for (i = 0; i < items.length; i += 1) {
+                item = this.domAt(items, i, "tail page items");
+                if (!attached || item.id !== frame.id) { removable = false; }
+            }
+            if (!removable) { break; }
+            this.describe({ image_index: null, source_paragraph: null, frame_label: attached ? frame.label : null, operation: "remove empty generated tail page" });
+            var before = String(this.field(story, "contents", "tail cleanup story")), pageCount = doc.pages.length;
+            this.check(typeof page.remove === "function", "missing Page.remove for empty tail");
+            page.remove(); if (attached) { frames.pop(); } doc.recompose();
+            this.check(doc.pages.length === pageCount - 1, "Empty-tail page removal made no progress");
+            this.check(String(story.contents) === before, "Empty-tail cleanup changed source story contents");
+            // A terminal control may have required the empty frame. Fit the last
+            // archive smaller without deleting that control or any source paragraph.
+            if (story.overflows) {
+                var lastImage = this.domAt(images, -1, "last archive image"), preference = tokens.image_policy.preferences[images.length - 1];
+                var b = this.field(lastImage.rect, "geometricBounds", "last archive rectangle");
+                var width = (Number(b[3]) - Number(b[1])) / pt(1);
+                while (story.overflows && width > preference.min_width_mm + 0.01) {
+                    width = Math.max(preference.min_width_mm, width - tokens.image_policy.fit_step_mm);
+                    this.resizeImage(lastImage, width, tokens); doc.recompose();
+                }
+                this.check(!story.overflows, "Empty tail remains required by overset controls at minimum image size");
+            }
+            removed += 1;
+        }
+        return removed;
+    },
+    columnDiagnostics: function (frames) {
+        var log = [], i, j, frame, bounds, lines, line, position, bottom, ends, final;
+        for (i = 0; i < frames.length; i += 1) {
+            frame = this.domAt(frames, i, "density body frames");
+            this.describe({ frame_label: frame.label || "SHAN_HISTORY:body", operation: "measure composed body-column tails" });
+            bounds = this.field(frame, "geometricBounds", "density body frame");
+            lines = this.field(frame, "lines", "density body frame"); ends = [Number(bounds[0]),Number(bounds[0])];
+            for (j = 0; j < lines.length; j += 1) {
+                line = this.domAt(lines, j, "density body lines"); position = this.linePosition(line);
+                bottom = Number(this.field(line, "baseline", "density body line")) + Number(this.field(line, "descent", "density body line"));
+                ends[position.column] = Math.max(ends[position.column], bottom);
+            }
+            for (j = 0; j < 2; j += 1) {
+                final = i === frames.length - 1 && (j === 1 || ends[1] <= Number(bounds[0]) + 0.1);
+                var gap = Math.max(0, Number(bounds[2]) - ends[j]), page = this.field(frame, "parentPage", "density body frame");
+                log.push("page=" + page.name + "; column=" + (j + 1) + "; unused_tail_mm=" + (gap / SHAN.utils.pt(1)).toFixed(1) + "; end_of_story=" + final);
+                if (!final && gap > (Number(bounds[2]) - Number(bounds[0])) / 2) {
+                    log.push("WARNING: Half-column unused tail before continuing content; inspect page " + page.name + " column " + (j + 1) + " in PDF.");
+                }
+            }
+        }
+        return log;
     },
     linePosition: function (line) {
         var parentFrames = this.field(line, "parentTextFrames", "text line");
@@ -348,6 +507,7 @@ SHAN.history = {
             points = this.field(paragraph, "insertionPoints", "image block paragraph");
             local = parent.index - this.domAt(points, 0, "image block insertion points").index;
             text = String(this.field(paragraph, "contents", "image block paragraph"));
+            this.check(paragraph.spanColumnType === SpanColumnTypeOptions.SINGLE_COLUMN, "Image paragraph spans multiple columns");
             this.check(local >= 0 && text.charAt(local) === "\uFFFC", "Image anchor outside mapped paragraph");
             before = text.slice(0, local); before = before.slice(before.lastIndexOf("\n") + 1);
             after = text.slice(local + 1); after = after.split("\n")[0].split("\r")[0];
@@ -364,6 +524,19 @@ SHAN.history = {
             // Geometry collisions are real defects; desired size/ppi/page count are advisory.
             var rect = this.valid(record.rect, "display image rectangle"), page = this.field(rect, "parentPage", "display image rectangle");
             a = this.field(rect, "geometricBounds", "display image rectangle");
+            var anchorLines = this.field(parent, "lines", "image anchor character"), anchorLine = this.domAt(anchorLines, 0, "image anchor lines");
+            var imageFrame = this.domAt(this.field(anchorLine, "parentTextFrames", "image anchor line"), 0, "image body frame");
+            var frameBounds = this.field(imageFrame, "geometricBounds", "image body frame"), framePreferences = this.field(imageFrame, "textFramePreferences", "image body frame");
+            var gutter = Number(framePreferences.textColumnGutter), columnWidth = (Number(frameBounds[3]) - Number(frameBounds[1]) - gutter) / 2;
+            var columnLeft = Number(frameBounds[1]) + this.linePosition(anchorLine).column * (columnWidth + gutter), tolerance = SHAN.utils.pt(0.2);
+            this.check(a[1] >= columnLeft - tolerance && a[3] <= columnLeft + columnWidth + tolerance,
+                "Image escapes its single body column");
+            this.check(a[3] - a[1] <= SHAN.utils.pt(tokens.image_policy.single_column_max_mm) + tolerance,
+                "Image exceeds compact single-column maximum");
+            if (record.captionFrame) {
+                var captionBounds = this.field(record.captionFrame, "geometricBounds", "compact floating caption");
+                this.check(captionBounds[1] >= columnLeft - tolerance && captionBounds[3] <= columnLeft + columnWidth + tolerance, "Floating caption escapes image column");
+            }
             for (j = 0; j < i; j += 1) {
                 var other = this.valid(images[j].rect, "earlier image rectangle"), otherPage = this.field(other, "parentPage", "earlier image rectangle");
                 b = this.field(other, "geometricBounds", "earlier image rectangle");
@@ -406,6 +579,7 @@ SHAN.history = {
             this.check(preferences.textColumnCount === 2 && Math.abs(Number(preferences.textColumnGutter) - SHAN.utils.pt(6)) < 0.1,
                 "Wrong History column geometry");
             this.check(b[2] > b[0] && b[3] > b[1] && b[0] < p[2] && b[2] > p[0] && b[1] < p[3] && b[3] > p[1], "Body frame outside page");
+            this.check(this.hasVisibleContent(frame), "Empty generated History page: " + page.name);
         }
         this.yearChecks(story, map);
         for (i = 0; i < images.length; i += 1) { this.graphicChecks(images[i], source, map); }
@@ -459,12 +633,14 @@ SHAN.history = {
         var bleeds = ["documentBleedTopOffset", "documentBleedBottomOffset", "documentBleedInsideOrLeftOffset", "documentBleedOutsideOrRightOffset"];
         for (i = 0; i < bleeds.length; i += 1) { this.check(Math.abs(Number(documentPreferences[bleeds[i]]) - SHAN.utils.pt(3)) < 0.1, "Wrong bleed"); }
         // Visual targets are advisory; never fail on an estimated page count.
-        warnings.push("页数自然续排，无目标页数；图片密度、末页留白及名单间距需PDF视觉验收。");
+        if (pages.length < tokens.advisory_pages[0] || pages.length > tokens.advisory_pages[1]) { warnings.push("页数超出7–9页参考范围，仅供PDF视觉检查；不是内容完整性失败。"); }
+        warnings.push("图片与图注均为单栏；连续大块留白及页面密度仍需PDF视觉验收。");
         return "PASS History data checks; pages=" + pages.length + "; paragraphs=" + map.paragraph_order.length +
             "; entries=21; images=24; captions=5; overset=false; source SHA-256=PASS; paragraph equality=PASS" +
             "; display transforms reversible=PASS; roster splits=4; paragraph-boundary image blocks=PASS; image overlap=false" +
+            "; images_single_column=24; blank_tail=false; removed_empty_tail_pages=" + (result.removedEmptyTailPages || 0) +
             "; source already includes approved deletion; import omissions=0; approved moves=1; runtime=InDesign " + app.version +
-            "\n" + warnings.join("\n") + "\nPDF视觉验收待用户确认。";
+            "\n" + (result.compactLog || []).join("\n") + "\n" + (result.columnLog || []).join("\n") + "\n" + warnings.join("\n") + "\nPDF视觉验收待用户确认。";
     },
     create: function (doc, root, source, map, audit, tokens, section, context) {
         this.runtime = context && context.runtime ? context.runtime : null;
@@ -481,6 +657,9 @@ SHAN.history = {
         // In-memory adjunct only; HISTORY_IMPORT_MAP.json remains the immutable fact mapping.
         map.history_display = display;
         this.check(tokens.image_policy.preferences.length === 24, "Incomplete image size policy");
+        for (var policyIndex = 0; policyIndex < tokens.image_policy.preferences.length; policyIndex += 1) {
+            this.check(tokens.image_policy.preferences[policyIndex].span_columns === 1, "History image policy must be single-column");
+        }
         var textPreferences = this.field(doc, "textPreferences", "History document"); textPreferences.smartTextReflow = false;
         var first = this.addFrame(doc, page, true, tokens);
         var marker = this.chapterMarker(doc, page, section), text = [], i, j, index;
@@ -514,6 +693,12 @@ SHAN.history = {
         this.stage("history-flow", { operation: "thread History body frames", frame_label: "SHAN_HISTORY:body" });
         var frames = this.flow(doc, story, first, tokens);
         var result = { story: story, frames: frames, images: images, marker: marker };
+        this.stage("history-compact-images", { operation: "fit small archive blocks in available columns" });
+        result.compactLog = this.compactImages(doc, story, images, map, tokens);
+        this.stage("history-trim-empty-tail", { operation: "remove only empty generated document pages" });
+        result.removedEmptyTailPages = this.trimEmptyTail(doc, story, frames, images, tokens);
+        this.stage("history-column-diagnostics", { operation: "measure actual body-column tails", frame_label: "SHAN_HISTORY:body" });
+        result.columnLog = this.columnDiagnostics(frames);
         this.stage("history-validate", { operation: "compare source and document paragraphs" });
         var report = this.validate(doc, result, source, map, tokens, context);
         doc.insertLabel("SHAN_HISTORY_REPORT", report); result.report = report;

@@ -1,4 +1,30 @@
-# History Visual Refinement v2（本轮仅静态验证）
+# History Compact Image Layout v3（本轮仅静态验证）
+
+用户反馈上一版PDF为10页且末页空白。本轮未启动 InDesign/COM/GUI，必须重新运行 `build/13_history_test.jsx` 并导出新PDF；静态测试不证明实际已压缩至7–9页，也不证明视觉留白已通过。History 未冻结。
+
+全部24图及对应图注改为单栏。原 `HISTORY_IMPORT_MAP.json` 和 `HISTORY_DISPLAY_MAP.json` 不变，旧 Wide 样式仅保留兼容定义并被设为 SINGLE_COLUMN，没有正文段落再使用它们。图片生成完全不读取原模块数量/Word宽度，也没有双栏宽度分支。既有文字篇名、年份、正文、名单字号/字体/颜色和5mm名单间距保留。
+
+`HISTORY_TOKENS.json` v3 图片优选宽度：活动照48–56mm（含旧照片），合影54–64mm，海报40–44mm，档案/截图44mm，拼合档案图58mm，竖向活动照46–52mm，徽章30mm。栏尾允许按每图下限继续缩小：照片40–55mm、海报38mm、档案40mm、徽章25mm。绝对上限70mm，保留原比例、原DOCX裁切和优选145ppi限制；高度自动计算。
+
+图片仍在原段落边界的独立视觉行内，原顺序及年份不变。不增加强制分页、分栏符或正文空段。第一张图不再和整段历史正文一起 keep；无共用图注的多图可分别续栏；仅图片与原图注使用 keepWithNext=1，图注 keepWithNext=0，不连锁锁住后续年份。原浮动图注 Group 保留，图注框高度由12mm压至6mm，字号不变；P189双图和原共用图注保持小单元关系。
+
+续排后有界执行最多2轮栏尾检查，以实际前一行所在栏和剩余高度为依据，按3mm步进尝试缩小。每次 recompose 后检查整张图片/共用图注单元是否真的回到前一栏；失败则恢复小尺寸优选宽度并正常顺延。保持原 source story、锚点、段落与图片字节不变，不靠缩小文字或重排年份压页。
+
+自动清理仅针对本次生成的空白尾页（无正文、无FFFC/图片、无其他本地页面对象），包括无正文框的空尾页。删除后立即验证页数减少、story字符串完全一致及无overset；如只有末尾控制字符发生overset，继续在允许范围内缩小最后一张图，不删除控制字符或source paragraph。若最小尺寸仍无法解决，明确报错，不返回虚假PASS。中间空页会触发错误，有真实内容或其他对象的末页不会被误删。
+
+runtime report 增加 `images_single_column=24`、`blank_tail=false`、`removed_empty_tail_pages`、栏尾缩图记录，以及逐栏 `unused_tail_mm` / `end_of_story`。后续仍有内容的栏若出现超过半栏高度的底部留白，报告 WARNING；自然篇末留白单独标注。7–9页为advisory，密度/留白必须看新PDF，不能作为图片重要性或固定页数断言。
+
+静态测试：既有21编年、216段可逆逐段完整性、24图、5图注、源哈希/BOM/错误诊断/Parent聚焦全部保留；新增所有History专用样式单栏、旧Wide无实际映射、70mm上限及栏内几何容差、keep链、缩图成功/失败恢复/空间不足/比例/共用图注、空尾页与控制字符处理、误删/文字损失/overset/删除无进展失败路径、半栏留白诊断测试。
+
+v3实机待验收重点：
+
+- 所有24图/图片组均为单栏，最大宽度不超70mm，无拉伸/破坏性裁切。
+- 2021合影约64mm；星海邀约与月曜杯海报40–44mm；徽章约30mm；后期两张合影约60mm。
+- 图注跟随原图片/共享图片单元，无图文重叠、字体/链接异常和overset。
+- 不出现纯空白末页；检查 runtime report 的逐栏留白 WARNING 与第6页以后的活动/图片连续性。
+- 负责人仍一职务一行（P74共享姓名例外保留），名单与活动间约一行距离；结束 focus actual document page。
+
+# History Visual Refinement v2（此前静态验证记录）
 
 重新运行 `build/13_history_test.jsx` 后导出新 PDF。本轮未启动 InDesign，下面 v1 的8页实机证据不能作为 v2 验收结果；History 保持未冻结。
 

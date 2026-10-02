@@ -21,14 +21,11 @@ SHAN.historySkin = {
             style.keepWithNext = def.keep_with_next || 0;
             style.justification = Justification.LEFT_ALIGN;
             if (key.indexOf("P_History_Media") === 0) { style.justification = Justification.CENTER_ALIGN; }
-            if (key.indexOf("P_History_Media_Wide") === 0) {
-                style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
-            }
         }
-        style = doc.paragraphStyles.itemByName("P_History_Caption_Wide");
-        style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
+        // Legacy Wide definitions remain single-column and are never mapped to content.
         style = doc.paragraphStyles.itemByName("P_Article_Title");
         style.keepAllLinesTogether = true; style.keepWithNext = 2;
+        // Preserve the approved text title only; no image/caption has a spanning style.
         style.spanColumnType = SpanColumnTypeOptions.SPAN_COLUMNS; style.spanSplitColumnCount = 2;
         doc.paragraphStyles.itemByName("P_Metadata").keepWithNext = 1;
     }

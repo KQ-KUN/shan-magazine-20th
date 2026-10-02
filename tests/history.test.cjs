@@ -54,8 +54,9 @@ for(const name of ['P_History_Media','P_History_Media_Wide']) {
 for(const name of ['P_History_Media_Caption','P_History_Media_Wide_Caption']) {
     const style=skinStyles.itemByName(name);assert.equal(style.keepAllLinesTogether,true);assert.equal(style.keepWithNext,1);
 }
-assert.equal(skinStyles.itemByName('P_History_Media_Wide_Caption').spanColumnType,2);
-assert.equal(skinStyles.itemByName('P_History_Caption_Wide').spanColumnType,2);
+for(const name of Object.keys(tokens.paragraph_styles)) assert.equal(skinStyles.itemByName(name).spanColumnType,1,'all History-specific styles are single-column');
+assert.equal(skinStyles.itemByName('P_History_Event_Image').keepAllLinesTogether,false,'archive no longer locks the entire preceding source paragraph');
+assert.equal(skinStyles.itemByName('P_History_Caption').keepWithNext,0,'caption never locks a following year');
 assert.equal(skinStyles.itemByName('P_History_Roster').justification,1);
 assert.equal(tokens.paragraph_styles.P_History_Roster.family,'sans_cn');
 for (const bytes of ['', 'abc', 'a'.repeat(55), 'a'.repeat(56), 'a'.repeat(63), 'a'.repeat(64), 'a'.repeat(65), '\x00\xff'.repeat(250)]) {
@@ -249,9 +250,18 @@ story.paragraphs.forEach((p, i) => {
     }); p.allGraphics = [];
     const name = history.styleName(map.paragraph_order[i], map, tokens);
     p.appliedParagraphStyle = { name, spaceAfter: pt(tokens.paragraph_styles[name]?.space_after_mm || 0) };
+    p.spanColumnType=1;
     p.spaceAfter = p.appliedParagraphStyle.spaceAfter;
     p.insertionPoints = [{ index: storyOffset }]; storyOffset += p.contents.length;
 });
+story.characters = [];
+for (const paragraph of story.paragraphs) {
+    let visualLine=0;
+    for (const char of paragraph.contents) {
+        story.characters.push({index:story.characters.length,contents:char,parentStory:story,lines:[paragraph.lines[visualLine]]});
+        if(char==='\n')visualLine++;
+    }
+}
 const records = map.images.map((image, i) => {
     const graphic = { id: i + 1, isValid: true, itemLink: { isValid: true, status: 1 }, horizontalScale: 100, verticalScale: 100, effectivePpi: [180,180] };
     const paragraph = story.paragraphs[map.paragraph_order.indexOf(image.source_paragraph)];
@@ -259,26 +269,35 @@ const records = map.images.map((image, i) => {
     const previous = map.images.slice(0, i).filter(im => im.source_paragraph === image.source_paragraph).length;
     let local = -1; for (let j = 0; j <= previous; j++) local = paragraph.contents.indexOf('\ufffc', local + 1);
     return { source: image, layout: display.image_layouts[i], graphic, rect: { isValid: true, parentPage: page, itemLayer: { visible: true }, geometricBounds: [10 + i * 20, 10, 20 + i * 20, 20] },
-        anchor: { parent: { index: paragraph.insertionPoints[0].index + local, parentStory: story } }, captionFrame: i ? null : {
-            overflows: false, parentPage: page, parentStory: { paragraphs: [{ contents: fixture.textbox + '\r' }] } } };
+        anchor: { parent: story.characters[paragraph.insertionPoints[0].index + local] }, captionFrame: i ? null : {
+            geometricBounds:[20,10,30,20],overflows: false, parentPage: page, parentStory: { paragraphs: [{ contents: fixture.textbox + '\r' }] } } };
 });
 story.allGraphics = records.map(r => r.graphic);
 const docPrefs = { pageWidth: pt(185) + 0.01, pageHeight: pt(260) - 0.01 };
 for (const key of ['documentBleedTopOffset', 'documentBleedBottomOffset', 'documentBleedInsideOrLeftOffset', 'documentBleedOutsideOrRightOffset']) docPrefs[key] = pt(3) + 0.01;
 const doc = { pages: [page], fonts: [{ status: 1 }], documentPreferences: docPrefs, extractLabel: () => 'approved font' };
-const result = { story, images: records, frames: [{ parentPage: page, geometricBounds: [85, 51, 680, 482], itemLayer: { visible: true }, textFramePreferences: { textColumnCount: 2, textColumnGutter: pt(6) + 0.01 } }],
+const result = { story, images: records, frames: [{ contents:story.paragraphs.map(p=>p.contents).join(''),allGraphics:story.allGraphics,
+    parentPage: page, geometricBounds: [85, 51, 680, 482], itemLayer: { visible: true }, textFramePreferences: { textColumnCount: 2, textColumnGutter: pt(6) + 0.01 } }],
     marker: { parentPage: page, overflows: false } };
 assert.match(history.validate(doc, result, source, map, tokens, {}), /pages=1/);
-assert.equal(history.styleName(38,map,tokens), 'P_History_Media_Wide_Caption');
-for (const p of [153,213]) assert.equal(history.styleName(p,map,tokens), 'P_History_Media_Wide');
+assert.equal(history.styleName(38,map,tokens), 'P_History_Media_Caption');
+assert.equal(history.styleName(39,map,tokens), 'P_History_Caption');
+for (const p of [153,213]) assert.equal(history.styleName(p,map,tokens), 'P_History_Media');
+for(const p of map.paragraph_order) assert.ok(!history.styleName(p,map,tokens).includes('Wide'),'no source paragraph uses a legacy spanning style');
 for (const p of [15,69,75,173,177]) assert.equal(history.styleName(p,map,tokens), 'P_History_Roster', 'roster-only year has no forced activity gap');
 assert.equal(tokens.paragraph_styles.P_History_Roster.space_after_mm,0);
 assert.equal(tokens.paragraph_styles.P_History_Roster_Last.space_after_mm,5);
 assert.equal(tokens.paragraph_styles.P_History_Empty_Roster_Gap.leading_pt,0.1);
 assert.equal(tokens.paragraph_styles.P_History_Media_Wide.keep_with_next,0);
 assert.equal(tokens.paragraph_styles.P_History_Media_Wide_Caption.keep_with_next,1);
-assert.deepEqual(tokens.image_policy.preferences.filter(p => p.span_columns===2).map(p=>p.image_index),[3,15,23]);
-assert.equal(tokens.advisory_pages,undefined,'no target page count');
+assert.ok(tokens.image_policy.preferences.every(p=>p.span_columns===1));
+assert.deepEqual(tokens.advisory_pages,[7,9],'page count stays advisory');
+assert.equal(tokens.image_policy.double_column_max_mm,undefined);
+for (const [i,pref] of tokens.image_policy.preferences.entries()) {
+    assert.equal(pref.image_index,i+1);assert.ok(pref.width_mm<=70);
+    assert.ok(pref.min_width_mm>0&&pref.min_width_mm<=pref.width_mm);
+    assert.ok(history.imageSize(audit.assets[i],pref,tokens.image_policy).width<=70+0.01);
+}
 for (const asset of audit.assets) {
     const size = history.imageSize({ ...asset, original_width_mm:1 }, tokens.image_policy.preferences[0], tokens.image_policy);
     assert.ok(size.width>1,'Word physical width is no longer the image display limit');
@@ -307,11 +326,114 @@ assert.throws(checkDisplay,/interrupts a sentence/); archiveParagraph.contents=a
 const priorBounds=records[1].rect.geometricBounds;
 records[1].rect.geometricBounds=records[0].rect.geometricBounds;
 assert.throws(checkDisplay,/blocks overlap/); records[1].rect.geometricBounds=priorBounds;
+records[1].rect.geometricBounds=[30,0,40,pt(71)];
+assert.throws(checkDisplay,/compact single-column maximum/);records[1].rect.geometricBounds=priorBounds;
+records[1].rect.geometricBounds=[30,pt(72),40,pt(80)];
+assert.throws(checkDisplay,/escapes its single body column/);records[1].rect.geometricBounds=priorBounds;
+const imageParagraph=story.paragraphs[map.paragraph_order.indexOf(28)];
+imageParagraph.spanColumnType=2;assert.throws(checkDisplay,/spans multiple/);imageParagraph.spanColumnType=1;
+const frameContents=result.frames[0].contents;result.frames[0].contents='\r\n';result.frames[0].allGraphics=[];
+assert.throws(()=>history.validate(doc,result,source,map,tokens,{}),/Empty generated History page/);
+result.frames[0].contents=frameContents;result.frames[0].allGraphics=story.allGraphics;
 const originalPpi=records[6].graphic.effectivePpi; records[6].graphic.effectivePpi=[80,80];
 const visualWarnings=[]; history.displayChecks(story,records,map,tokens,visualWarnings);
 assert.ok(visualWarnings.some(w=>w.includes('image 7 effective ppi')),'ppi preference is advisory, not fatal');
 records[6].graphic.effectivePpi=originalPpi;
 checkDisplay();
+// Run the real bounded fit/resize code against a composition model. This verifies
+// decisions and source preservation, not InDesign's actual recomposition behavior.
+function compactModel(threshold=58,baselineMM=150) {
+    const frame={id:88,parentPage:{id:1},geometricBounds:[0,0,pt(200),pt(152)],textFramePreferences:{textColumnGutter:pt(6)}};
+    const previous={baseline:pt(baselineMM),horizontalOffset:0,parentTextFrames:[frame]};
+    const next={baseline:pt(20),horizontalOffset:pt(79),parentTextFrames:[frame]};
+    const rect={geometricBounds:[0,0,pt(64*545/818),pt(64)],label:'SHAN_HISTORY:image:15'};
+    const graphic={geometricBounds:rect.geometricBounds.slice()};
+    const content='活动正文\n\ufffc\r', compactStory={contents:content,characters:[]};
+    const character={index:1,parentStory:compactStory,get lines(){return [(rect.geometricBounds[3]-rect.geometricBounds[1])/pt(1)<=threshold+0.001?previous:next];}};
+    compactStory.characters=[{index:0,lines:[previous]},character];
+    const record={source:map.images[14],asset:audit.assets[14],rect,graphic,anchor:{parent:character}};
+    let recomposes=0;const doc={recompose(){recomposes++;}};
+    return {doc,story:compactStory,record,content,get recomposes(){return recomposes;}};
+}
+let fit=compactModel();
+const fitLog=history.compactImages(fit.doc,fit.story,[fit.record],{captions:[]},tokens);
+assert.ok(fitLog.some(line=>line.includes('preceding_column_fit=true')));
+assert.ok(Math.abs(fit.record.rect.geometricBounds[3]/pt(1)-58)<0.001);
+assert.equal(fit.story.contents,fit.content,'fit never changes source controls/text');
+assert.ok(fit.recomposes<=4,'bounded fit cannot add infinite pages or retries');
+const g=fit.record.graphic.geometricBounds;
+assert.ok(Math.abs((g[2]-g[0])/(g[3]-g[1])-545/818)<1e-9,'fit preserves pixel aspect ratio');
+fit=compactModel(50);
+assert.equal(history.compactImages(fit.doc,fit.story,[fit.record],{captions:[]},tokens).length,0);
+assert.ok(Math.abs(fit.record.rect.geometricBounds[3]/pt(1)-64)<0.001,'failed fit restores the small preferred size and leaves flow in next column');
+assert.ok(fit.recomposes<=6);assert.equal(fit.story.contents,fit.content);
+fit=compactModel(58,198);
+assert.equal(history.compactImages(fit.doc,fit.story,[fit.record],{captions:[]},tokens).length,0);
+assert.equal(fit.recomposes,0,'do not attempt impossible minimum-height fit');
+assert.throws(()=>history.compactImages(fit.doc,fit.story,[fit.record],{captions:[]},
+    {...tokens,image_policy:{...tokens.image_policy,fit_step_mm:0}}),/bounded compact-fit/);
+fit=compactModel();fit.record.captionFrame={geometricBounds:[1,2,3,4]};
+history.resizeImage(fit.record,55,tokens);
+assert.ok(Math.abs((fit.record.captionFrame.geometricBounds[3]-fit.record.captionFrame.geometricBounds[1])/pt(1)-55)<0.001);
+assert.ok(Math.abs((fit.record.captionFrame.geometricBounds[2]-fit.record.captionFrame.geometricBounds[0])/pt(1)-6)<0.001,'floating caption box gets compact geometry without font scaling');
+// A shared original caption follows BOTH small images as a single bounded unit.
+const pairPolicy=structuredClone(tokens);pairPolicy.image_policy.preferences[0].width_mm=44;pairPolicy.image_policy.preferences[0].min_width_mm=40;
+pairPolicy.image_policy.preferences[1].width_mm=54;pairPolicy.image_policy.preferences[1].min_width_mm=45;
+const pairFrame={id:89,parentPage:{id:2},geometricBounds:[0,0,pt(200),pt(152)],textFramePreferences:{textColumnGutter:pt(6)}};
+const pairPrevious={baseline:pt(150),horizontalOffset:0,parentTextFrames:[pairFrame]},pairNext={baseline:pt(30),horizontalOffset:pt(79),parentTextFrames:[pairFrame]};
+const pairAsset={pixel_width:500,pixel_height:100,crop:{t:0,b:0,l:0,r:0}};
+const pairStory={contents:'原文\r\ufffc\n\ufffc\r原图注\r',characters:[],paragraphs:[]};
+const pairRecords=[44,54].map((w,i)=>{
+    const rect={geometricBounds:[0,0,pt(w/5),pt(w)],label:'SHAN_HISTORY:image:'+(i+1)},graphic={};
+    const parent={index:i===0?1:3,parentStory:pairStory,get lines(){return [rect.geometricBounds[3]/pt(1)<=(i===0?41:51)+0.001?pairPrevious:pairNext];}};
+    return {source:{image_index:i+1,source_paragraph:1,anchor:'paragraph_start'},asset:pairAsset,rect,graphic,anchor:{parent}};
+});
+pairStory.characters=[{lines:[pairPrevious]},pairRecords[0].anchor.parent,{get lines(){return pairRecords[0].anchor.parent.lines;}},pairRecords[1].anchor.parent];
+pairStory.paragraphs=[{get lines(){return pairRecords.every((r,i)=>r.rect.geometricBounds[3]/pt(1)<=(i===0?41:51)+0.001)?[pairPrevious]:[pairNext];}}];
+const pairBefore=pairStory.contents;
+assert.equal(history.compactImages({recompose(){}},pairStory,pairRecords,{paragraph_order:[1],captions:[{},
+    {image_indices:[1,2],source_paragraph:1}]},pairPolicy).length,1);
+assert.ok(Math.abs(pairRecords[0].rect.geometricBounds[3]/pt(1)-41)<0.001);
+assert.ok(Math.abs(pairRecords[1].rect.geometricBounds[3]/pt(1)-51)<0.001);
+assert.equal(pairStory.contents,pairBefore);
+function tailModel({text='',graphics=[],extraItem=false,unthreaded=false,overflow=false,loseText=false}={}) {
+    const before='完整首段\r\ufffc完整末段\r';let shrinkCount=0;
+    const story={contents:before,overflows:false};
+    const page1={id:1,pageItems:[]},page2={id:2,pageItems:[]};
+    const first={id:11,label:'SHAN_HISTORY:body',parentPage:page1,contents:'完整正文\ufffc',allGraphics:[{}]};
+    const tail={id:12,label:'SHAN_HISTORY:body',parentPage:page2,contents:text,allGraphics:graphics};
+    const frames=unthreaded?[first]:[first,tail];page2.pageItems=unthreaded?[]:[tail];
+    if(extraItem)page2.pageItems.push({id:99,label:'unrelated artwork'});
+    const doc={pages:[page1,page2],recompose(){}};
+    page2.remove=()=>{doc.pages.pop();if(loseText)story.contents='lost source';if(overflow)story.overflows=true;};
+    const asset=audit.assets[23],w=tokens.image_policy.preferences[23].width_mm;
+    const last={source:map.images[23],asset,rect:{label:'SHAN_HISTORY:image:24',geometricBounds:[0,0,pt(w*asset.pixel_height/asset.pixel_width),pt(w)]},graphic:{},anchor:{}};
+    doc.recompose=()=>{if(story.overflows&&last.rect.geometricBounds[3]/pt(1)<=41+0.001){story.overflows=false;shrinkCount++;}};
+    return {doc,story,frames,images:[...Array(23).fill({}),last],before,get shrinkCount(){return shrinkCount;}};
+}
+for(const options of [{},{text:'\r\n\t '},{unthreaded:true},{overflow:true}]) {
+    const tail=tailModel(options);assert.equal(history.trimEmptyTail(tail.doc,tail.story,tail.frames,tail.images,tokens),1);
+    assert.equal(tail.doc.pages.length,1);assert.equal(tail.frames.length,1);
+    assert.equal(tail.story.contents,tail.before);assert.equal(tail.story.overflows,false);
+    if(options.overflow)assert.equal(tail.shrinkCount,1,'terminal controls are fitted by shrinking the last image, never deleted');
+}
+for(const options of [{text:'正文'},{text:'\ufffc'},{graphics:[{}]},{extraItem:true}]) {
+    const tail=tailModel(options);assert.equal(history.trimEmptyTail(tail.doc,tail.story,tail.frames,tail.images,tokens),0);
+    assert.equal(tail.doc.pages.length,2,'do not delete content, images or non-History objects');
+}
+let tail=tailModel({loseText:true});assert.throws(()=>history.trimEmptyTail(tail.doc,tail.story,tail.frames,tail.images,tokens),/changed source story/);
+tail=tailModel();tail.doc.pages[1].remove=()=>{};
+assert.throws(()=>history.trimEmptyTail(tail.doc,tail.story,tail.frames,tail.images,tokens),/removal made no progress/);
+tail=tailModel({overflow:true});tail.doc.recompose=()=>{};
+assert.throws(()=>history.trimEmptyTail(tail.doc,tail.story,tail.frames,tail.images,tokens),/overset controls at minimum/,'a cleanup cannot silently pass with missing/overset text');
+const densityFrame={id:20,parentPage:{id:1,name:'1'},geometricBounds:[0,0,pt(200),pt(152)],textFramePreferences:{textColumnGutter:pt(6)}};
+densityFrame.lines=[{baseline:pt(80),descent:0,horizontalOffset:0,parentTextFrames:[densityFrame]},
+    {baseline:pt(190),descent:0,horizontalOffset:pt(79),parentTextFrames:[densityFrame]}];
+const density=history.columnDiagnostics([densityFrame]);
+assert.ok(density.some(line=>line.includes('unused_tail_mm=120.0')));
+assert.ok(density.some(line=>line.includes('WARNING: Half-column')),'layout density remains an explicit visual warning, not a guessed visual PASS');
+densityFrame.lines.pop();
+assert.ok(!history.columnDiagnostics([densityFrame]).some(line=>line.includes('WARNING:')),'natural EOF whitespace is distinguished from continuing-flow gaps');
 // Estimated page count remains advisory, whereas real data defects fail.
 for (const mutation of [
     () => { story.overflows = true; },
@@ -410,7 +532,7 @@ history.runtime = null;
 
 // Execute the real create loop with specifiers that expire on EACH insertion.
 // The image double simulates mutation; this does not certify native anchoring.
-const savedMethods = Object.fromEntries(['addFrame', 'chapterMarker', 'image', 'flow', 'validate'].map(key => [key, history[key]]));
+const savedMethods = Object.fromEntries(['addFrame', 'chapterMarker', 'image', 'flow', 'compactImages', 'trimEmptyTail', 'columnDiagnostics', 'validate'].map(key => [key, history[key]]));
 const currentStory = { id: 999, paragraphs: [] };
 function liveParagraph(contents) {
     return { isValid: true, contents, applyParagraphStyle() {},
@@ -435,6 +557,8 @@ history.image = (doc, page, asset, file, paragraph, imageMap, caption, tokens, l
     return { source: imageMap };
 };
 history.flow = () => [bodyFrame]; history.validate = () => 'mock validation';
+history.compactImages = () => ['mock compact'];history.trimEmptyTail = () => 0;
+history.columnDiagnostics=()=>['mock column diagnostics'];
 const createDoc = { pages: [{ textFrames: [] }], textPreferences: {},
     masterSpreads: { itemByName: () => ({ isValid: true }) }, paragraphStyles: { itemByName: () => ({ isValid: true }) }, insertLabel() {} };
 try {
@@ -443,7 +567,7 @@ try {
     assert.equal(result.images.length, 24);
     assert.equal(stages[0], 'history-create:text'); assert.equal(stages[1], 'history-create:display-map'); assert.equal(stages[2], 'history-create:styles');
     assert.ok(stages.includes('history-create:image-24') && stages.includes('history-create:image-1'));
-    assert.deepEqual(stages.slice(-2), ['history-flow', 'history-validate']);
+    assert.deepEqual(stages.slice(-5), ['history-flow', 'history-compact-images', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate']);
     sourceModule.assertParagraphs(currentStory, source, map);
 } finally { Object.assign(history, savedMethods); history.runtime = null; }
 
@@ -509,7 +633,7 @@ function diagnosticRun(failStage, { failLog = false, failCleanup = false, withou
 }
 for (const stage of ['read-json', 'verify-source', 'create-document', 'create-foundation-styles', 'create-parents',
     'apply-typography', 'apply-running-system', 'apply-history-skin', 'history-create:text', 'history-create:styles',
-    'history-create:image-7', 'history-flow', 'history-validate', 'write-report']) diagnosticRun(stage);
+    'history-create:image-7', 'history-flow', 'history-compact-images', 'history-trim-empty-tail', 'history-column-diagnostics', 'history-validate', 'write-report']) diagnosticRun(stage);
 for (const options of [{}, { failCleanup: true }, { failLog: true, failCleanup: true }, { withoutSource: true }]) {
     const { diagnostic } = diagnosticRun('history-create:image-7', options);
     for (const field of ['image_index=7', 'source_paragraph=90', 'anchor=paragraph_start',
@@ -624,4 +748,4 @@ assert.ok(build.includes('HISTORY_RUNTIME_ERROR.txt'));
 assert.ok(!/throw\s+e\s*;/.test(build), 'no top-level rethrow that masks original location');
 assert.ok(!build.includes('.intro') && !build.includes('SHAN.chapter.create'));
 assert.ok(!read('modules/history.jsx').includes('doc.stories'));
-console.log('PASS History v2: locked DOCX/XML/24 original image hashes; all 216 source paragraphs and blanks reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years; 5 caption relations; P12/13/24/26 role splits, shared-role P74 unchanged; 14 style gaps; 24 boundary-only image anchors on separate display lines, original year/order; proportional sizes + original crop + low-resolution cap; overlap/spacing/roster negative cases; ppi/page-count advisory; ES3 syntax+BOM; invalid/expired DOM, orphan/overset, source parser and original diagnostic regressions; two document-page focus calls; frozen scope checked by Python. InDesign/PDF v2 acceptance pending; host not launched.');
+console.log('PASS History v3: all 216 source paragraphs reconstructed exactly; unauthorized text/LF negatives for all 216; 21 years, 24 original images, 5 captions; source SHA/BOM/parser/DOM/diagnostic/focus regressions; roster splits and 5mm gaps unchanged; all History media/caption styles single-column with no Wide mapping; max70mm + column geometry tolerance; no stretching/new crop; bounded previous-column fit, failed-fit restore, shared-caption unit; empty-tail deletion, control-only overset shrink, no deletion of content/images/unrelated items, no-progress/text-loss failures; density WARNING vs natural EOF; 7–9 pages advisory; frozen scope PASS. InDesign/PDF v3 acceptance pending; host not launched.');
