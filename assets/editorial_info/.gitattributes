@@ -1,0 +1,2 @@
+# Preserve the original DOCX ZIP member byte-for-byte across Git checkouts.
+source-document.xml binary

@@ -101,6 +101,10 @@ SHAN.assemblyV0 = {
             SHAN.associationProfileSkin.apply(doc, tokens, base, context);
             result = SHAN.associationProfile.render(doc, media, tokens, root);
             SHAN.associationProfile.assertRendered(doc, result, media, tokens);
+        } else if (c.kind === "editorial_info") {
+            tokens = this.read(root, "spec/EDITORIAL_INFO_TOKENS.json");
+            SHAN.editorialInfoSkin.apply(doc, tokens, base, context);
+            SHAN.editorialInfo.create(doc, root, tokens);
         } else if (c.kind === "history") {
             tokens = this.read(root, "spec/HISTORY_TOKENS.json");
             var map = this.read(root, "content/HISTORY_IMPORT_MAP.json"), audit = this.read(root, "spec/HISTORY_SOURCE_AUDIT.json");

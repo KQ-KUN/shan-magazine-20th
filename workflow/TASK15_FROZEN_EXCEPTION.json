@@ -1,0 +1,17 @@
+{
+  "task": "TASK 15",
+  "authorization": "Explicit user-approved Interview question-rule visual defect fix",
+  "allowed_frozen_files": [
+    "visual/interview_skin.jsx"
+  ],
+  "allowed_effects": [
+    "P_Interview_Q ruleAboveOffset: full point size plus 2mm",
+    "P_Interview_Q keepRuleAboveInFrame: true"
+  ],
+  "forbidden": [
+    "question text",
+    "font size",
+    "column width",
+    "other frozen files"
+  ]
+}

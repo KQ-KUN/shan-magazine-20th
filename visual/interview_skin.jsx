@@ -5,6 +5,12 @@ SHAN.interviewSkin = {
         if (!style.isValid) { throw new Error("Missing O_Text_Main"); }
         style.textFramePreferences.textColumnCount = t.interview_visual.body_columns;
         style.textFramePreferences.textColumnGutter = t.interview_visual.column_gutter_mm + " mm";
+        // TASK 15 authorized defect fix: a rule offset smaller than the first
+        // line's ascent crosses CJK glyphs. Reserve the full em plus 2 mm.
+        var question = doc.paragraphStyles.itemByName("P_Interview_Q");
+        if (!question.isValid) { throw new Error("Missing P_Interview_Q"); }
+        question.ruleAboveOffset = Number(question.pointSize) + SHAN.utils.pt(2);
+        question.keepRuleAboveInFrame = true;
         // No portrait/archive/pull-quote placeholders; those are not this task.
     },
     applyStory: function (story, t) {

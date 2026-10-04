@@ -1,0 +1,51 @@
+{
+  "version": "0.1",
+  "max_pages": 4,
+  "styles": {
+    "P_Editorial_Title": {
+      "family": "serif_cn",
+      "weight": "SemiBold",
+      "size_pt": 17,
+      "leading_pt": 24,
+      "space_after_mm": 1.5
+    },
+    "P_Editorial_Subtitle": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 9.4,
+      "leading_pt": 15,
+      "space_after_mm": 3
+    },
+    "P_Editorial_Section": {
+      "family": "sans_cn",
+      "weight": "Medium",
+      "size_pt": 10.4,
+      "leading_pt": 17,
+      "color": "C_SDU_RED",
+      "space_before_mm": 3.4,
+      "space_after_mm": 1.5,
+      "keep_with_next": 1
+    },
+    "P_Editorial_Body": {
+      "family": "serif_cn",
+      "weight": "Regular",
+      "size_pt": 9.2,
+      "leading_pt": 14.5,
+      "space_after_mm": 0
+    },
+    "P_Editorial_Empty": {
+      "family": "serif_cn",
+      "weight": "Regular",
+      "size_pt": 3,
+      "leading_pt": 4,
+      "space_after_mm": 0
+    },
+    "P_Editorial_Legal": {
+      "family": "serif_cn",
+      "weight": "Regular",
+      "size_pt": 8.7,
+      "leading_pt": 13.5,
+      "space_after_mm": 2
+    }
+  }
+}

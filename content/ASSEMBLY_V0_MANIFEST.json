@@ -66,11 +66,10 @@
       "label": "CONTENT PENDING — NOT FOR PRINT"
     },
     {
-      "id": "credits_pending",
-      "kind": "placeholder",
-      "title": "编辑委员会 / 版权信息",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
+      "id": "editorial_info",
+      "kind": "editorial_info",
+      "source": "manuscripts/source/编辑信息.docx",
+      "title": "编辑委员会 / 版权信息"
     },
     {
       "id": "chapter_origin",
@@ -204,14 +203,14 @@
     {
       "id": "messages_pending",
       "kind": "placeholder",
-      "title": "历任社长寄语 / 友协祝福",
+      "title": "历任社长寄语",
       "pages": 1,
       "label": "CONTENT PENDING — NOT FOR PRINT"
     },
     {
       "id": "closing_pending",
       "kind": "placeholder",
-      "title": "未来 / 编后记 / 致谢",
+      "title": "未来",
       "pages": 1,
       "label": "CONTENT PENDING — NOT FOR PRINT"
     }

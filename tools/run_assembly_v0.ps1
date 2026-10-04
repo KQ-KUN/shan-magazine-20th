@@ -16,6 +16,15 @@ try {
  var interaction = app.scriptPreferences.userInteractionLevel;
  try {
   app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;
+  // Preserve modified prior proof artifacts in a timestamped sibling file,
+  // keeping their documents open. Never touch unrelated user documents.
+  for(var i=app.documents.length-1;i>=0;i--){
+   var old=app.documents[i],path="";try{path=old.fullName.fsName.replace(/\\/g,"/");}catch(unsaved){}
+   if(path==="__ROOT__/exports/assembly_v0/SHAN_INTERIOR_ASSEMBLY_V0.indd" || path==="__ROOT__/exports/assembly_v0/SHAN_REVIEW_V0.indd"){
+    if(old.modified){old.save(File(path.replace(/\.indd$/,"_PRESERVED_"+new Date().getTime()+".indd")));}
+    else{old.close(SaveOptions.NO);}
+   }
+  }
   var compile = app.doScript(File("__ROOT__/exports/assembly_v0/ASSEMBLY_NATIVE_COMPILE.jsx"), ScriptLanguage.JAVASCRIPT);
   if (compile !== "COMPILE_OK") { return "FAIL native compilation: " + compile; }
   return app.doScript(File("__ROOT__/build/14_magazine_assembly_v0.jsx"), ScriptLanguage.JAVASCRIPT);

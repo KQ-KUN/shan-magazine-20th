@@ -22,6 +22,8 @@
 #include "../modules/history_source.jsx"
 #include "../modules/history.jsx"
 #include "../visual/history_skin.jsx"
+#include "../modules/editorial_info.jsx"
+#include "../visual/editorial_info_skin.jsx"
 #include "../modules/assembly_v0.jsx"
 
 (function () {
