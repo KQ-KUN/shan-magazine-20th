@@ -187,6 +187,12 @@
       "title": "宇宙很大，科幻更大"
     },
     {
+      "id": "xingyue",
+      "kind": "xingyue",
+      "source": "manuscripts/source/幻协社娘.docx",
+      "title": "星岳｜山大幻协社娘设定"
+    },
+    {
       "id": "now_pending",
       "kind": "placeholder",
       "title": "2025—2026协会现状 / 活动 / 文创",
@@ -217,7 +223,6 @@
   ],
   "excluded_for_v0": [
     "老师刊首语（暂缓）",
-    "社娘（暂停）",
     "封底",
     "书脊",
     "最终展开封面",

@@ -1,0 +1,18 @@
+{
+  "authorization": "User TASK16: three Fiction work-info additions, Pancake single-column media, XingYue module and Assembly integration only",
+  "implementation": "Display overlays outside frozen renderers; no frozen file actually changes",
+  "baseline_commit": "49ac92e1fb2084381b7cc658305dc53f7a18bb7c",
+  "allowed_frozen_files": [],
+  "display_only_changes": [
+    "One P_Metadata paragraph after the existing author in each of three Fiction works",
+    "Pancake original media replaces transparent wide canvas; Media/Caption single-column paragraph overrides; proportional 25mm width",
+    "XingYue approved replacement prose and all three exact DOCX image members in chapter_now"
+  ],
+  "prohibited": [
+    "Original body text edits",
+    "Shared visual redesign",
+    "Other frozen changes",
+    "History edits",
+    "Cover edits"
+  ]
+}

@@ -70,5 +70,10 @@ assert.equal(build.subarray(0, 3).toString('hex'), 'efbbbf');
 const buildText = build.toString('utf8');
 assert.ok(buildText.includes('/manuscripts/06_fiction_传送科技逸史_田李昊.docx'));
 assert.ok(buildText.includes('"fiction_teleport_history"'));
-execFileSync('git', ['diff', '--exit-code', 'fiction-v1.0^{}', '--', 'workflow/MODULE_STATUS.json', 'modules/fiction.jsx', 'visual/fiction_skin.jsx', 'spec/FICTION_TOKENS.json'], { cwd: root });
+// Later modules legitimately add status entries; preserve the tagged Fiction
+// entry and every frozen Fiction implementation file, not the entire registry.
+const taggedStatus = JSON.parse(execFileSync('git', ['show', 'fiction-v1.0:workflow/MODULE_STATUS.json'], { cwd: root, encoding: 'utf8' }));
+const currentStatus = JSON.parse(fs.readFileSync(path.join(root, 'workflow/MODULE_STATUS.json'), 'utf8'));
+assert.deepEqual(currentStatus.fiction, taggedStatus.fiction);
+execFileSync('git', ['diff', '--exit-code', 'fiction-v1.0^{}', '--', 'modules/fiction.jsx', 'visual/fiction_skin.jsx', 'spec/FICTION_TOKENS.json'], { cwd: root });
 console.log('PASS Fiction Transfer: author, 10 chapters, opening Body, unchanged text, thin build, BOM, Fiction v1.0 unchanged.');

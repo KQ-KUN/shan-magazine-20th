@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const read = p => fs.readFileSync(path.join(root, p), 'utf8').replace(/^\uFEFF/, '');
 const json = p => JSON.parse(read(p));
 const manifest = json('content/ASSEMBLY_V0_MANIFEST.json');
-const ids = ['chapter_prologue','front_note','association_profile','toc_pending','editorial_info','chapter_origin','interview_shao','interview_xiao','origin_pending','chapter_strata','history','chapter_ridge','feature_beyond_ridge','chapter_constellations','fiction_fourfold','fiction_tin_soldier','fiction_teleport_history','memoir_gloomy','memoir_pancake','chapter_now','feature_now','now_pending','chapter_beyond','messages_pending','closing_pending'];
+const ids = ['chapter_prologue','front_note','association_profile','toc_pending','editorial_info','chapter_origin','interview_shao','interview_xiao','origin_pending','chapter_strata','history','chapter_ridge','feature_beyond_ridge','chapter_constellations','fiction_fourfold','fiction_tin_soldier','fiction_teleport_history','memoir_gloomy','memoir_pancake','chapter_now','feature_now','xingyue','now_pending','chapter_beyond','messages_pending','closing_pending'];
 assert.deepStrictEqual(manifest.interior.map(c => c.id), ids);
 assert.strictEqual(manifest.purpose, 'REVIEW_PROOF_ONLY');
 assert.strictEqual(manifest.cover.front.file, 'assets/cover/SHAN_FRONT_COVER_FINAL.pdf');
@@ -52,7 +52,7 @@ for (const p of ['spec/CONTENT_MANIFEST.json','assets/cover/SHAN_FRONT_COVER_FIN
   assert.strictEqual(git('diff','HEAD','--',p).length,0,'Read-only input changed: '+p);
 }
 const changedManuscripts = git('-c','core.quotePath=false','diff','--name-only','HEAD','--','manuscripts').toString('utf8').trim().split('\n').filter(Boolean);
-assert(changedManuscripts.every(p => p === 'manuscripts/source/编辑信息.docx'), 'Existing manuscript changed');
+assert(changedManuscripts.every(p => ['manuscripts/source/编辑信息.docx','manuscripts/source/幻协社娘.docx'].includes(p)), 'Existing manuscript changed');
 const editorialAudit = json('spec/EDITORIAL_INFO_SOURCE_AUDIT.json');
 assert.strictEqual(require('crypto').createHash('sha256').update(fs.readFileSync(path.join(root,editorialAudit.source_file))).digest('hex'), editorialAudit.source_sha256);
 assert(git('check-attr','text','--',editorialAudit.xml_file).toString('utf8').endsWith('text: unset\n'), 'Source XML must not receive Git newline normalization');
@@ -76,4 +76,4 @@ assert.strictEqual(manifest.interior.filter(c=>c.kind==='placeholder').length,5)
 assert(!manifest.interior.some(c=>/编后记|致谢|友协祝福/.test(c.title)));
 assert.strictEqual(manifest.interior.find(c=>c.id==='closing_pending').title,'未来');
 assert.strictEqual(manifest.interior.find(c=>c.id==='messages_pending').title,'历任社长寄语');
-console.log('PASS TASK 15 Assembly static: 25 components / 7 recto chapters / 5 placeholders / editorial source / Interview-only frozen exception / BOM / immutable inputs / serializer');
+console.log('PASS TASK 16 Assembly static: 26 components / 7 recto chapters / 5 placeholders / editorial source / Interview-only frozen exception / BOM / immutable inputs / serializer');

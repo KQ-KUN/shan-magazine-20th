@@ -1,0 +1,10 @@
+{
+  "pancake": {
+    "file": "assets/task16/pancake-original.png",
+    "width_mm": 25,
+    "width_px": 257,
+    "height_px": 350
+  },
+  "fiction_info_style": "P_Metadata",
+  "fiction_info_anchor": "after_author"
+}

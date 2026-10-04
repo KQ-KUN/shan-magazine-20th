@@ -82,12 +82,14 @@ SHAN.assemblyV0 = {
         } else if (c.kind === "fiction") {
             tokens = this.read(root, "spec/FICTION_TOKENS.json");
             SHAN.fictionSkin.apply(doc, tokens, base, context);
-            SHAN.fiction.create(doc, File(root + "/" + c.source), c.article_id);
+            result = SHAN.fiction.create(doc, File(root + "/" + c.source), c.article_id);
+            SHAN.publicationRefinements.fiction(doc,result,this.read(root,"content/FICTION_WORK_INFO.json"),c.id);
         } else if (c.kind === "memoir") {
             tokens = this.read(root, "spec/MEMOIR_TOKENS.json"); media = this.read(root, c.media_manifest);
             SHAN.memoirSkin.apply(doc, tokens, base, context);
-            SHAN.memoir.create(doc, File(root + "/" + c.source), c.id === "memoir_gloomy" ? "memoir_gloomy_biologist_cry" : c.article_id,
+            result = SHAN.memoir.create(doc, File(root + "/" + c.source), c.id === "memoir_gloomy" ? "memoir_gloomy_biologist_cry" : c.article_id,
                 File(root + "/" + media.file), media.width_mm, media.height_mm);
+            if(c.id === "memoir_pancake"){SHAN.publicationRefinements.pancake(doc,result,root,this.read(root,"content/TASK16_DISPLAY.json").pancake);}
         } else if (c.kind === "feature") {
             tokens = this.read(root, "spec/FEATURE_TOKENS.json"); media = this.read(root, c.media_manifest);
             SHAN.featureSkin.apply(doc, tokens, base, context);
@@ -105,6 +107,9 @@ SHAN.assemblyV0 = {
             tokens = this.read(root, "spec/EDITORIAL_INFO_TOKENS.json");
             SHAN.editorialInfoSkin.apply(doc, tokens, base, context);
             SHAN.editorialInfo.create(doc, root, tokens);
+        } else if (c.kind === "xingyue") {
+            tokens=this.read(root,"spec/XINGYUE_TOKENS.json");
+            SHAN.xingyueSkin.apply(doc,tokens,base,context);SHAN.xingyue.create(doc,root,tokens,runtime);
         } else if (c.kind === "history") {
             tokens = this.read(root, "spec/HISTORY_TOKENS.json");
             var map = this.read(root, "content/HISTORY_IMPORT_MAP.json"), audit = this.read(root, "spec/HISTORY_SOURCE_AUDIT.json");

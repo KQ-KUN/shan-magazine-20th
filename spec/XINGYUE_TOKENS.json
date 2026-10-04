@@ -1,0 +1,74 @@
+{
+  "body_columns": 2,
+  "column_gutter_mm": 6,
+  "image_widths_mm": {
+    "1": 38,
+    "2": 44,
+    "3": 32
+  },
+  "styles": {
+    "P_XingYue_Title": {
+      "family": "serif_cn",
+      "weight_preference": "SemiBold",
+      "size_pt": 25,
+      "leading_pt": 29,
+      "color": "C_TEXT",
+      "space_after_mm": 1.2,
+      "space_before_mm": 0
+    },
+    "P_XingYue_Subtitle": {
+      "family": "sans_cn",
+      "weight_preference": "Regular",
+      "size_pt": 9.2,
+      "leading_pt": 13,
+      "color": "C_MUTED",
+      "space_after_mm": 3,
+      "space_before_mm": 0
+    },
+    "P_XingYue_Section": {
+      "family": "sans_cn",
+      "weight_preference": "Medium",
+      "size_pt": 11,
+      "leading_pt": 17,
+      "color": "C_SDU_RED",
+      "space_after_mm": 1.8,
+      "space_before_mm": 1
+    },
+    "P_XingYue_Subhead": {
+      "family": "sans_cn",
+      "weight_preference": "Medium",
+      "size_pt": 9.6,
+      "leading_pt": 14.5,
+      "color": "C_TEXT",
+      "space_after_mm": 1,
+      "space_before_mm": 1.5
+    },
+    "P_XingYue_Body": {
+      "family": "serif_cn",
+      "weight_preference": "Regular",
+      "size_pt": 9.2,
+      "leading_pt": 14.5,
+      "color": "C_TEXT",
+      "space_after_mm": 1.1,
+      "space_before_mm": 0
+    },
+    "P_XingYue_Media": {
+      "family": "serif_cn",
+      "weight_preference": "Regular",
+      "size_pt": 2,
+      "leading_pt": 3,
+      "color": "C_TEXT",
+      "space_after_mm": 0.7,
+      "space_before_mm": 1.5
+    },
+    "P_XingYue_Caption": {
+      "family": "sans_cn",
+      "weight_preference": "Regular",
+      "size_pt": 7.2,
+      "leading_pt": 10.5,
+      "color": "C_MUTED",
+      "space_after_mm": 2,
+      "space_before_mm": 0
+    }
+  }
+}

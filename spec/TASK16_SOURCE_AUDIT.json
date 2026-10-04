@@ -1,0 +1,41 @@
+{
+  "source": "manuscripts/source/幻协社娘.docx",
+  "sha256": "229cf81240173f8846f1c980b3cb620314959b6d6ebb96e20c86425c11cfc6ad",
+  "images": [
+    {
+      "index": 1,
+      "file": "assets/task16/xingyue-1.png",
+      "zip_member": "word/media/image1.png",
+      "width_px": 2000,
+      "height_px": 2000,
+      "sha256": "6c5f7f34e30060831cfea63492f111f24a41298ebc594642aadc118fca5e0f1f"
+    },
+    {
+      "index": 2,
+      "file": "assets/task16/xingyue-2.png",
+      "zip_member": "word/media/image2.png",
+      "width_px": 651,
+      "height_px": 977,
+      "sha256": "c517cb71de6cba269fc7d3f91eaf60941a8ef0a303616b3ad5fd544cde1a456b"
+    },
+    {
+      "index": 3,
+      "file": "assets/task16/xingyue-3.png",
+      "zip_member": "word/media/image3.png",
+      "width_px": 930,
+      "height_px": 930,
+      "sha256": "0051d2b3c11ed565c9e524bdd9584ed0fd379e1f060a32f4e0f7b51d0501d06c"
+    }
+  ],
+  "pancake_original": {
+    "file": "assets/task16/pancake-original.png",
+    "sha256": "eb03cf869c5fe40b244c2f45b8f07664ade164da226dfafe97371c52525a8431",
+    "width_px": 257,
+    "height_px": 350,
+    "origin_filename": "煎饼回忆录_奶牛煎饼.docx",
+    "origin_docx_sha256": "aa334c6e05fc323e4eda5ad5605f0a97f496868af3f8a4a077f789123c1fed82",
+    "zip_member": "word/media/image1.png",
+    "note": "Frozen CLEAN manuscript intentionally contains no embedded image; exact original submission member replaces the wide transparent canvas."
+  },
+  "copy_authority": "Explicit user-approved replacement prose; original DOCX retained unchanged for image/core-setting provenance."
+}

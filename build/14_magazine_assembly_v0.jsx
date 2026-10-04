@@ -24,6 +24,9 @@
 #include "../visual/history_skin.jsx"
 #include "../modules/editorial_info.jsx"
 #include "../visual/editorial_info_skin.jsx"
+#include "../modules/publication_refinements.jsx"
+#include "../modules/xingyue.jsx"
+#include "../visual/xingyue_skin.jsx"
 #include "../modules/assembly_v0.jsx"
 
 (function () {
