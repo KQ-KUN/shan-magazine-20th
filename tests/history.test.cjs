@@ -441,6 +441,11 @@ function fixedTailModel({overset=false,hiddenCinema=false,wrongPosterColumn=fals
     });
     const pages=prefix.map(f=>f.parentPage),added=[];
     fixedStory.paragraphs.forEach((p,i)=>{p.lines=map.paragraph_order[i]>=188?[]:[line(0)];});
+    const boundary=fixedStory.paragraphs[map.paragraph_order.indexOf(188)];
+    boundary.insertionPoints=[{index:fixedStory.paragraphs.slice(0,map.paragraph_order.indexOf(188)).reduce((n,p)=>n+p.contents.length,0)}];
+    boundary.parentTextFrames=[];boundary.getElements=()=>[boundary];
+    boundary.lines=[{isValid:true,parentTextFrames:[]},{isValid:true,parentTextFrames:[]}];
+    prefix[4].insertionPoints=[{index:boundary.insertionPoints[0].index}];
     if(tailInPrefix)fixedStory.paragraphs[map.paragraph_order.indexOf(188)].lines=[line(0)];
     pages.add=()=>{const page={id:pages.length+1,name:String(pages.length+1)};pages.push(page);return page;};
     const createFrame=page=>{const frame={id:101+page.id,parentPage:page,label:'SHAN_HISTORY:body',geometricBounds:[0,0,pt(223),pt(152)],
@@ -483,7 +488,8 @@ try {
         assert.equal(history.linePosition(p.lines[0]).page,7);
         assert.equal(history.linePosition(p.lines[0]).column,sourceParagraph===210?0:1);
     }
-    assert.match(frames.tailLog[0],/automatic_compaction=false/);
+    assert.match(frames.tailLog.join('\n'),/automatic_compaction=false/);
+    assert.match(frames.tailLog[0],/overset_lines=2/,'valid overset lines are not proof of prefix ownership');
     const tailRecords=map.images.map(im=>{const p=fixed.story.paragraphs[map.paragraph_order.indexOf(im.source_paragraph)];
         const block=tailLayout.blocks.find(b=>b.image_indices.includes(im.image_index));
         return block?{source:im,rect:{parentPage:fixed.doc.pages[block.page-1],itemLayer:{visible:true}},anchor:{parent:{lines:p.lines}}}:{};});
@@ -501,6 +507,18 @@ try {
         assert.ok(fixed.doc.pages.length<=7,'never add a spill page to hide a tail defect');
     }
 } finally {history.addFrame=fixedSavedAdd;history.runtime=null;}
+// Ownership and index guards remain fatal; fresh resolution cannot hide stale/invalid DOM.
+fixed=fixedTailModel();
+const boundary=fixed.story.paragraphs[map.paragraph_order.indexOf(188)];
+assert.doesNotThrow(()=>history.checkTailBoundary(fixed.story,map.paragraph_order.indexOf(188),fixed.frames));
+boundary.parentTextFrames=[fixed.frames[4]];
+assert.throws(()=>history.checkTailBoundary(fixed.story,map.paragraph_order.indexOf(188),fixed.frames),/paragraph has a composed text frame/);
+boundary.parentTextFrames=[];boundary.lines[1].parentTextFrames=[fixed.frames[4]];
+assert.throws(()=>history.checkTailBoundary(fixed.story,map.paragraph_order.indexOf(188),fixed.frames),/line has a composed text frame/);
+boundary.lines[1].parentTextFrames=[];fixed.frames[4].insertionPoints[0].index++;
+assert.throws(()=>history.checkTailBoundary(fixed.story,map.paragraph_order.indexOf(188),fixed.frames),/insertion point precedes visible frame end/);
+fixed.frames[4].insertionPoints[0].index--;boundary.getElements=()=>[{isValid:false}];
+assert.throws(()=>history.checkTailBoundary(fixed.story,map.paragraph_order.indexOf(188),fixed.frames),/missing\/invalid resolved first tail paragraph/);
 // Real flow enters the override after exactly five prefix frames, without flowing tail automatically.
 const realFixedTail=history.fixedTail,flowAdd=history.addFrame;
 let flowFrameCount=1,overrideCalls=0;

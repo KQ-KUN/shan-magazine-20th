@@ -117,5 +117,15 @@
     "runtimeTested": false,
     "designValuesPending": true,
     "frozen": false
+  },
+  "assembly_v0": {
+    "status": "IMPLEMENTED_PENDING_IND2026_TEST",
+    "scope": [
+      "modules/assembly_v0.jsx",
+      "build/14_magazine_assembly_v0.jsx"
+    ],
+    "runtimeTested": false,
+    "designValuesPending": true,
+    "frozen": false
   }
 }

@@ -288,12 +288,35 @@ SHAN.history = {
             }
         }
     },
+    checkTailBoundary: function (story, outputIndex, frames) {
+        var paragraph = this.paragraph(story, outputIndex, "first tail paragraph"), resolved, i, line, owners;
+        // Native 2026 retains valid Line objects in overset text. A nonzero
+        // lines.length does not prove that any line is composed into a frame.
+        if (typeof paragraph.getElements === "function") {
+            resolved = paragraph.getElements(); paragraph = this.domAt(resolved, 0, "resolved first tail paragraph");
+        }
+        owners = this.field(paragraph, "parentTextFrames", "first tail paragraph");
+        this.check(owners.length === 0, "Tail starts inside the locked five-page prefix: paragraph has a composed text frame");
+        var lines = this.field(paragraph, "lines", "first tail paragraph");
+        for (i = 0; i < lines.length; i += 1) {
+            line = this.domAt(lines, i, "first tail paragraph lines");
+            owners = this.field(line, "parentTextFrames", "first tail line");
+            this.check(owners.length === 0, "Tail starts inside the locked five-page prefix: line has a composed text frame");
+        }
+        var points = this.field(paragraph, "insertionPoints", "first tail paragraph");
+        var start = this.domAt(points, 0, "first tail insertion point").index;
+        var last = this.domAt(frames, -1, "locked prefix frames");
+        points = this.field(last, "insertionPoints", "last locked prefix frame");
+        var end = this.domAt(points, -1, "last locked prefix insertion point").index;
+        this.check(typeof start === "number" && typeof end === "number" && start >= end,
+            "Tail starts inside the locked five-page prefix: insertion point precedes visible frame end");
+        return "tail_boundary=uncomposed; overset_lines=" + lines.length + "; paragraph_start=" + start + "; prefix_end=" + end;
+    },
     fixedTail: function (doc, story, frames, map, tokens) {
         var tail = map.history_tail, snapshot = this.prefixSnapshot(frames), before = String(story.contents), i, block, paragraph, page, next;
         this.validateTailMap(tail, map);
-        paragraph = this.paragraph(story, this.indexOf(map.paragraph_order, tail.blocks[0].start_source_paragraph), "first tail paragraph");
-        var lines = this.field(paragraph, "lines", "first tail paragraph");
-        this.check(lines.length === 0, "Tail starts inside the locked five-page prefix; check baseline/fonts rather than repaginating prefix");
+        this.describe({ source_paragraph: tail.blocks[0].start_source_paragraph, operation: "validate uncomposed fixed tail boundary" });
+        var boundary = this.checkTailBoundary(story, this.indexOf(map.paragraph_order, tail.blocks[0].start_source_paragraph), frames);
         this.stage("history-tail:boundaries", { operation: "apply fixed source-paragraph frame/column boundaries" });
         for (i = 0; i < tail.blocks.length; i += 1) {
             block = tail.blocks[i];
@@ -318,7 +341,7 @@ SHAN.history = {
         this.check(!story.overflows, "Fixed History tail overset: preserve locked pages and inspect fixed page-6/7 block; automatic compression disabled");
         this.check(String(story.contents) === before, "Fixed tail changed source story contents");
         this.checkPrefixSnapshot(snapshot); this.tailChecks(doc, story, map);
-        frames.tailLog = ["tail_layout=fixed_two_pages; locked_prefix_pages=5; source_boundary=188; automatic_compaction=false; prefix_text_geometry=PASS"];
+        frames.tailLog = [boundary, "tail_layout=fixed_two_pages; locked_prefix_pages=5; source_boundary=188; automatic_compaction=false; prefix_text_geometry=PASS"];
         return frames;
     },
     tailChecks: function (doc, story, map, images) {

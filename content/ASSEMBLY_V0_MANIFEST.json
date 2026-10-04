@@ -1,0 +1,228 @@
+{
+  "version": "0.1",
+  "purpose": "REVIEW_PROOF_ONLY",
+  "project": {
+    "title": "山",
+    "subtitle": "山东大学学生科幻协会二十周年纪念刊",
+    "years": "2006—2026",
+    "trim_mm": [
+      185,
+      260
+    ],
+    "bleed_mm": 3
+  },
+  "cover": {
+    "front": {
+      "status": "APPROVED_EXTERNAL_ARTWORK",
+      "file": "assets/cover/SHAN_FRONT_COVER_FINAL.pdf",
+      "include_in_review_pdf": true,
+      "include_in_interior_master": false
+    },
+    "back": {
+      "status": "PENDING",
+      "include": false
+    },
+    "spine": {
+      "status": "WIDTH_PENDING",
+      "include": false
+    }
+  },
+  "editorial_corrections": [
+    {
+      "id": "wechat_account",
+      "target": "content/ASSOCIATION_PROFILE.json",
+      "from": "SFW10422",
+      "to": "SFA10422",
+      "status": "APPROVED_BY_USER",
+      "note": "Content-data correction only. Frozen Association Profile code remains unchanged."
+    }
+  ],
+  "interior": [
+    {
+      "id": "chapter_prologue",
+      "kind": "chapter",
+      "section_id": "prologue",
+      "title": "山口",
+      "start_on_recto": true
+    },
+    {
+      "id": "front_note",
+      "kind": "front_note",
+      "source": "manuscripts/11_front_写在山前_FINAL.docx",
+      "article_id": "front_note_shan",
+      "title": "写在《山》前"
+    },
+    {
+      "id": "association_profile",
+      "kind": "association_profile",
+      "source": "content/ASSOCIATION_PROFILE.json",
+      "title": "山东大学学生科幻协会"
+    },
+    {
+      "id": "toc_pending",
+      "kind": "placeholder",
+      "title": "目录",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    },
+    {
+      "id": "credits_pending",
+      "kind": "placeholder",
+      "title": "编辑委员会 / 版权信息",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    },
+    {
+      "id": "chapter_origin",
+      "kind": "chapter",
+      "section_id": "origin",
+      "title": "火种",
+      "start_on_recto": true
+    },
+    {
+      "id": "interview_shao",
+      "kind": "interview",
+      "source": "manuscripts/01_interview_邵珠瑜_贾锦阳.docx",
+      "article_id": "interview_shao",
+      "title": "邵珠瑜专访"
+    },
+    {
+      "id": "interview_xiao",
+      "kind": "interview",
+      "source": "manuscripts/01_interview_肖兆旭_河流.docx",
+      "article_id": "interview_xiao",
+      "title": "肖兆旭专访"
+    },
+    {
+      "id": "origin_pending",
+      "kind": "placeholder",
+      "title": "最初的我们",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    },
+    {
+      "id": "chapter_strata",
+      "kind": "chapter",
+      "section_id": "strata",
+      "title": "地层",
+      "start_on_recto": true
+    },
+    {
+      "id": "history",
+      "kind": "history",
+      "source": "manuscripts/source/山东大学学生科幻协会会史 (2.5）.docx",
+      "title": "山东大学学生科幻协会发展历史"
+    },
+    {
+      "id": "chapter_ridge",
+      "kind": "chapter",
+      "section_id": "ridge",
+      "title": "越岭",
+      "start_on_recto": true
+    },
+    {
+      "id": "feature_beyond_ridge",
+      "kind": "feature",
+      "source": "manuscripts/09_feature_越岭_几华里.docx",
+      "article_id": "feature_beyond_ridge",
+      "media_manifest": "assets/YUELING_MEDIA_MANIFEST.json",
+      "title": "越岭：十七年间，山外仍有回声"
+    },
+    {
+      "id": "chapter_constellations",
+      "kind": "chapter",
+      "section_id": "constellations",
+      "title": "星图",
+      "start_on_recto": true
+    },
+    {
+      "id": "fiction_fourfold",
+      "kind": "fiction",
+      "source": "manuscripts/04_fiction_四叠半_笠原JunE.docx",
+      "article_id": "fiction_fourfold",
+      "title": "四叠半"
+    },
+    {
+      "id": "fiction_tin_soldier",
+      "kind": "fiction",
+      "source": "manuscripts/05_fiction_锡兵_张钧寒.docx",
+      "article_id": "fiction_tin_soldier",
+      "title": "锡兵"
+    },
+    {
+      "id": "fiction_teleport_history",
+      "kind": "fiction",
+      "source": "manuscripts/06_fiction_传送科技逸史_田李昊.docx",
+      "article_id": "fiction_teleport_history",
+      "title": "传送科技逸史"
+    },
+    {
+      "id": "memoir_gloomy",
+      "kind": "memoir",
+      "source": "manuscripts/07_memoir_Gloomy_Biologist_Cry_笠原JunE_CLEAN.docx",
+      "article_id": "memoir_gloomy",
+      "media_manifest": "assets/GLOOMY_MEDIA_MANIFEST.json",
+      "title": "Gloomy Biologist Cry"
+    },
+    {
+      "id": "memoir_pancake",
+      "kind": "memoir",
+      "source": "manuscripts/08_memoir_煎饼回忆录_奶牛煎饼_CLEAN.docx",
+      "article_id": "memoir_pancake",
+      "media_manifest": "assets/PANCAKE_MEDIA_MANIFEST.json",
+      "title": "煎饼回忆录"
+    },
+    {
+      "id": "chapter_now",
+      "kind": "chapter",
+      "section_id": "now",
+      "title": "此刻",
+      "start_on_recto": true
+    },
+    {
+      "id": "feature_now",
+      "kind": "feature",
+      "source": "manuscripts/10_feature_宇宙很大，科幻更大_几华里.docx",
+      "article_id": "feature_universe_is_big",
+      "media_manifest": "assets/NOW_MEDIA_MANIFEST.json",
+      "title": "宇宙很大，科幻更大"
+    },
+    {
+      "id": "now_pending",
+      "kind": "placeholder",
+      "title": "2025—2026协会现状 / 活动 / 文创",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    },
+    {
+      "id": "chapter_beyond",
+      "kind": "chapter",
+      "section_id": "beyond",
+      "title": "山外",
+      "start_on_recto": true
+    },
+    {
+      "id": "messages_pending",
+      "kind": "placeholder",
+      "title": "历任社长寄语 / 友协祝福",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    },
+    {
+      "id": "closing_pending",
+      "kind": "placeholder",
+      "title": "未来 / 编后记 / 致谢",
+      "pages": 1,
+      "label": "CONTENT PENDING — NOT FOR PRINT"
+    }
+  ],
+  "excluded_for_v0": [
+    "老师刊首语（暂缓）",
+    "社娘（暂停）",
+    "封底",
+    "书脊",
+    "最终展开封面",
+    "最终TOC设计",
+    "最终版权页设计"
+  ]
+}

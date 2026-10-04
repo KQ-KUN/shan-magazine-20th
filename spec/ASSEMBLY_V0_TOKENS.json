@@ -1,0 +1,11 @@
+{
+  "version": "0.1",
+  "mode": "REVIEW_PROOF_PLACED_PDF",
+  "trim_mm": [
+    185,
+    260
+  ],
+  "bleed_mm": 3,
+  "placement_scale_percent": 100,
+  "geometry_tolerance_mm": 0.2
+}
