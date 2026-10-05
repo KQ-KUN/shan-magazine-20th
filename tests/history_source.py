@@ -151,7 +151,17 @@ def frozen_check():
             frozen_files.extend(value['scope'])
     # Honor existing Git checkout EOL filters for code only. Never normalize manuscript/XML/image bytes.
     subprocess.run(['git', 'diff', '--exit-code', 'HEAD', '--', *frozen_files], cwd=ROOT, check=True, stdout=subprocess.PIPE)
-    for file in ['spec/CONTENT_MANIFEST.json', 'assets/cover/SHAN_FRONT_COVER_FINAL.pdf']:
+    # TASK18 explicitly authorizes chapter intro copy only; History's numbering
+    # and all other manifest fields remain protected. Its dedicated delta test
+    # verifies the three new strings exactly, including the six-chapter context.
+    manifest = json.loads((ROOT / 'spec/CONTENT_MANIFEST.json').read_text('utf-8'))
+    previous = json.loads(subprocess.check_output(['git', 'show', 'HEAD:spec/CONTENT_MANIFEST.json'], cwd=ROOT))
+    for current, old in zip(manifest['sections'], previous['sections']):
+        if current['id'] in ['origin', 'ridge', 'beyond']:
+            old['intro'] = current['intro']
+    assert manifest == previous, 'Unexpected non-intro content-manifest change'
+    subprocess.run(['node', 'tests/task18.test.cjs'], cwd=ROOT, check=True, stdout=subprocess.PIPE)
+    for file in ['assets/cover/SHAN_FRONT_COVER_FINAL.pdf']:
         assert (ROOT / file).read_bytes() == subprocess.check_output(['git', 'show', 'HEAD:' + file], cwd=ROOT), file
 
 

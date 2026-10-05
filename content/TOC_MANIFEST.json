@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "mode": "FORMAL_COMPLETED_CONTENT_ONLY",
+  "page_numbers": "CURRENT_ASSEMBLY_RUNTIME_COMPONENT_START_PAGE",
+  "exclude_kinds": [
+    "placeholder",
+    "toc",
+    "editorial_info"
+  ],
+  "exclude_titles": [
+    "友协祝福",
+    "编后记",
+    "独立致谢页"
+  ],
+  "preferred_column_split_before": "chapter_constellations",
+  "metadata": {
+    "association_profile": {
+      "title": "山东大学学生科幻协会简介"
+    },
+    "interview_shao": {
+      "title": "邵珠瑜：以热爱拓荒，为科幻点燃校园星火",
+      "author": "贾锦阳"
+    },
+    "interview_xiao": {
+      "title": "肖兆旭：肉体工作，灵魂爱好，心怀热爱就好",
+      "author": "河流"
+    },
+    "feature_beyond_ridge": {
+      "author": "几华里"
+    },
+    "feature_monday_cup_backstage": {
+      "author": "鲲图"
+    },
+    "fiction_fourfold": {
+      "author": "笠原JunE"
+    },
+    "fiction_tin_soldier": {
+      "author": "张钧寒"
+    },
+    "fiction_teleport_history": {
+      "author": "田李昊"
+    },
+    "memoir_gloomy": {
+      "author": "笠原JunE"
+    },
+    "memoir_pancake": {
+      "author": "奶牛煎饼"
+    },
+    "feature_now": {
+      "author": "几华里"
+    }
+  }
+}

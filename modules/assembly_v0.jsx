@@ -93,7 +93,8 @@ SHAN.assemblyV0 = {
         } else if (c.kind === "feature") {
             tokens = this.read(root, "spec/FEATURE_TOKENS.json"); media = this.read(root, c.media_manifest);
             SHAN.featureSkin.apply(doc, tokens, base, context);
-            SHAN.feature.create(doc, File(root + "/" + c.source), c.article_id, media, root);
+            if (c.id === "feature_monday_cup_backstage") { SHAN.mondayCup.create(doc, c, root); }
+            else { SHAN.feature.create(doc, File(root + "/" + c.source), c.article_id, media, root); }
         } else if (c.kind === "front_note") {
             tokens = this.read(root, "spec/FRONT_NOTE_TOKENS.json"); SHAN.frontNoteSkin.apply(doc, tokens, base, context);
             result = SHAN.frontNote.create(doc, File(root + "/" + c.source), c.article_id, tokens, {hasSignature: false});

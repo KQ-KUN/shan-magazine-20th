@@ -28,6 +28,7 @@
 #include "../modules/xingyue.jsx"
 #include "../visual/xingyue_skin.jsx"
 #include "../modules/assembly_v0.jsx"
+#include "../modules/monday_cup.jsx"
 
 (function () {
     var root = File($.fileName).parent.parent.fsName;

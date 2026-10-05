@@ -1,6 +1,17 @@
-param([ValidateSet('Samples','Book')][string]$Mode='Book', [string]$ProjectRoot=(Join-Path $PSScriptRoot '..'), [string]$PythonExecutable=(Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'))
+﻿param([ValidateSet('Samples','Book')][string]$Mode='Book', [string]$ProjectRoot=(Join-Path $PSScriptRoot '..'), [string]$PythonExecutable=(Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'))
 $ErrorActionPreference='Stop'
 $printRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
+if($Mode -eq 'Book'){
+ $printCurrent=Get-Content -Raw -LiteralPath (Join-Path $printRoot 'content/ASSEMBLY_V0_MANIFEST.json') | ConvertFrom-Json
+ if($printCurrent.interior.kind -contains 'toc'){
+  & (Join-Path $printRoot 'tools/run_print_v4.ps1') -ProjectRoot $printRoot -PythonExecutable $PythonExecutable
+  exit 0
+ }
+ if($printCurrent.interior.id -contains 'feature_monday_cup_backstage'){
+  & (Join-Path $printRoot 'tools/run_print_v3.ps1') -ProjectRoot $printRoot -PythonExecutable $PythonExecutable
+  exit 0
+ }
+}
 $printOut=Join-Path $printRoot 'exports/print_v2'
 New-Item -ItemType Directory -Force -Path $printOut | Out-Null
 if($Mode -eq 'Book'){

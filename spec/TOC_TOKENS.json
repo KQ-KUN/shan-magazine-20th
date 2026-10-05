@@ -1,0 +1,67 @@
+{
+  "version": "1.0",
+  "columns": 2,
+  "gutter_mm": 6,
+  "main_top_mm": 54,
+  "main_bottom_mm": 235,
+  "preferred_pages": 1,
+  "max_pages": 2,
+  "number_axis_mm": 9,
+  "chapter_height_mm": 8.5,
+  "section_gap_mm": 2.3,
+  "chapter_after_mm": 1.4,
+  "entry_after_mm": 2.0,
+  "author_gap_mm": 0.45,
+  "styles": {
+    "P_TOC_Display": {
+      "family": "serif_cn",
+      "weight": "SemiBold",
+      "size_pt": 26,
+      "leading_pt": 32,
+      "color": "C_TOC_Red"
+    },
+    "P_TOC_English": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 8.6,
+      "leading_pt": 12,
+      "tracking": 140,
+      "color": "C_TOC_Muted"
+    },
+    "P_TOC_Chapter_Number": {
+      "family": "sans_cn",
+      "weight": "Medium",
+      "size_pt": 20,
+      "leading_pt": 23,
+      "color": "C_TOC_Red"
+    },
+    "P_TOC_Chapter_Name": {
+      "family": "serif_cn",
+      "weight": "SemiBold",
+      "size_pt": 12.2,
+      "leading_pt": 17,
+      "color": "C_TOC_Text"
+    },
+    "P_TOC_Article": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 8.8,
+      "leading_pt": 12.6,
+      "color": "C_TOC_Text"
+    },
+    "P_TOC_Author": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 7.5,
+      "leading_pt": 10,
+      "color": "C_TOC_Muted"
+    },
+    "P_TOC_Page": {
+      "family": "mono",
+      "weight": "Regular",
+      "size_pt": 9.2,
+      "leading_pt": 13,
+      "color": "C_TOC_Text"
+    }
+  }
+}

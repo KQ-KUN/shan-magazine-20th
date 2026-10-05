@@ -1,0 +1,118 @@
+{
+  "source": "manuscripts/12_feature_第一届月曜杯幕后_鲲图.docx",
+  "source_sha256": "37bae5b2b21eb1b8ffe789db47fef3525d17755d9b0a519458aba0ad2098e57c",
+  "layout_source": "manuscripts/layout/12_feature_第一届月曜杯幕后_鲲图_LAYOUT.docx",
+  "layout_sha256": "b9b14ace49ddaafb99b3649c4121ad3e231508d93b5bbe6ce4b03b2acb10e61a",
+  "paragraph_count": 18,
+  "normalization": "Paragraph equality removes only the terminal InDesign CR. At import only, a single leading U+FEFF encoding marker may be removed if absent from source; logged explicitly. No other text normalization.",
+  "paragraphs": [
+    {
+      "source_index": 1,
+      "word_style": "ArticleTitle",
+      "text_sha256": "c7fc47553bb28e744cdad191f3818ca9415aca51f4c567454be1edf2c515ad85",
+      "number_marker": null
+    },
+    {
+      "source_index": 2,
+      "word_style": "Author",
+      "text_sha256": "1be964a054f9b343a9a9474b6d2f3765d700e433742dd6a18b04c06a4ebbe16a",
+      "number_marker": null
+    },
+    {
+      "source_index": 3,
+      "word_style": "Body",
+      "text_sha256": "d96bc9e7cb910ffc7ac4b27bd5c7cf4c22244614b9fa45465f375586353a5d49",
+      "number_marker": null
+    },
+    {
+      "source_index": 4,
+      "word_style": "Body",
+      "text_sha256": "6d91713d5f9c182696c93748f206170ea9627072be6bdf2d1bb4e158c9ae92ba",
+      "number_marker": null
+    },
+    {
+      "source_index": 5,
+      "word_style": "Body",
+      "text_sha256": "108e41f73b23db7f00cdcd4f739730514ea2bbb8d4913e8cf7aad547182a22f1",
+      "number_marker": null
+    },
+    {
+      "source_index": 6,
+      "word_style": "Body",
+      "text_sha256": "e408516d91d0d50fb873eeea704028cb8879b11c50b70b9480e9234915358791",
+      "number_marker": null
+    },
+    {
+      "source_index": 7,
+      "word_style": "Body",
+      "text_sha256": "1a2fc7a011ccab899534f51a0fcdf16d8e813256262b3e6839d0f8d96f175356",
+      "number_marker": null
+    },
+    {
+      "source_index": 8,
+      "word_style": "Body",
+      "text_sha256": "8593e52635bb87645ebc6be8294bd1fe7ad3a8a76239e08d455d62379c563b9a",
+      "number_marker": "①"
+    },
+    {
+      "source_index": 9,
+      "word_style": "Body",
+      "text_sha256": "36a973fbf256a8e4f378ad1fe834299dd74c6cd754b910def8e23dac1cdf2ed0",
+      "number_marker": "②"
+    },
+    {
+      "source_index": 10,
+      "word_style": "Body",
+      "text_sha256": "43fee044c9354f0e5c41fd26f24a937da5a3766d056f6aaef0bcc9db54ac6516",
+      "number_marker": "③"
+    },
+    {
+      "source_index": 11,
+      "word_style": "Body",
+      "text_sha256": "509e9284424f8c1ce017c30223cba1a14ad21f972a5b73650a17337d1dd38bd8",
+      "number_marker": "④"
+    },
+    {
+      "source_index": 12,
+      "word_style": "Body",
+      "text_sha256": "d339aa8e898958dff8429a70beec5796bc909082f6e6519d16996c5cdbba5fe2",
+      "number_marker": "⑤"
+    },
+    {
+      "source_index": 13,
+      "word_style": "Body",
+      "text_sha256": "2578ccd18b18a8c25c3aef9bed666ef212f86fccc14391d18b05a9ab228819a7",
+      "number_marker": "⑥"
+    },
+    {
+      "source_index": 14,
+      "word_style": "Body",
+      "text_sha256": "470e026c681aa13b4c12c77c091b477dcacc1ba291591412c4b83673e5dbd761",
+      "number_marker": "⑦"
+    },
+    {
+      "source_index": 15,
+      "word_style": "Body",
+      "text_sha256": "4e53e07c0ed847a3e168c905bf82f2f2f840c289a632bbe4495994269709d445",
+      "number_marker": "⑧"
+    },
+    {
+      "source_index": 16,
+      "word_style": "Body",
+      "text_sha256": "7dbfb1f4e2d87d88e34a6c1ab31ba0455ed182d3cdc32d372943f162fbf8616b",
+      "number_marker": null
+    },
+    {
+      "source_index": 17,
+      "word_style": "Body",
+      "text_sha256": "8d7f5a17a64deb137c430397c4f00da8fdec09d8d573e3a822f309409ae1b970",
+      "number_marker": null
+    },
+    {
+      "source_index": 18,
+      "word_style": "Body",
+      "text_sha256": "71225854dcd4248c401ef02030e50a306547a57233b57948a3d5c32ce3d2961a",
+      "number_marker": null
+    }
+  ]
+}

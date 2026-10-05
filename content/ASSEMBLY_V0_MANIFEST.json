@@ -59,17 +59,16 @@
       "title": "山东大学学生科幻协会"
     },
     {
-      "id": "toc_pending",
-      "kind": "placeholder",
-      "title": "目录",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
-    },
-    {
       "id": "editorial_info",
       "kind": "editorial_info",
       "source": "manuscripts/source/编辑信息.docx",
       "title": "编辑委员会 / 版权信息"
+    },
+    {
+      "id": "toc",
+      "kind": "toc",
+      "title": "目录",
+      "toc_manifest": "content/TOC_MANIFEST.json"
     },
     {
       "id": "chapter_origin",
@@ -126,6 +125,22 @@
       "article_id": "feature_beyond_ridge",
       "media_manifest": "assets/YUELING_MEDIA_MANIFEST.json",
       "title": "越岭：十七年间，山外仍有回声"
+    },
+    {
+      "id": "feature_monday_cup_backstage",
+      "kind": "feature",
+      "section_id": "ridge",
+      "source": "manuscripts/12_feature_第一届月曜杯幕后_鲲图.docx",
+      "layout_source": "manuscripts/layout/12_feature_第一届月曜杯幕后_鲲图_LAYOUT.docx",
+      "import_map": "content/MONDAY_CUP_IMPORT_MAP.json",
+      "article_id": "feature_monday_cup_backstage",
+      "media_manifest": "content/MONDAY_CUP_MEDIA_MANIFEST.json",
+      "title": "第一届“月曜杯”山东高校科幻联合征文幕后二三事",
+      "author": "鲲图",
+      "toc": {
+        "title": "第一届“月曜杯”山东高校科幻联合征文幕后二三事",
+        "author": "鲲图"
+      }
     },
     {
       "id": "chapter_constellations",
