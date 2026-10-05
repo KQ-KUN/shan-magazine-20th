@@ -1,0 +1,87 @@
+{
+  "trim_mm": [
+    185,
+    260
+  ],
+  "bleed_mm": 3,
+  "safe_trim_mm": 5,
+  "inside_mm": 18,
+  "max_artwork_tac_percent": 220,
+  "number_pt": 114,
+  "title_pt": 62,
+  "english_pt": 10,
+  "intro_pt": 10.2,
+  "intro_leading_pt": 15,
+  "sections": {
+    "prologue": {
+      "cmyk": [
+        3,
+        4,
+        10,
+        0
+      ],
+      "motif": "entrance",
+      "light_background": true
+    },
+    "origin": {
+      "cmyk": [
+        12,
+        70,
+        65,
+        22
+      ],
+      "motif": "ember",
+      "light_background": false
+    },
+    "strata": {
+      "cmyk": [
+        23,
+        49,
+        60,
+        29
+      ],
+      "motif": "sediment",
+      "light_background": false
+    },
+    "ridge": {
+      "cmyk": [
+        68,
+        33,
+        51,
+        38
+      ],
+      "motif": "ridge",
+      "light_background": false
+    },
+    "constellations": {
+      "cmyk": [
+        80,
+        64,
+        25,
+        30
+      ],
+      "motif": "constellation",
+      "light_background": false
+    },
+    "now": {
+      "cmyk": [
+        70,
+        32,
+        35,
+        27
+      ],
+      "motif": "signal",
+      "light_background": false
+    },
+    "beyond": {
+      "cmyk": [
+        64,
+        64,
+        28,
+        32
+      ],
+      "motif": "horizon",
+      "light_background": false
+    }
+  }
+}
