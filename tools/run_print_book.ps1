@@ -3,6 +3,10 @@ $ErrorActionPreference='Stop'
 $printRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
 if($Mode -eq 'Book'){
  $printCurrent=Get-Content -Raw -LiteralPath (Join-Path $printRoot 'content/ASSEMBLY_V0_MANIFEST.json') | ConvertFrom-Json
+ if($printCurrent.interior.kind -contains 'editorial_toc'){
+  & (Join-Path $printRoot 'tools/run_print_v5.ps1') -ProjectRoot $printRoot -PythonExecutable $PythonExecutable
+  exit 0
+ }
  if($printCurrent.interior.kind -contains 'toc'){
   & (Join-Path $printRoot 'tools/run_print_v4.ps1') -ProjectRoot $printRoot -PythonExecutable $PythonExecutable
   exit 0

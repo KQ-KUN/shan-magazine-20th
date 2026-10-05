@@ -1,0 +1,8 @@
+{
+  "authorization": "User-supplied short copyright for combined editorial/contents page; original source unchanged.",
+  "source_audit": "spec/EDITORIAL_INFO_SOURCE_AUDIT.json",
+  "short_copyright": [
+    "本刊为山东大学学生科幻协会二十周年纪念刊，用于协会历史整理、作品展示与内部交流。所收录文章、图片及其他作品著作权归相应作者或权利人所有；转载、复制或使用其中内容，请事先取得相应授权并注明出处。",
+    "部分历史资料来自历届社员保存的照片、文稿、活动记录及采访材料，如有疏漏，欢迎联系编辑部补充或勘误。"
+  ]
+}

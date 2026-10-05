@@ -59,15 +59,11 @@
       "title": "山东大学学生科幻协会"
     },
     {
-      "id": "editorial_info",
-      "kind": "editorial_info",
+      "id": "editorial_toc",
+      "kind": "editorial_toc",
+      "title": "编辑委员会 / 目录",
       "source": "manuscripts/source/编辑信息.docx",
-      "title": "编辑委员会 / 版权信息"
-    },
-    {
-      "id": "toc",
-      "kind": "toc",
-      "title": "目录",
+      "display": "content/EDITORIAL_TOC_DISPLAY.json",
       "toc_manifest": "content/TOC_MANIFEST.json"
     },
     {

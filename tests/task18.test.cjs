@@ -11,6 +11,9 @@ const at=after.interior.findIndex(c=>c.id===id);
 assert.strictEqual(after.interior[at-1].id,'feature_beyond_ridge');
 assert.strictEqual(after.interior[at+1].id,'chapter_constellations');
 const without=JSON.parse(JSON.stringify(after));without.interior=without.interior.filter(c=>c.id!==id);
+if(without.interior.some(c=>c.kind==='editorial_toc')){
+ assert.strictEqual(without.interior[3].kind,'editorial_toc');without.interior.splice(3,1,before.interior[3],before.interior[4]);
+}
 if(without.interior.some(c=>c.kind==='toc')){
  const formal=without.interior.findIndex(c=>c.kind==='toc'),credits=without.interior.find(c=>c.id==='editorial_info');
  assert.strictEqual(formal,4);assert.strictEqual(without.interior[3].id,'editorial_info');

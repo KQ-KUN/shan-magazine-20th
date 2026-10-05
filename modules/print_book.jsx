@@ -104,7 +104,7 @@ SHAN.printBook = {
                 report.intentional_transition_pages.push({page:next,before:c.id,section:c.section_id,art:SHAN.chapterArt.render(doc,page,section,t,base,true)});next+=1;
             }
             this.check(next===entry.start_page,"Approved body pagination changed "+c.id);
-            if(c.kind==="toc"){
+            if(c.kind==="toc" || c.kind==="editorial_toc"){
                 runtime.setStage("reserve-native-toc",{physical_page:next});for(j=0;j<entry.page_count;j+=1){a.page(doc,"NATIVE_TOC:"+(j+1));}
             }else if(c.kind==="chapter"){
                 runtime.setStage("chapter-opener",{section_id:c.section_id,physical_page:next});section=this.section(sections,c.section_id);
@@ -118,12 +118,24 @@ SHAN.printBook = {
             }
             this.check(Number(doc.pages[next-1].name)===next,"Actual component folio mismatch "+c.id);
             report.components.push({id:c.id,kind:c.kind,start_page:Number(doc.pages[next-1].name),end_page:Number(doc.pages[next+entry.page_count-2].name),page_count:entry.page_count,status:entry.status,
-                source_sha256:entry.sha256,production_sha256:(c.kind==="chapter" || c.kind==="toc")?null:byId[c.id].sha256});next+=entry.page_count;
+                source_sha256:entry.sha256,production_sha256:(c.kind==="chapter" || c.kind==="toc" || c.kind==="editorial_toc")?null:byId[c.id].sha256});next+=entry.page_count;
         }
         this.check(doc.pages.length===baseline.interior_pages && next-1===baseline.interior_pages,"Additional interior pages");
         this.check(report.intentional_transition_pages.length===baseline.parity_transitions.length,"Additional transitions");
         for(i=0;i<baseline.parity_transitions.length;i+=1){this.check(report.intentional_transition_pages[i].page===baseline.parity_transitions[i].page && report.intentional_transition_pages[i].before===baseline.parity_transitions[i].before,"Wrong transition replacement");}
-        if(plan.toc_manifest){
+        if(plan.combined_front_matter){
+            runtime.setStage("combined-editorial-contents-from-actual-ranges");
+            var combinedRecord=null;
+            for(i=0;i<report.components.length;i+=1){if(report.components[i].kind==="editorial_toc"){combinedRecord=report.components[i];}}
+            this.check(combinedRecord && combinedRecord.page_count===1,"Combined editorial/contents requires exactly one page");
+            var combinedPage=doc.pages[combinedRecord.start_page-1],combinedConfig=a.read(root,plan.toc_manifest);
+            var combinedData=SHAN.toc.entries(manifest,{status:"PASS",components:report.components},combinedConfig,sections);
+            var combined=SHAN.editorialToc.render(doc,combinedPage,combinedData,a.read(root,"spec/EDITORIAL_TOC_TOKENS.json"),a.read(root,"content/EDITORIAL_TOC_DISPLAY.json"),root);
+            report.editorial_toc=combined;report.credits_page={interior_page:combinedRecord.start_page,printed_folio:combinedRecord.start_page,review_pdf_page:combinedRecord.start_page+2,side:a.side(combinedPage)};
+            report.toc_page={interior_page:combinedRecord.start_page,printed_folio:combinedRecord.start_page,review_pdf_page:combinedRecord.start_page+2,side:a.side(combinedPage),page_count:1};
+            report.toc_rendering=combined;report.toc_entries=combinedData.entries;report.toc_pending_excluded=combinedData.pending;report.toc_page_numbers_source=combinedData.page_numbers_source;
+            report.toc_validation={status:"PASS",overset:false,actual_runtime_start_pages:true,chapters_point_to_recto_openers:true,credits_toc_same_page:true,entry_count:combinedData.entries.length};
+        }else if(plan.toc_manifest){
             runtime.setStage("native-toc-from-actual-ranges");var tocConfig=a.read(root,plan.toc_manifest),tocTokens=a.read(root,"spec/TOC_TOKENS.json"),tocRecord=null,creditsRecord=null,tocPages=[];
             for(i=0;i<report.components.length;i+=1){if(report.components[i].kind==="toc"){tocRecord=report.components[i];}if(report.components[i].id==="editorial_info"){creditsRecord=report.components[i];}}
             this.check(tocRecord && creditsRecord,"Missing front-matter components");

@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "left_mm": 15,
+  "top_mm": 18,
+  "bottom_mm": 240,
+  "editorial_width_mm": 47,
+  "gap_mm": 7,
+  "contents_width_mm": 98,
+  "rule_pt": 0.5,
+  "contents_top_mm": 40,
+  "number_axis_mm": 8,
+  "section_gap_mm": 2.3,
+  "chapter_height_mm": 7.2,
+  "entry_after_mm": 1.3,
+  "author_gap_mm": 0.3,
+  "styles": {
+    "P_ET_Title": {
+      "family": "serif_cn",
+      "weight": "SemiBold",
+      "size_pt": 13,
+      "leading_pt": 18,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 1.3
+    },
+    "P_ET_Subtitle": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 7.3,
+      "leading_pt": 10.5,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 1.7
+    },
+    "P_ET_Section": {
+      "family": "sans_cn",
+      "weight": "Medium",
+      "size_pt": 8.4,
+      "leading_pt": 12,
+      "color": "C_TOC_Red",
+      "space_before_mm": 2.3,
+      "space_after_mm": 1
+    },
+    "P_ET_Body": {
+      "family": "serif_cn",
+      "weight": "Regular",
+      "size_pt": 7.8,
+      "leading_pt": 11.4,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Empty": {
+      "family": "serif_cn",
+      "weight": "Regular",
+      "size_pt": 2,
+      "leading_pt": 2,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Legal": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 7.4,
+      "leading_pt": 10.8,
+      "color": "C_TOC_Muted",
+      "space_before_mm": 0,
+      "space_after_mm": 1.8
+    },
+    "P_ET_Contents_Title": {
+      "family": "serif_cn",
+      "weight": "SemiBold",
+      "size_pt": 22,
+      "leading_pt": 27,
+      "color": "C_TOC_Red",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Contents_English": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 7.5,
+      "leading_pt": 10,
+      "color": "C_TOC_Muted",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Chapter": {
+      "family": "sans_cn",
+      "weight": "Medium",
+      "size_pt": 11.4,
+      "leading_pt": 15.8,
+      "color": "C_TOC_Red",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Article": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 8.8,
+      "leading_pt": 12.6,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Author": {
+      "family": "sans_cn",
+      "weight": "Regular",
+      "size_pt": 7.3,
+      "leading_pt": 9.5,
+      "color": "C_TOC_Muted",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    },
+    "P_ET_Page": {
+      "family": "mono",
+      "weight": "Regular",
+      "size_pt": 9.2,
+      "leading_pt": 13,
+      "color": "C_TOC_Text",
+      "space_before_mm": 0,
+      "space_after_mm": 0
+    }
+  }
+}

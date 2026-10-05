@@ -5,7 +5,8 @@
   "exclude_kinds": [
     "placeholder",
     "toc",
-    "editorial_info"
+    "editorial_info",
+    "editorial_toc"
   ],
   "exclude_titles": [
     "友协祝福",

@@ -32,5 +32,5 @@ for(const module of Object.values(status))if(module.frozen)for(const file of mod
 for(const file of ['modules/history.jsx','visual/history_skin.jsx','spec/HISTORY_TOKENS.json','content/HISTORY_IMPORT_MAP.json','modules/publication_refinements.jsx','modules/xingyue.jsx','visual/xingyue_skin.jsx','spec/XINGYUE_TOKENS.json','spec/VISUAL_TOKENS.json','workflow/MODULE_STATUS.json'])assert.strictEqual(git('diff',baseline.baseline_commit,'--',file).length,0,'Protected changed '+file);
 const existing=git('ls-tree','-r','--name-only',baseline.baseline_commit,'--','manuscripts','assets').toString('utf8').trim().split('\n');
 for(const file of existing)assert.strictEqual(git('diff',baseline.baseline_commit,'--',file).length,0,'Existing source/asset changed '+file);
-require(json('content/ASSEMBLY_V0_MANIFEST.json').interior.some(c=>c.kind==='toc')?'./task19.test.cjs':'./task18.test.cjs');
-console.log('PASS PrintBook static: C2 distinct / 71 interior + 2 reader pages / 7 recto chapters / only transitions 6,26,62 / CMYK <=220% / BOM / approved input SHA / zero frozen or body changes');
+require(json('content/ASSEMBLY_V0_MANIFEST.json').interior.some(c=>c.kind==='editorial_toc')?'./task20.test.cjs':json('content/ASSEMBLY_V0_MANIFEST.json').interior.some(c=>c.kind==='toc')?'./task19.test.cjs':'./task18.test.cjs');
+console.log('PASS protected TASK17 baseline static: C2 distinct / 71 interior + 2 reader pages / 7 recto chapters / only transitions 6,26,62 / CMYK <=220% / BOM / approved input SHA / zero frozen or body changes');

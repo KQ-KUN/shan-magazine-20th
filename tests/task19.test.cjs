@@ -2,7 +2,8 @@ const fs=require('fs'),path=require('path'),assert=require('assert'),vm=require(
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8').replace(/^\uFEFF/,'');
 const json=p=>JSON.parse(read(p));
-const manifest=json('content/ASSEMBLY_V0_MANIFEST.json'),config=json('content/TOC_MANIFEST.json'),tokens=json('spec/TOC_TOKENS.json');
+const current=json('content/ASSEMBLY_V0_MANIFEST.json');
+const manifest=current.interior.some(c=>c.kind==='editorial_toc')?JSON.parse(require('child_process').execFileSync('git',['show','8bbc343faca2b7b9131fd610310e40856a72dcae:content/ASSEMBLY_V0_MANIFEST.json'],{cwd:root})):current,config=json('content/TOC_MANIFEST.json'),tokens=json('spec/TOC_TOKENS.json');
 assert.strictEqual(manifest.interior[3].id,'editorial_info');assert.strictEqual(manifest.interior[4].kind,'toc');
 assert(!manifest.interior.some(c=>c.id==='toc_pending'));
 const context={};vm.createContext(context);vm.runInContext(read('modules/toc.jsx'),context);
