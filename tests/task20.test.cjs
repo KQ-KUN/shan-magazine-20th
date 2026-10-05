@@ -4,12 +4,13 @@ const before=JSON.parse(cp.execFileSync('git',['show','8bbc343faca2b7b9131fd6103
 const current=json('content/ASSEMBLY_V0_MANIFEST.json'),restored=JSON.parse(JSON.stringify(current));
 assert.strictEqual(current.interior[3].id,'editorial_toc');assert.strictEqual(current.interior[4].id,'chapter_origin');
 assert(!current.interior.some(c=>['editorial_info','toc','toc_pending'].includes(c.id)));
-restored.interior.splice(3,1,...before.interior.slice(3,5));assert.deepStrictEqual(restored,before,'Only combine two front components');
+restored.interior.splice(3,1,...before.interior.slice(3,5));
+for(const c of before.interior.filter(c=>['origin_pending','now_pending','closing_pending'].includes(c.id))){if(!restored.interior.some(x=>x.id===c.id)){restored.interior.splice(before.interior.findIndex(x=>x.id===c.id),0,c);}}assert.deepStrictEqual(restored,before,'Only combine two front components');
 const context={};vm.createContext(context);vm.runInContext(read('modules/toc.jsx'),context);
 const previous=json('exports/print_v4/FINAL_PRINT_REPORT.json'),shifted=JSON.parse(JSON.stringify(previous));
 for(const c of shifted.components)if(c.start_page>5){c.start_page-=2;c.end_page-=2;}
 const entries=context.SHAN.toc.entries(current,shifted,json('content/TOC_MANIFEST.json'),json('spec/CONTENT_MANIFEST.json').sections);
-assert.strictEqual(entries.entries.length,21);assert.strictEqual(entries.pending.length,4);
+assert.strictEqual(entries.entries.length,21);assert.strictEqual(entries.pending.length,1);
 assert.strictEqual(entries.entries.find(e=>e.component_id==='chapter_origin').printed_folio,5);
 assert(entries.entries.some(e=>e.component_id==='feature_monday_cup_backstage'));
 assert(entries.entries.some(e=>e.component_id==='xingyue'));

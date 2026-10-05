@@ -1,0 +1,22 @@
+{
+  "version": "6.0",
+  "binding_mode": "UNCONFIRMED",
+  "cover_pages": 4,
+  "cover_artwork_pages_supplied": 1,
+  "reader_cover_pages": 2,
+  "source_plan": "content/ASSEMBLY_V0_MANIFEST.json",
+  "baseline": "exports/print_v6/RESOLVED_BOOK_PLAN.json",
+  "approved_cover": "assets/cover/SHAN_FRONT_COVER_FINAL.pdf",
+  "inside_front_type": "COVER_INSIDE_FRONT_BLANK",
+  "parity_page_type": "CHAPTER_TRANSITION_VERSO",
+  "interior_number_start": 1,
+  "reader_interior_offset": 2,
+  "add_only_parity_pages": true,
+  "body_geometry": "IMMUTABLE_APPROVED_BODY_EXCEPT_AUTHORIZED_NUMERIC_FOLIOS",
+  "print_text_black": "exact C_TEXT RGB [0.122,0.122,0.122] -> Process 100K in production copies only",
+  "section_tokens": "spec/CHAPTER_ART_TOKENS.json",
+  "output": "exports/print_v6",
+  "output_version": "V6",
+  "toc_manifest": "content/TOC_MANIFEST.json",
+  "combined_front_matter": true
+}

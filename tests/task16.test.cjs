@@ -15,14 +15,14 @@ for(const image of audit.images.concat([audit.pancake_original])){
  assert.strictEqual(bytes.readUInt32BE(16),image.width_px);assert.strictEqual(bytes.readUInt32BE(20),image.height_px);
 }
 const data=json('content/XINGYUE.json'),rows=data.paragraphs;
-assert.deepStrictEqual(rows.filter(p=>p.image).map(p=>p.image),[1,2,3]);
+assert.deepStrictEqual(rows.filter(p=>p.image).map(p=>p.image),[2,1,3]);
 assert(rows.filter(p=>p.image).every(p=>p.role==='Media' && p.text===''));
 for(const [i,p] of rows.entries())if(p.image)assert.strictEqual(rows[i+1].role,'Caption');
-assert.deepStrictEqual(rows.filter(p=>p.role==='Caption').map(p=>p.text),['原型图｜马静雅绘','星岳人物形象','Q版表情包']);
-assert(rows.some(p=>p.text==='她是一位 AGI，负责航线计算、信息分析与辅助决策，也是船上的气氛担当。活泼开朗的小星岳，既是大家旅途中的可靠伙伴，也是整艘星船的“最强大脑”。'));
+assert.deepStrictEqual(rows.filter(p=>p.role==='Caption').map(p=>p.text),['星岳人物形象','原型图｜马静雅绘','Q版表情包']);
+assert.deepStrictEqual(rows.filter(p=>['Body','Quote'].includes(p.role)).slice(0,8).map(p=>p.text),json('content/TASK21_APPROVED_XINGYUE_COPY.json').story);
 assert(rows.some(p=>p.text==='靴子上则写有“SDU”与“SFA”字样，作为与学校和社团的直接呼应。'));
 const m=json('content/ASSEMBLY_V0_MANIFEST.json'),now=m.interior.findIndex(c=>c.id==='chapter_now'),x=m.interior.findIndex(c=>c.id==='xingyue'),next=m.interior.findIndex(c=>c.id==='chapter_beyond');
-assert(now<x && x<next);assert(m.interior.some(c=>c.id==='now_pending' && c.kind==='placeholder'));assert(!m.excluded_for_v0.includes('社娘（暂停）'));
+assert(now<x && x<next);assert.deepStrictEqual(m.interior.filter(c=>c.kind==='placeholder').map(c=>c.id),['messages_pending']);assert(!m.excluded_for_v0.includes('社娘（暂停）'));
 const status=json('workflow/MODULE_STATUS.json');
 const exception=json('workflow/TASK16_FROZEN_EXCEPTION.json'),baseline=exception.baseline_commit;
 assert.deepStrictEqual(exception.allowed_frozen_files,[]);

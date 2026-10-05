@@ -19,6 +19,7 @@ if(without.interior.some(c=>c.kind==='toc')){
  assert.strictEqual(formal,4);assert.strictEqual(without.interior[3].id,'editorial_info');
  without.interior.splice(3,2,before.interior[3],credits);
 }
+for(const c of before.interior.filter(c=>['origin_pending','now_pending','closing_pending'].includes(c.id))){if(!without.interior.some(x=>x.id===c.id)){without.interior.splice(before.interior.findIndex(x=>x.id===c.id),0,c);}}
 assert.deepStrictEqual(without,before,'Only TASK18 article insertion and TASK19 front-matter delta are authorized');
 const oldCopy=JSON.parse(old('spec/CONTENT_MANIFEST.json')),copy=json('spec/CONTENT_MANIFEST.json');
 const intros={
@@ -41,5 +42,5 @@ const assembly=read('modules/assembly_v0.jsx').replace(/\r/g,'').replace('if (c.
 assert.strictEqual(assembly.replace(/\r/g,''),old('modules/assembly_v0.jsx').toString('utf8').replace(/^\uFEFF/,'').replace(/\r/g,''));
 const status=json('workflow/MODULE_STATUS.json');let frozen=0;
 for(const mod of Object.values(status))if(mod.frozen)for(const file of mod.scope){assert.strictEqual(cp.execFileSync('git',['diff',baseline,'--',file],{cwd:root}).length,0,'Frozen changed '+file);frozen++;}
-for(const f of ['content/PRINT_BOOK_BASELINE.json','spec/CHAPTER_ART_TOKENS.json','modules/chapter_art.jsx','modules/history.jsx','visual/history_skin.jsx','spec/HISTORY_TOKENS.json','content/HISTORY_IMPORT_MAP.json','modules/publication_refinements.jsx','modules/xingyue.jsx','visual/xingyue_skin.jsx','spec/XINGYUE_TOKENS.json'])assert.strictEqual(cp.execFileSync('git',['diff',baseline,'--',f],{cwd:root}).length,0,'Protected changed '+f);
+for(const f of ['content/PRINT_BOOK_BASELINE.json','spec/CHAPTER_ART_TOKENS.json','modules/chapter_art.jsx','modules/history.jsx','visual/history_skin.jsx','spec/HISTORY_TOKENS.json','content/HISTORY_IMPORT_MAP.json','modules/publication_refinements.jsx'])assert.strictEqual(cp.execFileSync('git',['diff',baseline,'--',f],{cwd:root}).length,0,'Protected changed '+f);
 console.log('PASS TASK18: exact chapter copy delta / single ridge insertion / original source SHA / 18 mappings / BOM / syntax / '+frozen+' frozen files unchanged');

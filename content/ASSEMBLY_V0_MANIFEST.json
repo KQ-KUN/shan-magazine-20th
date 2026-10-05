@@ -88,13 +88,6 @@
       "title": "肖兆旭专访"
     },
     {
-      "id": "origin_pending",
-      "kind": "placeholder",
-      "title": "最初的我们",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
-    },
-    {
       "id": "chapter_strata",
       "kind": "chapter",
       "section_id": "strata",
@@ -204,13 +197,6 @@
       "title": "星岳｜山大幻协社娘设定"
     },
     {
-      "id": "now_pending",
-      "kind": "placeholder",
-      "title": "2025—2026协会现状 / 活动 / 文创",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
-    },
-    {
       "id": "chapter_beyond",
       "kind": "chapter",
       "section_id": "beyond",
@@ -221,13 +207,6 @@
       "id": "messages_pending",
       "kind": "placeholder",
       "title": "历任社长寄语",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
-    },
-    {
-      "id": "closing_pending",
-      "kind": "placeholder",
-      "title": "未来",
       "pages": 1,
       "label": "CONTENT PENDING — NOT FOR PRINT"
     }

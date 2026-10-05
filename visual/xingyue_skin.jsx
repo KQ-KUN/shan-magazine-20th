@@ -9,7 +9,7 @@ SHAN.xingyueSkin = {
         object.textFramePreferences.textColumnCount=2;object.textFramePreferences.textColumnGutter="6 mm";
         for(var name in t.styles) {
             if(!t.styles.hasOwnProperty(name)){continue;}
-            var style=doc.paragraphStyles.itemByName(name),wide=name==="P_XingYue_Title" || name==="P_XingYue_Subtitle";
+            var style=doc.paragraphStyles.itemByName(name),wide=false;
             style.spanColumnType=wide?SpanColumnTypeOptions.SPAN_COLUMNS:SpanColumnTypeOptions.SINGLE_COLUMN;
             if(wide){style.spanSplitColumnCount=2;}
             style.keepWithNext=/Title|Subtitle|Section|Subhead|Media/.test(name)?1:0;

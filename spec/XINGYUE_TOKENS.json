@@ -3,8 +3,8 @@
   "column_gutter_mm": 6,
   "image_widths_mm": {
     "1": 38,
-    "2": 44,
-    "3": 32
+    "2": 72,
+    "3": 72
   },
   "styles": {
     "P_XingYue_Title": {
@@ -46,8 +46,8 @@
     "P_XingYue_Body": {
       "family": "serif_cn",
       "weight_preference": "Regular",
-      "size_pt": 9.2,
-      "leading_pt": 14.5,
+      "size_pt": 10,
+      "leading_pt": 15.5,
       "color": "C_TEXT",
       "space_after_mm": 1.1,
       "space_before_mm": 0
@@ -69,6 +69,16 @@
       "color": "C_MUTED",
       "space_after_mm": 2,
       "space_before_mm": 0
+    },
+    "P_XingYue_Quote": {
+      "family": "serif_cn",
+      "weight_preference": "Regular",
+      "size_pt": 12.5,
+      "leading_pt": 20,
+      "color": "C_TEXT",
+      "space_after_mm": 6,
+      "space_before_mm": 3
     }
-  }
+  },
+  "page_count": 2
 }

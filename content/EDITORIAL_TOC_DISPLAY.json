@@ -4,5 +4,55 @@
   "short_copyright": [
     "本刊为山东大学学生科幻协会二十周年纪念刊，用于协会历史整理、作品展示与内部交流。所收录文章、图片及其他作品著作权归相应作者或权利人所有；转载、复制或使用其中内容，请事先取得相应授权并注明出处。",
     "部分历史资料来自历届社员保存的照片、文稿、活动记录及采访材料，如有疏漏，欢迎联系编辑部补充或勘误。"
+  ],
+  "staff_display": [
+    {
+      "source_paragraph": 4,
+      "source_text": "指导老师 / （谭杨）",
+      "display_text": "指导老师 / 谭杨",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 5,
+      "source_text": "主　　编 / （黄可其）",
+      "display_text": "主　　编 / 黄可其",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 6,
+      "source_text": "执行主编 / （李司煜）",
+      "display_text": "执行主编 / 李司煜",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 7,
+      "source_text": "编　　辑 / （袁琦）",
+      "display_text": "编　　辑 / 袁琦",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 8,
+      "source_text": "责任编辑 / （贾锦阳）",
+      "display_text": "责任编辑 / 贾锦阳",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 9,
+      "source_text": "美术编辑 / （于笑涵）",
+      "display_text": "美术编辑 / 于笑涵",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 10,
+      "source_text": "文字校对 / （黄阳金）",
+      "display_text": "文字校对 / 黄阳金",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    },
+    {
+      "source_paragraph": 11,
+      "source_text": "摄影提供 / （历届社员及资料提供者）",
+      "display_text": "摄影提供 / 历届社员及资料提供者",
+      "authorization": "TASK21 explicit user-supplied role / name, no parentheses"
+    }
   ]
 }

@@ -8,11 +8,11 @@ from pypdf import PdfReader,PdfWriter
 from PIL import Image,ImageDraw,ImageChops
 
 ROOT=Path(__file__).resolve().parents[1]
-parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');options=parser.parse_args()
-OUT=ROOT/('exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
+parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true');options=parser.parse_args()
+OUT=ROOT/('exports/print_v6' if options.v6 else 'exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V6' if options.v6 else 'V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
 report=json.loads((OUT/'FINAL_PRINT_REPORT.json').read_text('utf-8'))
-baseline=json.loads((ROOT/('exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
-sections=(json.loads((ROOT/'spec/CONTENT_MANIFEST.json').read_text('utf-8')) if options.v3 or options.v4 or options.v5 else json.loads(subprocess.check_output(['git','show','522935fbe2a4635d08b372b0d389f191ad2fe72f:spec/CONTENT_MANIFEST.json'],cwd=ROOT)))['sections']
+baseline=json.loads((ROOT/('exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
+sections=(json.loads((ROOT/'spec/CONTENT_MANIFEST.json').read_text('utf-8')) if options.v3 or options.v4 or options.v5 or options.v6 else json.loads(subprocess.check_output(['git','show','522935fbe2a4635d08b372b0d389f191ad2fe72f:spec/CONTENT_MANIFEST.json'],cwd=ROOT)))['sections']
 count=baseline['interior_pages'];reader_count=count+2;spread_count=(reader_count+2)//2
 transition_pages=[t['page'] for t in baseline['parity_transitions']]
 tokens=json.loads((ROOT/'spec/CHAPTER_ART_TOKENS.json').read_text('utf-8'))
@@ -22,7 +22,7 @@ assert report['pdf_finishing']['source_text_normalization']=='NONE'
 assert report['interior_pages']==baseline['interior_pages']==count
 assert report['total_reader_pdf_pages']==reader_count and report['c2_blank']
 assert not report['overset'] and not report['missing_links'] and not report['focus']['active_page_is_parent']
-assert report['first_interior_side']=='RIGHT_HAND' and report['last_interior_side']=='RIGHT_HAND'
+assert report['first_interior_side']=='RIGHT_HAND' and report['last_interior_side']==('RIGHT_HAND' if count%2 else 'LEFT_HAND')
 assert [t['page'] for t in report['intentional_transition_pages']]==transition_pages
 assert len(report['openers'])==7 and all(o['side']=='RIGHT_HAND' for o in report['openers'])
 for page in report['physical_pages']:
@@ -169,7 +169,7 @@ result={'status':'PASS','interior_pages':count,'reader_pages':reader_count,'read
         'embedded_fonts':font_names,
         'chapter_pdf_cmyk_and_full_bleed':True,
         'visual_review':'PENDING_AGENT_SPREAD_INSPECTION'}
-if options.v3 or options.v4 or options.v5:
+if options.v3 or options.v4 or options.v5 or options.v6:
     sys.path.insert(0,str(ROOT/'tools'))
     from monday_cup_source import verify
     source=verify()
@@ -189,6 +189,9 @@ if options.v3 or options.v4 or options.v5:
 if options.v4:
     subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task19_outputs.py')],check=True)
     result['front_matter']=json.loads((OUT/'FRONT_MATTER_PREFLIGHT.json').read_text('utf-8'))
+if options.v6:
+    subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task21_outputs.py')],check=True)
+    result['task21']=json.loads((OUT/'TASK21_PREFLIGHT.json').read_text('utf-8'))
 if options.v5:
     subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task20_outputs.py')],check=True)
     result['front_matter']=json.loads((OUT/'EDITORIAL_TOC_PREFLIGHT.json').read_text('utf-8'))

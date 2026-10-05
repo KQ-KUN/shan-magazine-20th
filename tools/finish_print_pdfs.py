@@ -9,8 +9,8 @@ import hashlib,json
 import time,argparse
 from pypdf import PdfReader,PdfWriter
 
-parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');options=parser.parse_args()
-root=Path(__file__).resolve().parents[1];out=root/('exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
+parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true');options=parser.parse_args()
+root=Path(__file__).resolve().parents[1];out=root/('exports/print_v6' if options.v6 else 'exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V6' if options.v6 else 'V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
 
 def replace_output(temporary,destination):
     # Windows PDF preview/readers may hold a transient share lock. Keep the
@@ -23,7 +23,7 @@ def replace_output(temporary,destination):
         except PermissionError:
             if attempt==5:raise
             time.sleep(.25*(attempt+1))
-baseline=json.loads((root/('exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
+baseline=json.loads((root/('exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
 inputs=json.loads((out/'PRINT_COMPONENT_INPUTS.json').read_text('utf-8'))
 report=json.loads((out/'FINAL_PRINT_REPORT.json').read_text('utf-8'))
 count=baseline['interior_pages'];reader_count=count+2
@@ -43,7 +43,7 @@ for c in baseline['components']:
     assert len(reader.pages)==c['page_count']
     for offset,page in enumerate(reader.pages):body_pages[c['start_page']-1+offset]=page
 for index,page in enumerate(native.pages):writer.add_page(body_pages.get(index,page))
-if options.v5:writer.add_metadata({'/Subject':'\n'.join(report['editorial_toc']['full_copyright'])})
+if options.v5 or options.v6:writer.add_metadata({'/Subject':'\n'.join(report['editorial_toc']['full_copyright'])})
 interior_file=out/f'SHAN_INTERIOR_PRINT_{version}.pdf'
 temporary=interior_file.with_suffix('.finish.tmp')
 with temporary.open('wb') as output:writer.write(output)
@@ -64,7 +64,7 @@ c2=native_reader.pages[1]
 assert not c2.extract_text() and not c2.get('/Resources',{}).get('/XObject')
 review.add_page(c2)
 for page in check.pages:review.add_page(page)
-if options.v5:review.add_metadata({'/Subject':'\n'.join(report['editorial_toc']['full_copyright'])})
+if options.v5 or options.v6:review.add_metadata({'/Subject':'\n'.join(report['editorial_toc']['full_copyright'])})
 review.page_layout='/TwoPageRight'
 for page in review.pages:page.cropbox=page.trimbox
 review_file=out/f'SHAN_REVIEW_{version}.pdf';temporary=review_file.with_suffix('.finish.tmp')

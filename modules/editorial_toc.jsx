@@ -8,6 +8,10 @@ SHAN.editorialToc = {
         var paper=page.rectangles.add();paper.label="SHAN_EDITORIAL_TOC:paper";paper.geometricBounds=[b[0]-p(3),b[1]-p(3),b[2]+p(3),b[3]+p(3)];paper.fillColor=doc.colors.itemByName("C_TOC_Paper");paper.strokeWeight=0;paper.sendToBack();
         var rule=page.graphicLines.add();rule.label="SHAN_EDITORIAL_TOC:divider";rule.geometricBounds=[b[0]+p(t.top_mm),b[1]+p(t.left_mm+t.editorial_width_mm+t.gap_mm/2),b[0]+p(t.bottom_mm),b[1]+p(t.left_mm+t.editorial_width_mm+t.gap_mm/2)];rule.strokeWeight=t.rule_pt;rule.strokeColor=doc.colors.itemByName("C_TOC_Muted");
         var paragraphs=source.paragraphs.slice(0,31),i,paragraph,key,f,owned=[],records=[],left;
+        var transforms=display.staff_display || [],row,index;
+        for(i=0;i<transforms.length;i+=1){row=transforms[i];index=row.source_paragraph-1;
+            toc.check(index>=3 && index<=10 && paragraphs[index]===row.source_text,"Invalid authorized staff display mapping "+row.source_paragraph);
+            toc.check(!/[()（）]/.test(row.display_text),"Parentheses in staff display "+row.source_paragraph);paragraphs[index]=row.display_text;}
         paragraphs=paragraphs.concat(display.short_copyright);
         left=toc.frame(doc,page,"editorial",paragraphs.join("\r"),"P_ET_Body",[t.left_mm,t.top_mm,t.editorial_width_mm,t.bottom_mm-t.top_mm]);owned.push(left);
         for(i=0;i<paragraphs.length;i+=1){
@@ -43,7 +47,7 @@ SHAN.editorialToc = {
         for(i=0;i<paragraphs.length;i+=1){paragraph=left.parentStory.paragraphs[i];toc.check(SHAN.historySource.paragraphText(paragraph.contents,0)===paragraphs[i],"Editorial source/display mismatch "+(i+1));if(paragraphs[i]){toc.check(paragraph.lines.length>0 && paragraph.parentTextFrames.length>0,"Invisible editorial paragraph "+(i+1));}}
         var fullLegal=source.paragraphs.slice(31).join("\n");doc.insertLabel("SHAN_FULL_COPYRIGHT",fullLegal);doc.metadataPreferences.description=fullLegal;
         return {status:"PASS",page_count:1,entries:data.entries.length,overset:false,editorial_width_mm:t.editorial_width_mm,contents_width_mm:width,
-            divider:true,source_sha256:source.audit.source_sha256,source_paragraphs:source.paragraphs.length,unchanged_editorial_paragraphs:31,
+            divider:true,source_sha256:source.audit.source_sha256,source_paragraphs:source.paragraphs.length,unchanged_editorial_paragraphs:31-transforms.length,staff_display_transforms:transforms,
             short_copyright:display.short_copyright,full_copyright:source.paragraphs.slice(31),full_copyright_in_document_metadata:true,frames:records};
     }
 };

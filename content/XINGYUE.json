@@ -3,110 +3,173 @@
   "paragraphs": [
     {
       "role": "Title",
-      "text": "星岳"
+      "text": "星岳",
+      "block": "portrait"
     },
     {
       "role": "Subtitle",
-      "text": "山大幻协社娘设定"
+      "text": "山大幻协社娘设定",
+      "block": "portrait"
+    },
+    {
+      "role": "Media",
+      "text": "",
+      "image": 2,
+      "block": "portrait"
+    },
+    {
+      "role": "Caption",
+      "text": "星岳人物形象",
+      "block": "portrait"
+    },
+    {
+      "role": "Media",
+      "text": "",
+      "image": 1,
+      "block": "portrait"
+    },
+    {
+      "role": "Caption",
+      "text": "原型图｜马静雅绘",
+      "block": "portrait"
     },
     {
       "role": "Section",
-      "text": "故事背景"
+      "text": "故事背景",
+      "block": "story"
     },
     {
       "role": "Body",
-      "text": "在遥远的未来，星际航行早已像今日出行一样寻常。山东大学学生科幻协会的幻迷们乘坐社团专属星船“远山号”，穿梭于宇宙之间，去寻找新的故事，也去抵达更广阔的想象。"
+      "text": "在遥远的未来，星际航行早已像今日乘坐高铁一样寻常。山东大学学生科幻协会的幻迷们驾驶社团专属飞船“远山号”，穿行于不同恒星之间。他们在宇宙中旅行，寻找新的故事，也收集来自宇宙各处的小说、影像和奇怪传闻——毕竟无论人类走得多远，总会有人忍不住问一句：“这里有没有科幻社团？”",
+      "block": "story"
     },
     {
       "role": "Body",
-      "text": "而在“远山号”上，有一位特别的领航员——星岳。"
+      "text": "“远山号”的领航员叫星岳。她是一位 AGI，负责航线计算、资料分析、设备管理和紧急决策。理论上，她应该是整艘船上最冷静、最可靠的存在；实际上，她也是最喜欢凑热闹的那一个。有人熬夜写稿，她会提醒“再不睡明天跃迁时你可能比飞船先掉线”；有人争论某部作品算硬科幻还是软科幻，她会一边整理数据，一边兴致勃勃地加入讨论。",
+      "block": "story"
     },
     {
       "role": "Body",
-      "text": "她是一位 AGI，负责航线计算、信息分析与辅助决策，也是船上的气氛担当。活泼开朗的小星岳，既是大家旅途中的可靠伙伴，也是整艘星船的“最强大脑”。"
+      "text": "对船员们来说，星岳既是领航员，也是同行者。她保存着协会历年的作品、活动记录与成员档案，也一直在寻找那些散落在时间里的旧故事。",
+      "block": "story"
     },
     {
       "role": "Body",
-      "text": "一次超光速航行中，“远山号”意外与21世纪初的山大幻协建立了联系。"
+      "text": "一次超光速航行中，“远山号”的通信阵列收到了一组异常微弱的信号。它并不来自另一颗星球，而像是穿过漫长时间抵达未来的一段古老数据。星岳顺着信号反向追踪，最终连接到了21世纪初的山东大学学生科幻协会。",
+      "block": "story"
     },
     {
       "role": "Body",
-      "text": "于是，一场跨越时间的相遇，就这样开始了。"
+      "text": "于是，“远山号”与山大幻协之间建立了一条奇怪的跨时空通信频道。星岳也由此认识了山大幻协最初的那一批社员们。她会把未来的星空发回过去；而过去的人则把那些刚刚写下的故事传给她。",
+      "block": "story"
     },
     {
-      "role": "Media",
-      "text": "",
-      "image": 1
+      "role": "Body",
+      "text": "至于这条通信到底是怎么建立的——星岳每次都会认真解释一大串关于超光速通信、量子纠缠和时空扰动的理论。",
+      "block": "appearance"
     },
     {
-      "role": "Caption",
-      "text": "原型图｜马静雅绘"
+      "role": "Body",
+      "text": "然后补上一句：",
+      "block": "appearance"
+    },
+    {
+      "role": "Quote",
+      "text": "“简单来说，就是信号串台啦。”",
+      "block": "appearance"
     },
     {
       "role": "Section",
-      "text": "设定解释"
+      "text": "设定解释",
+      "block": "appearance"
     },
     {
       "role": "Subhead",
-      "text": "星岳的名字"
+      "text": "星岳的名字",
+      "block": "appearance"
     },
     {
       "role": "Body",
-      "text": "“星”寓意科幻迷始终朝向星辰大海的热爱，“岳”则对应山东大学，也呼应“远山号”与山大幻协的来处。"
+      "text": "“星”寓意科幻迷始终朝向星辰大海的热爱，“岳”则对应山东大学，也呼应“远山号”与山大幻协的来处。",
+      "block": "appearance"
+    },
+    {
+      "role": "Subhead",
+      "text": "外形锚点",
+      "block": "appearance"
+    },
+    {
+      "role": "Body",
+      "text": "星岳的头发为银色，发尾两侧尖直，带有鲜明的机械感，以凸显她作为 AGI 的身份。",
+      "block": "appearance"
+    },
+    {
+      "role": "Body",
+      "text": "她的眼睛是浅蓝色，平眉，整体神情明快而利落。",
+      "block": "appearance"
+    },
+    {
+      "role": "Body",
+      "text": "服装风格参考复古未来主义与太空时尚：肩线略宽、袖长利落，整体配色取自蓝色版幻协会徽，靴子则使用亮银色，增强未来感。",
+      "block": "appearance"
+    },
+    {
+      "role": "Subhead",
+      "text": "与山大及幻协的联系",
+      "block": "association"
+    },
+    {
+      "role": "Body",
+      "text": "星岳头发两侧的发夹采用“山大红”，造型由山东大学校徽变化而来。",
+      "block": "association"
+    },
+    {
+      "role": "Body",
+      "text": "她身体周围浮动的一串圆球，再加上上衣腰带，共同组成了山大幻协会徽的视觉变体。",
+      "block": "association"
+    },
+    {
+      "role": "Body",
+      "text": "靴子上则写有“SDU”与“SFA”字样，作为与学校和社团的直接呼应。",
+      "block": "association"
     },
     {
       "role": "Media",
       "text": "",
-      "image": 2
+      "image": 3,
+      "block": "association"
     },
     {
       "role": "Caption",
-      "text": "星岳人物形象"
+      "text": "Q版表情包",
+      "block": "association"
+    }
+  ],
+  "revision": "TASK21",
+  "blocks": [
+    {
+      "id": "portrait",
+      "page": 1,
+      "column": 1,
+      "top_mm": 17
     },
     {
-      "role": "Subhead",
-      "text": "外形锚点"
+      "id": "story",
+      "page": 1,
+      "column": 2,
+      "top_mm": 17
     },
     {
-      "role": "Body",
-      "text": "星岳的头发为银色，发尾两侧尖直，带有鲜明的机械感，以凸显她作为 AGI 的身份。"
+      "id": "appearance",
+      "page": 2,
+      "column": 1,
+      "top_mm": 24
     },
     {
-      "role": "Body",
-      "text": "她的眼睛是浅蓝色，平眉，整体神情明快而利落。"
-    },
-    {
-      "role": "Body",
-      "text": "服装风格参考复古未来主义与太空时尚：肩线略宽、袖长利落，整体配色取自蓝色版幻协会徽，靴子则使用亮银色，增强未来感。"
-    },
-    {
-      "role": "Subhead",
-      "text": "与山大及幻协的联系"
-    },
-    {
-      "role": "Body",
-      "text": "星岳头发两侧的发夹采用“山大红”，造型由山东大学校徽变化而来。"
-    },
-    {
-      "role": "Body",
-      "text": "她身体周围浮动的一串圆球，再加上上衣腰带，共同组成了山大幻协会徽的视觉变体。"
-    },
-    {
-      "role": "Body",
-      "text": "靴子上则写有“SDU”与“SFA”字样，作为与学校和社团的直接呼应。"
-    },
-    {
-      "role": "Subhead",
-      "text": "配图说明"
-    },
-    {
-      "role": "Media",
-      "text": "",
-      "image": 3
-    },
-    {
-      "role": "Caption",
-      "text": "Q版表情包"
+      "id": "association",
+      "page": 2,
+      "column": 2,
+      "top_mm": 66
     }
   ]
 }
