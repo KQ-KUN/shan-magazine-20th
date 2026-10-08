@@ -6,6 +6,7 @@ SHAN.xingyue = {
   var b=page.bounds,m=SHAN.spec.marginsMM,p=SHAN.utils.pt,left=page.side===PageSideOptions.LEFT_HAND;
   var width=(SHAN.spec.widthMM-m.inside-m.outside-t.column_gutter_mm)/2;
   var x=b[1]+p(left?m.outside:m.inside)+p((block.column-1)*(width+t.column_gutter_mm));
+  if(block.width_mm){width=block.width_mm;}if(block.x_mm!==undefined){x=b[1]+p(block.x_mm);}
   var f=page.textFrames.add();f.label='SHAN_XINGYUE:'+block.id;
   f.fillColor=doc.swatches.item(0);f.strokeColor=doc.swatches.item(0);
   f.geometricBounds=[b[0]+p(block.top_mm),x,b[2]-p(m.bottom),x+p(width)];f.textFramePreferences.textColumnCount=1;return f;
@@ -34,9 +35,12 @@ SHAN.xingyue = {
     var paragraph=story.paragraphs[i];this.check(paragraph && paragraph.isValid,'Missing image paragraph '+item.image);
     var points=paragraph.insertionPoints;this.check(points && points.length>0,'Missing insertion point '+item.image);
     var rect=page.rectangles.add();rect.label='SHAN_XINGYUE:image:'+item.image;rect.fillColor=doc.swatches.item(0);rect.strokeColor=doc.swatches.item(0);
-    rect.geometricBounds=[0,0,SHAN.utils.pt(width*image.height_px/image.width_px),SHAN.utils.pt(width)];
+    var zoom=item.image===2?(t.portrait_zoom || 1):1,height=width*image.height_px/image.width_px*zoom;
+    rect.geometricBounds=[0,0,SHAN.utils.pt(height),SHAN.utils.pt(width)];
     var placed=rect.place(file,false);this.check(placed && placed.length===1,'Placement failed image '+item.image);
-    rect.fit(FitOptions.PROPORTIONALLY);rect.fit(FitOptions.CENTER_CONTENT);
+    // The portrait window clips only approved lateral background margins.
+    // Proportional fill uses the full source height; head, sleeves, badge and boots remain visible.
+    rect.fit(zoom>1?FitOptions.FILL_PROPORTIONALLY:FitOptions.PROPORTIONALLY);rect.fit(FitOptions.CENTER_CONTENT);
     var settings=rect.anchoredObjectSettings;this.check(settings,'Missing anchored settings image '+item.image);
     settings.insertAnchoredObject(points[0],AnchorPosition.ABOVE_LINE);settings.anchorSpaceAbove=0;settings.anchorYoffset=0;
     records.push({index:item.image,paragraph:i,rect:rect,story:story,block:block});
@@ -64,8 +68,16 @@ SHAN.xingyue = {
    var b=r.geometricBounds,pb=page.bounds,m=SHAN.spec.marginsMM,left=page.side===PageSideOptions.LEFT_HAND;
    var x=pb[1]+SHAN.utils.pt(left?m.outside:m.inside),cw=SHAN.utils.pt((185-m.inside-m.outside-t.column_gutter_mm)/2);
    var columnLeft=x+(record.block.column-1)*(cw+SHAN.utils.pt(t.column_gutter_mm));
-   this.check(b[1]>=columnLeft-.1 && b[3]<=columnLeft+cw+.1,'Image outside single column '+record.index);
-   images.push({index:record.index,page:Number(page.name),column:record.block.column,width_mm:(b[3]-b[1])*25.4/72,height_mm:(b[2]-b[0])*25.4/72,bounds:b,source_sha256:audit.images[record.index-1].sha256,caption:helper.paragraphText(caption.contents,0),link_normal:true,proportional:true});
+   var allowedWidth=record.block.width_mm?SHAN.utils.pt(record.block.width_mm):cw;
+   if(record.block.x_mm!==undefined){columnLeft=pb[1]+SHAN.utils.pt(record.block.x_mm);}
+   this.check(b[1]>=columnLeft-.1 && b[3]<=columnLeft+allowedWidth+.1,'Image outside approved visual region '+record.index);
+   this.check(b[0]>=pb[0]-.1 && b[2]<=pb[2]+.1 && b[1]>=pb[1]-.1 && b[3]<=pb[3]+.1,'Image outside actual page '+record.index);
+   if(record.index===2 && t.portrait_zoom>1){
+    var gb=g.geometricBounds,roi=t.portrait_safe_region_px,sx=(gb[3]-gb[1])/audit.images[1].width_px,sy=(gb[2]-gb[0])/audit.images[1].height_px;
+    this.check(gb[0]>=b[0]-.1 && gb[2]<=b[2]+.1,'Portrait vertically cropped');
+    this.check(gb[1]+sx*roi[0]>=b[1]-.1 && gb[1]+sx*roi[2]<=b[3]+.1 && gb[0]+sy*roi[1]>=b[0]-.1 && gb[0]+sy*roi[3]<=b[2]+.1,'Portrait key region cropped');
+   }
+   images.push({index:record.index,page:Number(page.name),column:record.block.column,width_mm:(b[3]-b[1])*25.4/72,height_mm:(b[2]-b[0])*25.4/72,bounds:b,graphic_bounds:g.geometricBounds,source_sha256:audit.images[record.index-1].sha256,caption:helper.paragraphText(caption.contents,0),link_normal:true,proportional:true});
   }
   var report={status:'PASS',pages:doc.pages.length,paragraphs:data.paragraphs.length,source_sha256:audit.sha256,blocks:blocks,images:images,overset:false,native_version:app.version};
   doc.insertLabel('SHAN_TASK21_XINGYUE',a.json(report));doc.insertLabel('SHAN_TASK16_REPORT','PASS XingYue; exact approved copy; original 3 image bytes; overset=false; pages='+doc.pages.length);

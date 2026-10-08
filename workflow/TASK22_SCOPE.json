@@ -1,0 +1,28 @@
+{
+  "baseline": "b7dc705cdf6c75add65fd7e82679d0dfb7269b80",
+  "allowed": [
+    "content/XINGYUE.json",
+    "spec/XINGYUE_TOKENS.json",
+    "modules/xingyue.jsx",
+    "content/INTERVIEW_NAME_CORRECTION_MAP.json",
+    "manuscripts/layout/01_interview_肖兆旭_河流_NAME_FIX.docx",
+    "content/PRINT_BOOK_V7_MANIFEST.json",
+    "build/36_targeted_refinement_test.jsx",
+    "build/37_print_book_v7_test.jsx",
+    "build/38_print_v7_folios.jsx",
+    "build/39_print_v7_postflight.jsx",
+    "tools/resolve_print_v7.py",
+    "tools/run_print_v7.ps1",
+    "tools/run_print_book.ps1",
+    "tools/prepare_print_components.py",
+    "tools/finish_print_pdfs.py",
+    "tests/print_book_outputs.py",
+    "tests/print_book.test.cjs",
+    "tests/task21.test.cjs",
+    "tests/task22.test.cjs",
+    "tests/task22_outputs.py",
+    "tools/task22_source.py",
+    "tasks/TASK_22_V6_TARGETED_REFINEMENT.md",
+    "workflow/TASK22_SCOPE.json"
+  ]
+}

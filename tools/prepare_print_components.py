@@ -9,14 +9,14 @@ from pypdf.generic import ContentStream, FloatObject
 
 ROOT=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser()
-versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true')
+versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true');versions.add_argument('--v7',action='store_true')
 options=parser.parse_args()
-OUT=ROOT/('exports/print_v6/components' if options.v6 else 'exports/print_v5/components' if options.v5 else 'exports/print_v4/components' if options.v4 else 'exports/print_v3/components' if options.v3 else 'exports/print_v2/components')
+OUT=ROOT/('exports/print_v7/components' if options.v7 else 'exports/print_v6/components' if options.v6 else 'exports/print_v5/components' if options.v5 else 'exports/print_v4/components' if options.v4 else 'exports/print_v3/components' if options.v3 else 'exports/print_v2/components')
 OUT.mkdir(parents=True,exist_ok=True)
-baseline=json.loads((ROOT/('exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
-if options.v3 or options.v4 or options.v5 or options.v6:
+baseline=json.loads((ROOT/('exports/print_v7/RESOLVED_BOOK_PLAN.json' if options.v7 else 'exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
+if options.v3 or options.v4 or options.v5 or options.v6 or options.v7:
     from resolve_print_v3 import folio_blocks
-    folio_reader=PdfReader(ROOT/('exports/print_v6/FOLIO_ONLY_V6.pdf' if options.v6 else 'exports/print_v5/FOLIO_ONLY_V5.pdf' if options.v5 else 'exports/print_v4/FOLIO_ONLY_V4.pdf' if options.v4 else 'exports/print_v3/FOLIO_ONLY_V3.pdf'))
+    folio_reader=PdfReader(ROOT/('exports/print_v7/FOLIO_ONLY_V7.pdf' if options.v7 else 'exports/print_v6/FOLIO_ONLY_V6.pdf' if options.v6 else 'exports/print_v5/FOLIO_ONLY_V5.pdf' if options.v5 else 'exports/print_v4/FOLIO_ONLY_V4.pdf' if options.v4 else 'exports/print_v3/FOLIO_ONLY_V3.pdf'))
     folio_map={(r['component_id'],r['component_page']):r for r in baseline['folio_rebase']}
 rows=[]
 
@@ -47,7 +47,7 @@ for c in baseline['components']:
     reader=PdfReader(source);writer=PdfWriter();writer.append(reader)
     counts={'fill':0,'stroke':0};seen=set()
     rebased=[]
-    if options.v3 or options.v4 or options.v5 or options.v6:
+    if options.v3 or options.v4 or options.v5 or options.v6 or options.v7:
         for index,page in enumerate(writer.pages):
             row=folio_map.get((c['id'],index+1))
             if not row:continue

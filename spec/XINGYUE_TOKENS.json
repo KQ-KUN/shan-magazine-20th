@@ -3,8 +3,8 @@
   "column_gutter_mm": 6,
   "image_widths_mm": {
     "1": 38,
-    "2": 72,
-    "3": 72
+    "2": 73,
+    "3": 86.4
   },
   "styles": {
     "P_XingYue_Title": {
@@ -75,10 +75,17 @@
       "weight_preference": "Regular",
       "size_pt": 12.5,
       "leading_pt": 20,
-      "color": "C_TEXT",
+      "color": "C_SDU_RED",
       "space_after_mm": 6,
       "space_before_mm": 3
     }
   },
-  "page_count": 2
+  "page_count": 2,
+  "portrait_zoom": 1.42,
+  "portrait_safe_region_px": [
+    125,
+    5,
+    505,
+    955
+  ]
 }

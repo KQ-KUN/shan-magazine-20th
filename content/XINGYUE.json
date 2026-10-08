@@ -1,5 +1,5 @@
 {
-  "approved_copy": "User TASK16 message; title split and captions interleaved are display layout only.",
+  "approved_copy": "Exact TASK21 / V6 text; TASK22 changes only visual block membership.",
   "paragraphs": [
     {
       "role": "Title",
@@ -26,12 +26,12 @@
       "role": "Media",
       "text": "",
       "image": 1,
-      "block": "portrait"
+      "block": "reference"
     },
     {
       "role": "Caption",
       "text": "原型图｜马静雅绘",
-      "block": "portrait"
+      "block": "reference"
     },
     {
       "role": "Section",
@@ -137,15 +137,15 @@
       "role": "Media",
       "text": "",
       "image": 3,
-      "block": "association"
+      "block": "expressions"
     },
     {
       "role": "Caption",
       "text": "Q版表情包",
-      "block": "association"
+      "block": "expressions"
     }
   ],
-  "revision": "TASK21",
+  "revision": "TASK22",
   "blocks": [
     {
       "id": "portrait",
@@ -170,6 +170,21 @@
       "page": 2,
       "column": 2,
       "top_mm": 66
+    },
+    {
+      "id": "reference",
+      "page": 2,
+      "column": 1,
+      "top_mm": 187,
+      "width_mm": 38
+    },
+    {
+      "id": "expressions",
+      "page": 2,
+      "column": 2,
+      "top_mm": 144,
+      "x_mm": 80,
+      "width_mm": 86.4
     }
   ]
 }

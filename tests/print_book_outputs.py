@@ -8,11 +8,11 @@ from pypdf import PdfReader,PdfWriter
 from PIL import Image,ImageDraw,ImageChops
 
 ROOT=Path(__file__).resolve().parents[1]
-parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true');options=parser.parse_args()
-OUT=ROOT/('exports/print_v6' if options.v6 else 'exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V6' if options.v6 else 'V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
+parser=argparse.ArgumentParser();versions=parser.add_mutually_exclusive_group();versions.add_argument('--v3',action='store_true');versions.add_argument('--v4',action='store_true');versions.add_argument('--v5',action='store_true');versions.add_argument('--v6',action='store_true');versions.add_argument('--v7',action='store_true');options=parser.parse_args()
+OUT=ROOT/('exports/print_v7' if options.v7 else 'exports/print_v6' if options.v6 else 'exports/print_v5' if options.v5 else 'exports/print_v4' if options.v4 else 'exports/print_v3' if options.v3 else 'exports/print_v2');version='V7' if options.v7 else 'V6' if options.v6 else 'V5' if options.v5 else 'V4' if options.v4 else 'V3' if options.v3 else 'V2'
 report=json.loads((OUT/'FINAL_PRINT_REPORT.json').read_text('utf-8'))
-baseline=json.loads((ROOT/('exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
-sections=(json.loads((ROOT/'spec/CONTENT_MANIFEST.json').read_text('utf-8')) if options.v3 or options.v4 or options.v5 or options.v6 else json.loads(subprocess.check_output(['git','show','522935fbe2a4635d08b372b0d389f191ad2fe72f:spec/CONTENT_MANIFEST.json'],cwd=ROOT)))['sections']
+baseline=json.loads((ROOT/('exports/print_v7/RESOLVED_BOOK_PLAN.json' if options.v7 else 'exports/print_v6/RESOLVED_BOOK_PLAN.json' if options.v6 else 'exports/print_v5/RESOLVED_BOOK_PLAN.json' if options.v5 else 'exports/print_v4/RESOLVED_BOOK_PLAN.json' if options.v4 else 'exports/print_v3/RESOLVED_BOOK_PLAN.json' if options.v3 else 'content/PRINT_BOOK_BASELINE.json')).read_text('utf-8'))
+sections=(json.loads((ROOT/'spec/CONTENT_MANIFEST.json').read_text('utf-8')) if options.v3 or options.v4 or options.v5 or options.v6 or options.v7 else json.loads(subprocess.check_output(['git','show','522935fbe2a4635d08b372b0d389f191ad2fe72f:spec/CONTENT_MANIFEST.json'],cwd=ROOT)))['sections']
 count=baseline['interior_pages'];reader_count=count+2;spread_count=(reader_count+2)//2
 transition_pages=[t['page'] for t in baseline['parity_transitions']]
 tokens=json.loads((ROOT/'spec/CHAPTER_ART_TOKENS.json').read_text('utf-8'))
@@ -169,7 +169,7 @@ result={'status':'PASS','interior_pages':count,'reader_pages':reader_count,'read
         'embedded_fonts':font_names,
         'chapter_pdf_cmyk_and_full_bleed':True,
         'visual_review':'PENDING_AGENT_SPREAD_INSPECTION'}
-if options.v3 or options.v4 or options.v5 or options.v6:
+if options.v3 or options.v4 or options.v5 or options.v6 or options.v7:
     sys.path.insert(0,str(ROOT/'tools'))
     from monday_cup_source import verify
     source=verify()
@@ -189,6 +189,9 @@ if options.v3 or options.v4 or options.v5 or options.v6:
 if options.v4:
     subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task19_outputs.py')],check=True)
     result['front_matter']=json.loads((OUT/'FRONT_MATTER_PREFLIGHT.json').read_text('utf-8'))
+if options.v7:
+    subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task22_outputs.py')],check=True)
+    result['task22']=json.loads((OUT/'TASK22_PREFLIGHT.json').read_text('utf-8'))
 if options.v6:
     subprocess.run([sys.executable,'-X','utf8',str(ROOT/'tests/task21_outputs.py')],check=True)
     result['task21']=json.loads((OUT/'TASK21_PREFLIGHT.json').read_text('utf-8'))
