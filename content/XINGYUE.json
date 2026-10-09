@@ -66,72 +66,72 @@
     {
       "role": "Body",
       "text": "至于这条通信到底是怎么建立的——星岳每次都会认真解释一大串关于超光速通信、量子纠缠和时空扰动的理论。",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Body",
       "text": "然后补上一句：",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Quote",
       "text": "“简单来说，就是信号串台啦。”",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Section",
       "text": "设定解释",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Subhead",
       "text": "星岳的名字",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Body",
       "text": "“星”寓意科幻迷始终朝向星辰大海的热爱，“岳”则对应山东大学，也呼应“远山号”与山大幻协的来处。",
-      "block": "appearance"
+      "block": "closing"
     },
     {
       "role": "Subhead",
       "text": "外形锚点",
-      "block": "appearance"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "星岳的头发为银色，发尾两侧尖直，带有鲜明的机械感，以凸显她作为 AGI 的身份。",
-      "block": "appearance"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "她的眼睛是浅蓝色，平眉，整体神情明快而利落。",
-      "block": "appearance"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "服装风格参考复古未来主义与太空时尚：肩线略宽、袖长利落，整体配色取自蓝色版幻协会徽，靴子则使用亮银色，增强未来感。",
-      "block": "appearance"
+      "block": "details"
     },
     {
       "role": "Subhead",
       "text": "与山大及幻协的联系",
-      "block": "association"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "星岳头发两侧的发夹采用“山大红”，造型由山东大学校徽变化而来。",
-      "block": "association"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "她身体周围浮动的一串圆球，再加上上衣腰带，共同组成了山大幻协会徽的视觉变体。",
-      "block": "association"
+      "block": "details"
     },
     {
       "role": "Body",
       "text": "靴子上则写有“SDU”与“SFA”字样，作为与学校和社团的直接呼应。",
-      "block": "association"
+      "block": "details"
     },
     {
       "role": "Media",
@@ -145,7 +145,7 @@
       "block": "expressions"
     }
   ],
-  "revision": "TASK22",
+  "revision": "TASK23_EBOOK_V8",
   "blocks": [
     {
       "id": "portrait",
@@ -160,31 +160,36 @@
       "top_mm": 17
     },
     {
-      "id": "appearance",
+      "id": "closing",
       "page": 2,
       "column": 1,
-      "top_mm": 24
+      "top_mm": 17,
+      "x_mm": 15,
+      "width_mm": 51
     },
     {
-      "id": "association",
+      "id": "details",
       "page": 2,
       "column": 2,
-      "top_mm": 66
+      "top_mm": 17,
+      "x_mm": 72,
+      "width_mm": 95
     },
     {
       "id": "reference",
       "page": 2,
       "column": 1,
-      "top_mm": 187,
-      "width_mm": 38
+      "top_mm": 163,
+      "x_mm": 15,
+      "width_mm": 51
     },
     {
       "id": "expressions",
       "page": 2,
       "column": 2,
-      "top_mm": 144,
-      "x_mm": 80,
-      "width_mm": 86.4
+      "top_mm": 125,
+      "x_mm": 72,
+      "width_mm": 95
     }
   ]
 }

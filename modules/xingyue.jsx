@@ -41,6 +41,13 @@ SHAN.xingyue = {
     // The portrait window clips only approved lateral background margins.
     // Proportional fill uses the full source height; head, sleeves, badge and boots remain visible.
     rect.fit(zoom>1?FitOptions.FILL_PROPORTIONALLY:FitOptions.PROPORTIONALLY);rect.fit(FitOptions.CENTER_CONTENT);
+    // V8: center the approved character region, not the asymmetric background.
+    // Translation preserves scale/ratio and keeps the badge, hands and boots.
+    if(item.image===2 && zoom>1 && t.portrait_focus_safe_region){
+     var portrait=rect.graphics[0],portraitBounds=portrait.geometricBounds,focus=t.portrait_safe_region_px;
+     var shift=(image.width_px/2-(focus[0]+focus[2])/2)*(portraitBounds[3]-portraitBounds[1])/image.width_px;
+     portrait.move(undefined,[shift,0]);
+    }
     var settings=rect.anchoredObjectSettings;this.check(settings,'Missing anchored settings image '+item.image);
     settings.insertAnchoredObject(points[0],AnchorPosition.ABOVE_LINE);settings.anchorSpaceAbove=0;settings.anchorYoffset=0;
     records.push({index:item.image,paragraph:i,rect:rect,story:story,block:block});

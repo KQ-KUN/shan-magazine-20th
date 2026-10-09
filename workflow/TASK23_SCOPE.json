@@ -1,0 +1,31 @@
+{
+  "baseline": "a6825d5dfe13752cf2576714750fe96aa534ba06",
+  "allowed": [
+    "modules/ebook_v8.jsx",
+    "content/XINGYUE.json",
+    "spec/XINGYUE_TOKENS.json",
+    "content/EBOOK_V8_MANIFEST.json",
+    "build/40_ebook_v8_standalone.jsx",
+    "build/41_ebook_v8_assembly.jsx",
+    "build/42_ebook_v8_postflight.jsx",
+    "tools/ebook_v8.py",
+    "tools/run_ebook_v8.ps1",
+    "tests/ebook_v8.test.cjs",
+    "tests/ebook_v8_outputs.py",
+    "workflow/TASK23_SCOPE.json",
+    "tasks/TASK_23_EBOOK_V8_STYLE_FIX.md",
+    "assets/ebook_v8/01_TOC_NUMBER_AUTHOR_REFERENCE.png",
+    "assets/ebook_v8/02_ARTICLE_AUTHOR_REFERENCE.png",
+    "assets/ebook_v8/03_PORTRAIT_IMAGE_TEXT_REFERENCE.png",
+    "assets/ebook_v8/ASSOCIATION_EMBLEM_USER_SUPPLIED.png",
+    "modules/xingyue.jsx",
+    "assets/ebook_v8/ASSET_ORIGINS.json"
+  ],
+  "frozen_exception": "User-authorized title/byline/portrait/emblem display behavior isolated in new V8 adapter; no frozen source file modified.",
+  "protected": "History in full, source DOCX, cover, chapter intros/art, TOC data and generators",
+  "ignored_existing": [
+    "SHAN_MEMOIR_CLEAN_IMPORT_PROBE/",
+    "build/SHAN_MEMOIR_IMPORT_PROBE.jsx"
+  ],
+  "color_conversion": "NONE"
+}

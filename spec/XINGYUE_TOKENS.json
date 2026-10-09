@@ -2,9 +2,9 @@
   "body_columns": 2,
   "column_gutter_mm": 6,
   "image_widths_mm": {
-    "1": 38,
+    "1": 51,
     "2": 73,
-    "3": 86.4
+    "3": 95
   },
   "styles": {
     "P_XingYue_Title": {
@@ -81,11 +81,12 @@
     }
   },
   "page_count": 2,
-  "portrait_zoom": 1.42,
+  "portrait_zoom": 1.68,
   "portrait_safe_region_px": [
     125,
     5,
     505,
     955
-  ]
+  ],
+  "portrait_focus_safe_region": true
 }

@@ -1,0 +1,36 @@
+{
+  "assets": [
+    {
+      "file": "assets/ebook_v8/01_TOC_NUMBER_AUTHOR_REFERENCE.png",
+      "source_package": "SHAN_UPLOAD_TO_CODEX_EBOOK_V8_STYLE_FIX.zip",
+      "package_member": "references/01_TOC_NUMBER_AUTHOR_REFERENCE.png",
+      "sha256": "4d8b6e4245cdba3379dfd13ffe777053664c50c5bc8c12832d6d071f02d9aa06",
+      "modification": "NONE",
+      "use": "Visual hierarchy/layout reference ONLY; no content copied"
+    },
+    {
+      "file": "assets/ebook_v8/02_ARTICLE_AUTHOR_REFERENCE.png",
+      "source_package": "SHAN_UPLOAD_TO_CODEX_EBOOK_V8_STYLE_FIX.zip",
+      "package_member": "references/02_ARTICLE_AUTHOR_REFERENCE.png",
+      "sha256": "4770b2092fba532e47aa48c9c4e9abd30226fdeeb6104480f864c03121c785a8",
+      "modification": "NONE",
+      "use": "Visual hierarchy/layout reference ONLY; no content copied"
+    },
+    {
+      "file": "assets/ebook_v8/03_PORTRAIT_IMAGE_TEXT_REFERENCE.png",
+      "source_package": "SHAN_UPLOAD_TO_CODEX_EBOOK_V8_STYLE_FIX.zip",
+      "package_member": "references/03_PORTRAIT_IMAGE_TEXT_REFERENCE.png",
+      "sha256": "0203c52fc26e73d0c2a628f11a93dc6c32a5e9e6b1e3140209fd6bb924c13e9d",
+      "modification": "NONE",
+      "use": "Visual hierarchy/layout reference ONLY; no content copied"
+    },
+    {
+      "file": "assets/ebook_v8/ASSOCIATION_EMBLEM_USER_SUPPLIED.png",
+      "source_package": "SHAN_UPLOAD_TO_CODEX_EBOOK_V8_STYLE_FIX.zip",
+      "package_member": "assets/ASSOCIATION_EMBLEM_USER_SUPPLIED.png",
+      "sha256": "730f6ddb131faa4ad5019d0eb788854845d980182573c029963b4e0ca1851a82",
+      "modification": "NONE",
+      "use": "Association profile ONLY"
+    }
+  ]
+}
