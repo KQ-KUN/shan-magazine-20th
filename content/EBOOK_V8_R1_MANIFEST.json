@@ -1,0 +1,23 @@
+{
+  "version": "8.1",
+  "binding_mode": "UNCONFIRMED",
+  "cover_pages": 4,
+  "cover_artwork_pages_supplied": 1,
+  "reader_cover_pages": 2,
+  "source_plan": "content/ASSEMBLY_V0_MANIFEST.json",
+  "baseline": "exports/ebook_v8_r1/RESOLVED_BOOK_PLAN.json",
+  "approved_cover": "assets/cover/SHAN_FRONT_COVER_FINAL.pdf",
+  "inside_front_type": "COVER_INSIDE_FRONT_BLANK",
+  "parity_page_type": "CHAPTER_TRANSITION_VERSO",
+  "interior_number_start": 1,
+  "reader_interior_offset": 2,
+  "add_only_parity_pages": true,
+  "body_geometry": "ONLY_PANCAKE_BOOK_AND_XINGYUE_PAGE1_STORY",
+  "print_text_black": "NO_COLOR_CONVERSION",
+  "section_tokens": "spec/CHAPTER_ART_TOKENS.json",
+  "output": "exports/ebook_v8_r1",
+  "output_version": "V8_R1",
+  "toc_manifest": "content/TOC_MANIFEST.json",
+  "combined_front_matter": true,
+  "release_mode": "ONLINE_EBOOK_FIRST"
+}

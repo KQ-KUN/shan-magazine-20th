@@ -1,12 +1,17 @@
 {
   "article_id": "memoir_pancake",
-  "file": "assets/pancake_media_canvas.png",
+  "file": "assets/task16/pancake-original.png",
   "media_paragraph_style": "P_Memoir_Media",
-  "width_mm": 146.0,
-  "height_mm": 74.0,
+  "width_mm": 60.0,
+  "height_mm": 81.71206225680933,
+  "width_px": 257,
+  "height_px": 350,
+  "first_page_columns_mm": [86, 60],
+  "column_gutter_mm": 6,
+  "first_page_bottom_mm": 244,
   "anchor_position": "ABOVE_LINE",
   "expected_source_images": 1,
   "placed_graphics": 1,
   "caption": "△《生物中心主义》",
-  "note": "Original portrait image is centered unchanged in meaning on a transparent full-width canvas to reuse the existing anchored-media implementation without code changes."
+  "note": "V8 R1: exact RGB portrait from original DOCX, no alpha canvas. Pancake-only page1 uses 86/60mm threaded columns; proportional 60mm portrait fills the right column."
 }

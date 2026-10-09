@@ -1,0 +1,20 @@
+{
+  "baseline": "b403225d59ee71ec50a05067fdc81aff8dedf5b7",
+  "allowed": [
+    "assets/PANCAKE_MEDIA_MANIFEST.json",
+    "content/XINGYUE.json",
+    "content/EBOOK_V8_R1_MANIFEST.json",
+    "modules/ebook_v8_r1.jsx",
+    "build/43_ebook_v8_r1_standalone.jsx",
+    "build/44_ebook_v8_r1_assembly.jsx",
+    "build/45_ebook_v8_r1_postflight.jsx",
+    "tools/ebook_v8_r1.py",
+    "tools/run_ebook_v8_r1.ps1",
+    "tests/ebook_v8_r1.test.cjs",
+    "tests/ebook_v8_r1_outputs.py",
+    "workflow/TASK24_SCOPE.json"
+  ],
+  "frozen_exception": "Pancake-only display/layout adapter; no frozen Memoir source or shared skin/token modified.",
+  "protected": "All other V8 pages incl Gloomy, complete History, cover, chapter intros, all DOCX and all 28 frozen files. XingYue page2 and page1 left region unchanged.",
+  "ignored_existing": ["SHAN_MEMOIR_CLEAN_IMPORT_PROBE/", "build/SHAN_MEMOIR_IMPORT_PROBE.jsx"]
+}
