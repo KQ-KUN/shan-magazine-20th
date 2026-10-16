@@ -68,7 +68,7 @@ SHAN.messages = {
         var padding = pt(t.name_padding_mm[1]), gap = pt(t.role_gap_mm), columnWidth = pt(t.column_width_mm);
         do {
             width = this.measureText(doc, e.name, size, true);
-            if (padding * 2 + width + gap + roleWidth <= columnWidth + .1) { break; }
+            if (padding * 2 + pt(t.plate_offset_mm[0]) + width + gap + roleWidth <= columnWidth + .1) { break; }
             size -= t.name_size_step_pt;
         } while (size >= t.name_min_size_pt);
         this.check(size >= t.name_min_size_pt, "Header cannot fit legibly " + e.name);
@@ -79,8 +79,18 @@ SHAN.messages = {
         p.characters.itemByRange(0, e.name.length - 1).appliedCharacterStyle = doc.characterStyles.itemByName("C_Message_Name");
         p.characters.itemByRange(0, e.name.length - 1).pointSize = size;
         for (var i = p.tabStops.length - 1; i >= 0; i -= 1) { p.tabStops[i].remove(); }
-        p.tabStops.add({alignment: TabStopAlignment.LEFT_ALIGN, position: width + 2 * padding + gap});
+        p.tabStops.add({alignment: TabStopAlignment.LEFT_ALIGN, position: width + 2 * padding + pt(t.plate_offset_mm[0]) + gap});
         return {name_size_pt: size, name_width_pt: width, role_width_pt: roleWidth};
+    },
+    centerHeader: function (doc, story, index, e) {
+        // Baseline/ascent are unavailable while a header is still in overset.
+        // Resolve metrics only after all source text has real document frames.
+        doc.recompose(); var p = this.at(story.paragraphs, index);
+        var nameGlyph = this.at(p.characters, 0), roleGlyph = this.at(p.characters, e.name.length + 1);
+        this.check(nameGlyph && roleGlyph, "Missing centering metrics " + e.name);
+        var nameCenter = nameGlyph.baseline + (nameGlyph.descent - nameGlyph.ascent) / 2;
+        var roleCenter = roleGlyph.baseline + (roleGlyph.descent - roleGlyph.ascent) / 2;
+        p.characters.itemByRange(e.name.length + 1, e.name.length + e.role.length).baselineShift = roleCenter - nameCenter;
     },
     lineRecord: function (line, frames) {
         var owners = line.parentTextFrames, frame = this.at(owners, 0);
@@ -93,22 +103,41 @@ SHAN.messages = {
         return {text: String(line.contents), frame_index: frameIndex, page_index: Math.floor(frameIndex / 2) + 1, page: Number(page.name), column: frameIndex % 2,
             baseline_pt: line.baseline, frame_id: frame.id};
     },
+    paletteFor: function (role, t) {
+        var year = parseInt(role.substring(0, 4), 10), index = 0;
+        while (index < t.palette_year_breaks.length && year >= t.palette_year_breaks[index]) { index += 1; }
+        return t.palettes[index];
+    },
+    plate: function (doc, page, id, layer, bounds, color) {
+        var rect = page.rectangles.add(); rect.appliedObjectStyle = doc.objectStyles[0];
+        rect.label = "SHAN_MESSAGES_OVERPRINT:" + id + ":" + layer;
+        rect.geometricBounds = bounds; rect.fillColor = doc.colors.itemByName(color); rect.fillTint = 100;
+        // None last: the host's default object style can otherwise restore a stroke.
+        rect.strokeWeight = 0; rect.strokeColor = doc.swatches.itemByName("None"); rect.sendToBack();
+        return rect;
+    },
     decorate: function (doc, p, e, id, t, frames) {
         this.check(p.lines.length === 1, "Name/role header wrapped " + e.name);
         var first = this.at(p.characters, 0), last = this.at(p.characters, e.name.length - 1), role = this.at(p.characters, e.name.length + 1);
         this.check(first && last && role, "Header glyph access " + e.name);
         var line = this.at(p.lines, 0), info = this.lineRecord(line, frames), page = frames[info.frame_index].parentPage, b = page.bounds, pt = SHAN.utils.pt;
         var x1 = first.horizontalOffset - pt(t.name_padding_mm[1]), x2 = last.endHorizontalOffset + pt(t.name_padding_mm[1]);
-        var y1 = first.baseline - first.ascent - pt(t.name_padding_mm[0]), y2 = first.baseline + first.descent + pt(t.name_padding_mm[0]);
-        this.check(role.horizontalOffset >= x2 + pt(t.role_gap_mm) - .3, "Role overlaps name background " + e.name);
-        this.check(Math.abs(role.baseline - first.baseline) < .2, "Role/name baseline differs " + e.name);
-        var rect = page.rectangles.add(); rect.appliedObjectStyle = doc.objectStyles[0]; rect.label = "SHAN_MESSAGES_V2_NAME:" + id;
-        rect.geometricBounds = [y1, x1, y2, x2]; rect.fillColor = doc.colors.itemByName("C_Message_Name_Fill"); rect.fillTint = 100;
-        rect.strokeWeight = 0; rect.strokeColor = doc.swatches.itemByName("None"); rect.sendToBack();
-        this.check(x1 >= b[1] + pt(14.5) && x2 <= b[1] + pt(171), "Name box outside live area " + e.name);
-        return {page: info.page, page_index: info.page_index, column: info.column, frame_index: info.frame_index, same_line: true, solid_fill: true,
-            fill_rgb: t.name_fill_rgb, rect_mm: [(y1-b[0])/pt(1), (x1-b[1])/pt(1), (y2-b[0])/pt(1), (x2-b[1])/pt(1)],
-            name_start_pt: first.horizontalOffset, name_end_pt: last.endHorizontalOffset, role_start_pt: role.horizontalOffset, baseline_pt: first.baseline};
+        var inkTop = first.baseline - first.ascent, inkBottom = first.baseline + first.descent;
+        var height = (inkBottom - inkTop) * t.plate_height_ratio, y2 = inkBottom, y1 = y2 - height;
+        var dx = pt(t.plate_offset_mm[0]), dy = pt(t.plate_offset_mm[1]);
+        var nc = first.baseline + (first.descent - first.ascent) / 2, rc = role.baseline + (role.descent - role.ascent) / 2;
+        this.check(role.horizontalOffset >= x2 + dx + pt(t.role_gap_mm) - .3, "Role overlaps name plates " + e.name);
+        this.check(Math.abs(rc - nc) < .2, "Role/name visual centers differ " + e.name + ": " + (rc-nc));
+        var palette = this.paletteFor(e.role,t), primary = [y1,x1,y2,x2], shadow = [y1+dy,x1+dx,y2+dy,x2+dx];
+        this.plate(doc,page,id,"primary",primary,"C_Message_"+palette.name+"_primary");
+        this.plate(doc,page,id,"shadow",shadow,"C_Message_"+palette.name+"_shadow");
+        this.check(x1 >= b[1] + pt(14.5) && x2+dx <= b[1] + pt(171), "Name plates outside live area " + e.name);
+        var mm = function (g) { return [(g[0]-b[0])/pt(1),(g[1]-b[1])/pt(1),(g[2]-b[0])/pt(1),(g[3]-b[1])/pt(1)]; };
+        return {page:info.page,page_index:info.page_index,column:info.column,frame_index:info.frame_index,same_line:true,solid_fill:true,
+            palette:palette.name,primary_rgb:palette.primary,shadow_rgb:palette.shadow,rect_mm:mm(primary),shadow_rect_mm:mm(shadow),
+            plate_height_ratio:t.plate_height_ratio,offset_mm:t.plate_offset_mm,name_size_pt:first.pointSize,role_size_pt:role.pointSize,
+            name_center_pt:nc,role_center_pt:rc,name_start_pt:first.horizontalOffset,name_end_pt:last.endHorizontalOffset,
+            role_start_pt:role.horizontalOffset,baseline_pt:first.baseline};
     },
     render: function (doc, data, map, t, runtime) {
         this.clearOutput(doc);
@@ -150,6 +179,12 @@ SHAN.messages = {
         while (frames.length > 2 && frames[frames.length-2].characters.length === 0 && frames[frames.length-1].characters.length === 0) {
             frames.pop(); frames.pop(); doc.pages[doc.pages.length-1].remove(); doc.recompose();
         }
+        runtime.setStage("center-placed-message-headers");
+        for (i = 0; i < map.entries.length; i += 1) {
+            m = map.entries[i]; e = this.entry(data,m);
+            this.centerHeader(doc,story,m.header_paragraph-1,e);
+        }
+        doc.recompose();
         if (t.last_page_balance) {
             // Balance the closing spread through the same linked story, not per-person blocks.
             runtime.setStage("balance-messages-closing-spread");

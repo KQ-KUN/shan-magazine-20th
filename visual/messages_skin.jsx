@@ -1,10 +1,14 @@
 ﻿var SHAN = typeof SHAN === "undefined" ? {} : SHAN;
 SHAN.messagesSkin = {
     apply: function (doc, t, base, context) {
-        var fill = SHAN.utils.ensureNamed(doc.colors, "C_Message_Name_Fill");
-        fill.model = ColorModel.PROCESS; fill.space = ColorSpace.RGB; fill.colorValue = t.name_fill_rgb;
-        var white = SHAN.utils.ensureNamed(doc.colors, "C_Message_Name_White");
-        white.model = ColorModel.PROCESS; white.space = ColorSpace.RGB; white.colorValue = [255, 255, 255];
+        for (var pi = 0; pi < t.palettes.length; pi += 1) {
+            var palette = t.palettes[pi];
+            for (var layer = 0; layer < 2; layer += 1) {
+                var key = layer === 0 ? "primary" : "shadow";
+                var color = SHAN.utils.ensureNamed(doc.colors, "C_Message_" + palette.name + "_" + key);
+                color.model = ColorModel.PROCESS; color.space = ColorSpace.RGB; color.colorValue = palette[key];
+            }
+        }
         var name, style;
         for (name in t.styles) { if (t.styles.hasOwnProperty(name)) { SHAN.utils.ensureNamed(doc.paragraphStyles, name); } }
         SHAN.typography.apply(doc, {colors: {}, font_stacks: base.font_stacks, paragraph_styles: t.styles}, context);
@@ -22,8 +26,8 @@ SHAN.messagesSkin = {
         header.characterAlignment = CharacterAlignment.ALIGN_BASELINE;
         header.firstLineIndent = SHAN.utils.pt(t.name_padding_mm[1]);
         var cs = SHAN.utils.ensureNamed(doc.characterStyles, "C_Message_Name");
-        cs.appliedFont = header.appliedFont; cs.fontStyle = "Medium";
+        cs.appliedFont = header.appliedFont; cs.fontStyle = "Bold";
         cs.characterAlignment = CharacterAlignment.ALIGN_BASELINE; cs.baselineShift = 0;
-        cs.pointSize = t.name_size_pt; cs.fillColor = white; cs.fillTint = 100;
+        cs.pointSize = t.name_size_pt; cs.fillColor = doc.colors.itemByName("C_TEXT"); cs.fillTint = 100;
     }
 };

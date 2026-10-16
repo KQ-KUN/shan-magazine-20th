@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "2.1-overprint",
   "parent": "G-MESSAGE",
   "trim_mm": [
     185,
@@ -12,18 +12,13 @@
   "first_top_mm": 41,
   "continuation_top_mm": 23,
   "bottom_mm": 240,
-  "name_fill_rgb": [
-    67,
-    92,
-    115
-  ],
   "name_padding_mm": [
-    1.6,
-    2.0
+    0,
+    0.7
   ],
-  "role_gap_mm": 2.2,
-  "name_size_pt": 16.5,
-  "name_min_size_pt": 14.5,
+  "role_gap_mm": 3.5,
+  "name_size_pt": 14.5,
+  "name_min_size_pt": 13,
   "name_size_step_pt": 0.5,
   "header_gap_before_mm": 5.0,
   "header_gap_after_mm": 2.0,
@@ -41,8 +36,8 @@
     "P_Message_Header": {
       "family": "sans_cn",
       "weight_preference": "Regular",
-      "size_pt": 8.2,
-      "leading_pt": 35,
+      "size_pt": 9,
+      "leading_pt": 30,
       "color": "C_TEXT",
       "space_before_mm": 5,
       "space_after_mm": 2
@@ -65,5 +60,69 @@
       "space_after_mm": 0
     }
   },
-  "tail_balance_pages": 2
+  "tail_balance_pages": 2,
+  "plate_height_ratio": 0.8,
+  "plate_offset_mm": [
+    0.9,
+    0.8
+  ],
+  "palette_year_breaks": [
+    2011,
+    2016,
+    2021
+  ],
+  "palettes": [
+    {
+      "name": "Slate",
+      "primary": [
+        192,
+        208,
+        215
+      ],
+      "shadow": [
+        143,
+        169,
+        181
+      ]
+    },
+    {
+      "name": "Brick",
+      "primary": [
+        227,
+        199,
+        185
+      ],
+      "shadow": [
+        192,
+        148,
+        129
+      ]
+    },
+    {
+      "name": "Mauve",
+      "primary": [
+        215,
+        199,
+        212
+      ],
+      "shadow": [
+        176,
+        151,
+        174
+      ]
+    },
+    {
+      "name": "Ochre",
+      "primary": [
+        226,
+        211,
+        178
+      ],
+      "shadow": [
+        188,
+        165,
+        119
+      ]
+    }
+  ]
 }

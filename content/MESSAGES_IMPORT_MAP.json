@@ -639,7 +639,7 @@
       "entry_index": 27
     }
   ],
-  "display_transform": "Only each original role + ASCII space + name header displays as name + TAB + role in one paragraph. Header slices reconstruct the exact original string; body and empty source paragraphs are verbatim. Solid name rectangles are non-text decoration.",
+  "display_transform": "Only each original role + ASCII space + name header displays as name + TAB + role in one paragraph. Header slices reconstruct the exact original string; body and empty source paragraphs are verbatim. Offset mineral-color name plates are non-text decoration.",
   "styles": {
     "header": "P_Message_Header",
     "name_character": "C_Message_Name",
@@ -649,7 +649,7 @@
   "style_exceptions": [
     {
       "source_heading_paragraph": 26,
-      "policy": "Measure the original long name and role together; fit only name size within 14.5–16.5pt; role stays 8.2pt; no text changes"
+      "policy": "Measure every original name and role together; fit only name size within 13–14.5pt; role stays 9pt; vertically center actual glyph metrics; no text changes"
     }
   ]
 }
