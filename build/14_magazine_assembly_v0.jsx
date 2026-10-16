@@ -27,6 +27,8 @@
 #include "../modules/publication_refinements.jsx"
 #include "../modules/xingyue.jsx"
 #include "../visual/xingyue_skin.jsx"
+#include "../modules/messages.jsx"
+#include "../visual/messages_skin.jsx"
 #include "../modules/assembly_v0.jsx"
 #include "../modules/monday_cup.jsx"
 

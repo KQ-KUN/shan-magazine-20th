@@ -204,11 +204,10 @@
       "start_on_recto": true
     },
     {
-      "id": "messages_pending",
-      "kind": "placeholder",
-      "title": "历任社长寄语",
-      "pages": 1,
-      "label": "CONTENT PENDING — NOT FOR PRINT"
+      "id": "messages",
+      "kind": "messages",
+      "title": "寄语",
+      "source": "manuscripts/source/messages/寄语整理_已补充.docx"
     }
   ],
   "excluded_for_v0": [

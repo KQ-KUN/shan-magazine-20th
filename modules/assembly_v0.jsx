@@ -111,6 +111,10 @@ SHAN.assemblyV0 = {
         } else if (c.kind === "xingyue") {
             tokens=this.read(root,"spec/XINGYUE_TOKENS.json");
             SHAN.xingyueSkin.apply(doc,tokens,base,context);SHAN.xingyue.create(doc,root,tokens,runtime);
+        } else if (c.kind === "messages") {
+            tokens = this.read(root, "spec/MESSAGES_TOKENS.json");
+            SHAN.messagesSkin.apply(doc, tokens, base, context);
+            result = SHAN.messages.render(doc, this.read(root, "exports/messages_v2/SOURCE_IMPORT.json"), this.read(root, "content/MESSAGES_IMPORT_MAP.json"), tokens, runtime);
         } else if (c.kind === "history") {
             tokens = this.read(root, "spec/HISTORY_TOKENS.json");
             var map = this.read(root, "content/HISTORY_IMPORT_MAP.json"), audit = this.read(root, "spec/HISTORY_SOURCE_AUDIT.json");
