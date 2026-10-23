@@ -49,7 +49,7 @@
         runtime.setStage('save-export',{file:stem});doc.save(File(out+'/'+stem+'.indd'));SHAN.printBook.exportPDF(doc,File(out+'/'+stem+'.pdf'),false);
         if(!request.sample){SHAN.printBook.exportSpreads(doc,File(out+'/SHAN_MESSAGES_OVERPRINT_SPREADS.pdf'));}
         report.focus=a.focus(doc);runtime.setStage('write-report');a.write(out+'/'+reportStem+'.json',a.json(report));
-        a.write(out+'/'+reportStem+'.txt','PASS;version='+app.version+';people='+report.people+';source_paragraphs='+report.source_paragraphs+';pages='+doc.pages.length+';overset=false;paragraphs=exact;name-plates=2;role=9pt-right-centered;focus='+doc.pages[0].name);
+        a.write(out+'/'+reportStem+'.txt','PASS;version='+app.version+';people='+report.people+';source_paragraphs='+report.source_paragraphs+';pages='+doc.pages.length+';overset=false;paragraphs=exact;name-plates=2;role='+t.styles.P_Message_Header.size_pt+'pt-right-centered;name-font='+t.name_family+'/'+t.name_weight+';focus='+doc.pages[0].name);
         return 'PASS Messages overprint;people='+report.people+';source_paragraphs='+report.source_paragraphs+';pages='+doc.pages.length+';overset=false';
     }catch(e){var error='stage='+runtime.stage+';context='+a.json(runtime.detail)+';name='+e.name+';message='+e.message+';file='+e.fileName+';line='+e.line+(e.source?';source='+e.source:'')+';stack='+$.stack;
         try{a.write(out+'/MESSAGES_RUNTIME_ERROR.txt',error);}catch(log){$.writeln(error);}return 'FAIL '+error;

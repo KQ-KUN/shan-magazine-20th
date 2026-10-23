@@ -1,5 +1,5 @@
 {
-  "version": "2.1-overprint",
+  "version": "2.2-type-refinement",
   "parent": "G-MESSAGE",
   "trim_mm": [
     185,
@@ -14,12 +14,12 @@
   "bottom_mm": 240,
   "name_padding_mm": [
     0,
-    0.7
+    0.25
   ],
-  "role_gap_mm": 3.5,
-  "name_size_pt": 14.5,
-  "name_min_size_pt": 13,
-  "name_size_step_pt": 0.5,
+  "role_gap_mm": 3,
+  "name_size_pt": 15,
+  "name_min_size_pt": 13.25,
+  "name_size_step_pt": 0.25,
   "header_gap_before_mm": 5.0,
   "header_gap_after_mm": 2.0,
   "header_keep_body_lines": 2,
@@ -35,8 +35,8 @@
     },
     "P_Message_Header": {
       "family": "sans_cn",
-      "weight_preference": "Regular",
-      "size_pt": 9,
+      "weight_preference": "Medium",
+      "size_pt": 10.5,
       "leading_pt": 30,
       "color": "C_TEXT",
       "space_before_mm": 5,
@@ -124,5 +124,7 @@
         119
       ]
     }
-  ]
+  ],
+  "name_family": "serif_cn",
+  "name_weight": "SemiBold"
 }

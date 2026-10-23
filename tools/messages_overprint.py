@@ -17,11 +17,11 @@ def render(pdf,dpi):
  return sorted(folder.glob('page-*.png'),key=lambda p:int(p.stem.split('-')[-1]))
 
 def compare(report,pdf,suffix):
- old=read(ROOT/'exports/messages_v2/MESSAGES_RUNTIME_V2.json');oldpdf=ROOT/'exports/messages_v2/SHAN_MESSAGES_REVIEW_V2.pdf'
+ old=read(ROOT/'exports/messages_type_refinement/before/MESSAGES_RUNTIME.json');oldpdf=ROOT/'exports/messages_type_refinement/before/SHAN_MESSAGES_OVERPRINT.pdf'
  dpi=220;ppm=dpi/25.4;older=render(oldpdf,dpi);newer=render(pdf,dpi)
  for name,key in [('邵珠瑜','SHORT'),('刘慧颖（昼温）','LONG')]:
   panels=[]
-  for label,r,paths in [('V2',old,older),('OVERPRINT',report,newer)]:
+  for label,r,paths in [('PREVIOUS: Sans 14.5 / role 9',old,older),('NEW: Serif SemiBold / role 10.5 Medium',report,newer)]:
    e=next(e for e in r['entries'] if e['name']==name);h=e['header'];f=r['frames'][h['frame_index']];y,x,b,right=h['rect_mm'];left=f['bounds_mm'][1]-2
    with Image.open(paths[h['page_index']-1]) as im:
     crop=im.crop(tuple(round(v*ppm) for v in (left+3,y-3+3,left+79+3,y+18+3))).convert('RGB')
@@ -37,7 +37,7 @@ def check(sample=False):
  source=extract(SOURCE);mapping=read(ROOT/'content/MESSAGES_IMPORT_MAP.json');reconstructed=[p['text'] for p in report['paragraphs']]
  for e in report['entries']:
   reconstructed[e['header_paragraph']-1]=e['header_reconstructed'];h=e['header']
-  assert 13<=h['name_size_pt']<=15 and abs(h['role_size_pt']-9)<.01
+  assert 13<=h['name_size_pt']<=15 and abs(h['role_size_pt']-t['styles']['P_Message_Header']['size_pt'])<.01
   assert abs(h['role_center_pt']-h['name_center_pt'])<.2 and h['same_line']
   assert abs(h['offset_mm'][0]-.9)<.01 and abs(h['offset_mm'][1]-.8)<.01 and .7<=h['plate_height_ratio']<=.85
   assert all(l['frame_index']==h['frame_index'] for l in e['body_lines'][:2])
@@ -47,6 +47,14 @@ def check(sample=False):
   assert all(e['body']==[source[n-1] for n in m['body_paragraphs']] for e,m in zip(report['entries'],mapping['entries']))
   assert any(e['crosses_pages'] for e in report['entries']) and any(e['crosses_columns'] for e in report['entries'])
   assert all(not p['keep_all_lines'] for p in report['paragraphs'] if p['style']=='P_Message_Body')
+  previous=read(ROOT/'exports/messages_type_refinement/before/MESSAGES_RUNTIME.json')
+  current_body=[p for p in report['paragraphs'] if p['style']!='P_Message_Header'];previous_body=[p for p in previous['paragraphs'] if p['style']!='P_Message_Header']
+  assert len(current_body)==len(previous_body)
+  for current,old in zip(current_body,previous_body):
+   assert current['text']==old['text'] and len(current['lines'])==len(old['lines'])
+   for a,b in zip(current['lines'],old['lines']):
+    assert a['text']==b['text'] and a['page_index']==b['page_index'] and a['column']==b['column'] and abs(a['baseline_pt']-b['baseline_pt'])<.02,'Body layout changed'
+
  else:assert [e['name'] for e in report['entries']]==['邵珠瑜','刘慧颖（昼温）']
  reader=PdfReader(pdf);assert len(reader.pages)==report['pages'];bottoms=[];rect_count=0
  with pdfplumber.open(pdf) as doc:
@@ -63,10 +71,14 @@ def check(sample=False):
     for key,color in [('rect_mm',h['primary_rgb']),('shadow_rect_mm',h['shadow_rgb'])]:
      y,x,b,right=h[key];rs=[q for q in page.rects if abs(q['x0']-(x*pt+ox))<.3 and abs(q['top']-(y*pt+oy))<.3]
      assert len(rs)==1 and rs[0]['fill'] and not rs[0]['stroke'];rgb=rs[0]['non_stroking_color'];assert all(abs(a-v/255)<.01 for a,v in zip(rgb,color));rect_count+=1
-    assert (h['role_start_pt']-h['name_end_pt'])/pt>=3.5
+    assert (h['role_start_pt']-h['name_end_pt'])/pt>=3
     role_x=h['rect_mm'][1]*pt+t['name_padding_mm'][1]*pt+(h['role_start_pt']-h['name_start_pt'])+ox
     role=[c for c in chars if abs(c['x0']-role_x)<.2 and (h['rect_mm'][0]-4)*pt+oy<=c['top']<=(h['rect_mm'][2]+3)*pt+oy]
-    assert role and abs(role[0]['size']-9)<.05
+    assert role and abs(role[0]['size']-t['styles']['P_Message_Header']['size_pt'])<.05
+    assert 'Sans' in role[0]['fontname'] and 'Medium' in role[0]['fontname'],role[0]['fontname']
+    name_x=h['rect_mm'][1]*pt+t['name_padding_mm'][1]*pt+ox
+    names=[c for c in chars if abs(c['x0']-name_x)<.2 and (h['rect_mm'][0]-5)*pt+oy<=c['top']<=(h['rect_mm'][2]+2)*pt+oy]
+    assert names and 'Serif' in names[0]['fontname'] and 'SemiBold' in names[0]['fontname'],names
    local=[]
    for f in [f for f in report['frames'] if f['page_index']==i+1]:
     part=[c for c in chars if f['bounds_mm'][1]*pt+ox-1<=(c['x0']+c['x1'])/2<=f['bounds_mm'][3]*pt+ox+1]
@@ -94,6 +106,6 @@ def check(sample=False):
   canvas=Image.new('RGB',(sum(im.width+15 for _,im in panels),max(im.height for _,im in panels)+35),'#e5e3df');d=ImageDraw.Draw(canvas);x=5
   for label,im in panels:d.text((x,8),label,fill='black');canvas.paste(im,(x,30));x+=im.width+15
   canvas.save(OUT/'SHAN_MESSAGES_LONG_FLOW.png')
- proof={'status':'PASS','native_version':report['native_version'],'pages':report['pages'],'people':report['people'],'source_paragraphs':report['source_paragraphs'],'source_sha256':EXPECTED,'paragraph_equality':'Exact source reconstruction; header name TAB role reversed, terminal CR only; no body normalization','pdf_glyphs':'Exact per-page multiset from native visible lines','name_plates':rect_count,'name_sizes_pt':sorted(set(e['header']['name_size_pt'] for e in report['entries'])),'roles_pt':9,'centering':'Native glyph centers, PDF role size and no-overlap verified','body_size_leading':'9.4/15.5 unchanged','bottom_blank_mm':bottoms,'all_pages_rendered':len(paths),'visual_review':'PENDING_AGENT_INSPECTION','overset':False,'sample':sample}
+ proof={'status':'PASS','native_version':report['native_version'],'pages':report['pages'],'people':report['people'],'source_paragraphs':report['source_paragraphs'],'source_sha256':EXPECTED,'paragraph_equality':'Exact source reconstruction; header name TAB role reversed, terminal CR only; no body normalization','pdf_glyphs':'Exact per-page multiset from native visible lines','name_plates':rect_count,'name_sizes_pt':sorted(set(e['header']['name_size_pt'] for e in report['entries'])),'roles_pt':t['styles']['P_Message_Header']['size_pt'],'centering':'Native glyph centers, PDF role size/font and no-overlap verified','body_size_leading':'9.4/15.5 unchanged','bottom_blank_mm':bottoms,'all_pages_rendered':len(paths),'visual_review':'PENDING_AGENT_INSPECTION','overset':False,'sample':sample}
  write(OUT/('SAMPLE_VALIDATION.json' if sample else 'VALIDATION.json'),proof);print(json.dumps(proof,ensure_ascii=False))
 if __name__=='__main__':check(len(sys.argv)>1 and sys.argv[1]=='sample')

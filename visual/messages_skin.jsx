@@ -26,7 +26,9 @@ SHAN.messagesSkin = {
         header.characterAlignment = CharacterAlignment.ALIGN_BASELINE;
         header.firstLineIndent = SHAN.utils.pt(t.name_padding_mm[1]);
         var cs = SHAN.utils.ensureNamed(doc.characterStyles, "C_Message_Name");
-        cs.appliedFont = header.appliedFont; cs.fontStyle = "Bold";
+        var selected = SHAN.typography.chooseFont(app.fonts.everyItem().getElements(), base.font_stacks[t.name_family], t.name_weight);
+        SHAN.messages.check(selected && selected.exact, "Requested Messages name font unavailable");
+        cs.appliedFont = selected.font; cs.fontStyle = selected.font.fontStyleName;
         cs.characterAlignment = CharacterAlignment.ALIGN_BASELINE; cs.baselineShift = 0;
         cs.pointSize = t.name_size_pt; cs.fillColor = doc.colors.itemByName("C_TEXT"); cs.fillTint = 100;
     }

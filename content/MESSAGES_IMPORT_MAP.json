@@ -649,7 +649,7 @@
   "style_exceptions": [
     {
       "source_heading_paragraph": 26,
-      "policy": "Measure every original name and role together; fit only name size within 13–14.5pt; role stays 9pt; vertically center actual glyph metrics; no text changes"
+      "policy": "Measure every original name and role together; fit only name size within 13.25–15pt Source Han Serif SemiBold; role stays 10.5pt Source Han Sans Medium; vertically center actual glyph metrics; no text changes"
     }
   ]
 }

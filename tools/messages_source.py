@@ -37,7 +37,7 @@ def prepare():
   text=rows[i];split=text.rindex(' ');stop=starts[number+1] if number+1<len(starts) else len(rows)
   entries.append({'id':'message_%02d'%(number+1),'entry_index':number,'header_paragraph':i+1,'role_range':[0,split],'separator_range':[split,split+1],'name_range':[split+1,len(text)],'body_paragraphs':list(range(i+2,stop+1))})
  mapping={'source':SOURCE.relative_to(ROOT).as_posix(),'sha256':EXPECTED,'source_paragraphs':130,'people':28,'entries':entries,'display_transform':'Only each original role + ASCII space + name header displays as name + TAB + role in one paragraph. Header slices reconstruct the exact original string; body and empty source paragraphs are verbatim. Offset mineral-color name plates are non-text decoration.','styles':{'header': 'P_Message_Header', 'name_character': 'C_Message_Name', 'body': 'P_Message_Body', 'empty_source_paragraph': 'P_Message_Empty'}}
- mapping['style_exceptions']=[{'source_heading_paragraph': 26, 'policy': 'Measure every original name and role together; fit only name size within 13–14.5pt; role stays 9pt; vertically center actual glyph metrics; no text changes'}]
+ mapping['style_exceptions']=[{'source_heading_paragraph': 26, 'policy': 'Measure every original name and role together; fit only name size within 13.25–15pt Source Han Serif SemiBold; role stays 10.5pt Source Han Sans Medium; vertically center actual glyph metrics; no text changes'}]
  map_path=ROOT/'content/MESSAGES_IMPORT_MAP.json'
  if map_path.exists():assert read(map_path)==mapping,'Do not silently overwrite a mapping'
  else:write(map_path,mapping)
