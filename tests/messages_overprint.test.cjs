@@ -23,3 +23,7 @@ for(const p of [...changed,...untracked])assert(scope.allow.includes(p)||['tools
 let frozen=0;for(const m of Object.values(read('workflow/MODULE_STATUS.json')))if(m.frozen)for(const p of m.scope){assert.strictEqual(hash(p),scope.protected[p]);frozen++;}
 assert.strictEqual(sandbox.SHAN.messages.styleFor(3,{},['','','','title'],{'$3':true}),'P_Message_InternalTitle');
 console.log('PASS: 31 names/roles, 148 source paragraphs, 30 empties; 9.4/15.5 body; dynamic measured headers; JSX BOM/includes; '+frozen+' frozen files; '+Object.keys(scope.protected).length+' protected files/output hashes; unrelated dirty work preserved');
+
+assert.deepStrictEqual(map.no_indent_paragraphs,[19,20,21,22]);
+assert.strictEqual(t.styles.P_Message_Riddle.first_line_indent_em,0);
+for(const n of map.no_indent_paragraphs)assert.strictEqual(sandbox.SHAN.messages.styleFor(n-1,{},source.paragraphs,{},Object.fromEntries(map.no_indent_paragraphs.map(p=>['$'+(p-1),true]))),'P_Message_Riddle');

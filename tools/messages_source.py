@@ -60,6 +60,7 @@ def prepare(update_mapping=False,quiet=False):
   assert len(centered)==2 and len(underlines)==1,'Unexpected approved source formatting inventory'
  mapping['source_corrections']=[{'source_paragraph':129,'original':'颜东','replacement':'颜冬','authorization':'Explicit user name correction'},{'source_paragraph':64,'original':'2017级中心校区会长','replacement':'2017级会长','authorization':'Explicit user PDF annotation: remove 中心校区'}]
  mapping['centered_titles']=centered;mapping['double_underlines']=underlines
+ mapping['no_indent_paragraphs']=[19,20,21,22] # User-authorized riddle formatting; source text is unchanged.
  mapping['styles']['internal_title']='P_Message_InternalTitle'
  mapping['header_typography']='Names Source Han Serif SemiBold 13.25–15pt measured; roles Source Han Sans Medium 10.5pt; name/role glyph centers aligned; no text edits'
  map_path=ROOT/'content/MESSAGES_IMPORT_MAP.json'

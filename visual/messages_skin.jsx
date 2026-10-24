@@ -16,7 +16,7 @@ SHAN.messagesSkin = {
             style = doc.paragraphStyles.itemByName(name);
             style.spanColumnType = SpanColumnTypeOptions.SINGLE_COLUMN;
             style.justification = Justification.LEFT_ALIGN;
-            if (name === "P_Message_Body") { style.justification = Justification.LEFT_JUSTIFIED; }
+            if ((name === "P_Message_Body" || name === "P_Message_Riddle")) { style.justification = Justification.LEFT_JUSTIFIED; }
             if (name === "P_Message_InternalTitle") { style.justification = Justification.CENTER_ALIGN; }
             style.hyphenation = false; style.fillTint = 100;
             style.keepWithNext = (name === "P_Message_Header" || name === "P_Message_InternalTitle") ? t.header_keep_body_lines : 0;

@@ -14,11 +14,12 @@ SHAN.messages = {
         var raw = data.paragraphs[map.header_paragraph - 1];
         return {name: raw.substring(map.name_range[0], map.name_range[1]), role: raw.substring(map.role_range[0], map.role_range[1])};
     },
-    styleFor: function (index, starts, rows, centered) {
+    styleFor: function (index, starts, rows, centered, noIndent) {
         // ExtendScript's unparenthesized nested conditional is left-associative.
         // Use explicit branches so a Header can never become an Empty paragraph.
         if (starts["$" + index] > 0) { return "P_Message_Header"; }
         if (centered && centered["$" + index]) { return "P_Message_InternalTitle"; }
+        if (noIndent && noIndent["$" + index]) { return "P_Message_Riddle"; }
         if (rows[index] === "") { return "P_Message_Empty"; }
         return "P_Message_Body";
     },
@@ -143,17 +144,18 @@ SHAN.messages = {
     render: function (doc, data, map, t, runtime) {
         this.clearOutput(doc);
         while (doc.pages.length > 1) { doc.pages[doc.pages.length - 1].remove(); }
-        var frames = [], rows = data.paragraphs.slice(0), starts = {}, centered = {}, i, j, e, m, formats = [];
+        var frames = [], rows = data.paragraphs.slice(0), starts = {}, centered = {}, noIndent = {}, i, j, e, m, formats = [];
         for (i = 0; i < map.entries.length; i += 1) {
             m = map.entries[i]; e = this.entry(data, m); starts["$" + (m.header_paragraph - 1)] = i + 1; rows[m.header_paragraph - 1] = e.name + "\t" + e.role;
         }
         for (i = 0; i < map.centered_titles.length; i += 1) { centered["$" + (map.centered_titles[i].source_paragraph-1)] = true; }
+        for (i = 0; i < map.no_indent_paragraphs.length; i += 1) { noIndent["$" + (map.no_indent_paragraphs[i]-1)] = true; }
         runtime.setStage("create-messages-threaded-story"); this.addPage(doc, frames, t, true);
         var story = frames[0].parentStory; story.contents = rows.join("\r") + "\r";
         this.check(story.paragraphs.length === data.paragraphs.length, "Source paragraph count changed");
         for (i = 0; i < rows.length; i += 1) {
             var p = this.at(story.paragraphs, i), header = (starts["$" + i] > 0);
-            p.applyParagraphStyle(doc.paragraphStyles.itemByName(this.styleFor(i, starts, rows, centered)), true);
+            p.applyParagraphStyle(doc.paragraphStyles.itemByName(this.styleFor(i, starts, rows, centered, noIndent)), true);
             if (i === 0) { p.spaceBefore = 0; }
         }
         for (i = 0; i < map.double_underlines.length; i += 1) {
@@ -208,11 +210,12 @@ SHAN.messages = {
         this.check(!story.overflows, "Final story overset"); runtime.setStage("messages-paragraph-integrity");
         var paragraphs = [], entries = [], allLines = [];
         for (i = 0; i < rows.length; i += 1) {
-            p = this.at(story.paragraphs, i); var expectedStyle = this.styleFor(i, starts, rows, centered);
+            p = this.at(story.paragraphs, i); var expectedStyle = this.styleFor(i, starts, rows, centered, noIndent);
             this.check(p.appliedParagraphStyle.name === expectedStyle, "Unexpected paragraph style " + (i+1) + ": actual=" + p.appliedParagraphStyle.name + "; expected=" + expectedStyle); this.check(this.text(p) === rows[i], "Changed source paragraph " + (i+1));
+            if (noIndent["$" + i]) { this.check(Math.abs(Number(p.firstLineIndent)) < 0.01, "Riddle indent not zero " + (i+1)); }
             var lines = [], ls = p.lines; this.check(ls && ls.length > 0, "Invisible source paragraph " + (i+1));
             for (j = 0; j < ls.length; j += 1) { var lineInfo = this.lineRecord(this.at(ls,j), frames); lines.push(lineInfo); allLines.push(lineInfo); }
-            paragraphs.push({source_paragraph:i+1, text:rows[i], lines:lines, style:p.appliedParagraphStyle.name, keep_all_lines:p.keepAllLinesTogether});
+            paragraphs.push({source_paragraph:i+1, text:rows[i], lines:lines, style:p.appliedParagraphStyle.name, keep_all_lines:p.keepAllLinesTogether,first_line_indent_pt:Number(p.firstLineIndent)});
         }
         for (i = 0; i < map.entries.length; i += 1) {
             m = map.entries[i]; e = this.entry(data,m); p = this.at(story.paragraphs,m.header_paragraph-1);
