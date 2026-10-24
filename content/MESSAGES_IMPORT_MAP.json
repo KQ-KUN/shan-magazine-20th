@@ -1,6 +1,6 @@
 {
   "source": "manuscripts/source/messages/寄语（24号修订版）.docx",
-  "sha256": "ceffc5f57816e36350853899cce25097b1d96f2924e0d5f47e2c7d460052c0fb",
+  "sha256": "f495767b57568eb15db92774851a52b80a5c120ec7652a81e29fa59bdc8f39e1",
   "source_paragraphs": 148,
   "people": 31,
   "entries": [
@@ -719,6 +719,14 @@
     "empty_source_paragraph": "P_Message_Empty",
     "internal_title": "P_Message_InternalTitle"
   },
+  "source_corrections": [
+    {
+      "source_paragraph": 129,
+      "original": "颜东",
+      "replacement": "颜冬",
+      "authorization": "Explicit user name correction"
+    }
+  ],
   "centered_titles": [
     {
       "source_paragraph": 99,

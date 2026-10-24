@@ -7,7 +7,7 @@ from pypdf import PdfReader
 from PIL import Image,ImageDraw
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_revision_20261024'
 sys.path.insert(0,str(ROOT/'tools'))
-from messages_source import extract,SOURCE,UPLOAD,digest,EXPECTED
+from messages_source import extract,SOURCE,UPLOAD,digest,EXPECTED,verify_source
 
 def read(p):return json.loads(p.read_text('utf-8-sig'))
 def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
@@ -44,7 +44,7 @@ def compare(report,pdf,suffix):
 def check(sample=False):
  report=read(OUT/('SAMPLE_RUNTIME.json' if sample else 'MESSAGES_RUNTIME.json'));pdf=OUT/('SHAN_MESSAGES_REVISION_SAMPLES.pdf' if sample else 'SHAN_MESSAGES_REVISION_20261024.pdf');t=read(ROOT/'spec/MESSAGES_TOKENS.json')
  assert report['status']=='PASS' and not report['overset'] and report['fonts_installed'] and not report['missing_links'] and not report['focus']['active_page_is_parent']
- assert digest(SOURCE)==digest(UPLOAD)==EXPECTED
+ verify_source()
  source=extract(SOURCE);mapping=read(ROOT/'content/MESSAGES_IMPORT_MAP.json');reconstructed=[p['text'] for p in report['paragraphs']]
  for e in report['entries']:
   reconstructed[e['header_paragraph']-1]=e['header_reconstructed'];h=e['header']
