@@ -1,4 +1,5 @@
 """Native-PDF proofs for measured mineral overprint headers; no manuscript editing."""
+from importlib.metadata import version as package_version
 from pathlib import Path
 from collections import Counter
 import sys,json,hashlib,subprocess,shutil
@@ -11,10 +12,17 @@ from messages_source import extract,SOURCE,UPLOAD,digest,EXPECTED,verify_source
 
 def read(p):return json.loads(p.read_text('utf-8-sig'))
 def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+def digest_bytes(data):return hashlib.sha256(data).hexdigest()
+
 def render(pdf,dpi):
- folder=OUT/'render'/f'{digest(pdf)[:12]}_{dpi}';folder.mkdir(parents=True,exist_ok=True)
+ poppler=shutil.which('pdftoppm')
+ if poppler:
+  version=subprocess.check_output([poppler,'-v'],stderr=subprocess.STDOUT).splitlines()[0].decode(errors='replace');backend='poppler-'+digest_bytes(version.encode())[:10]
+ else:
+  import pypdfium2 as pdfium
+  backend='pdfium-'+str(package_version("pypdfium2"))
+ folder=OUT/'render'/f'{digest(pdf)[:12]}_{backend}_{dpi}';folder.mkdir(parents=True,exist_ok=True)
  if not list(folder.glob('page-*.png')):
-  poppler=shutil.which('pdftoppm')
   if poppler:subprocess.run([poppler,'-r',str(dpi),'-png',str(pdf),str(folder/'page')],check=True,capture_output=True)
   else:
    import pypdfium2 as pdfium

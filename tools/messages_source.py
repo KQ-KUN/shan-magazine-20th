@@ -34,7 +34,7 @@ def verify_source():
  assert current==[p.replace('颜东','颜冬').replace('2017级中心校区会长 于淼','2017级会长 于淼') for p in original], 'Only the user-authorized corrections are allowed'
  return current
 
-def prepare(update_mapping=False):
+def prepare(update_mapping=False,quiet=False):
  OUT.mkdir(parents=True,exist_ok=True)
  rows=verify_source();assert len(rows)==148
  starts=[i for i,s in enumerate(rows) if re.fullmatch(r'\d{4}级\S+ +.+?',s)]
@@ -66,6 +66,10 @@ def prepare(update_mapping=False):
  if map_path.exists() and not update_mapping:assert read(map_path)==mapping,'Do not silently overwrite a mapping'
  else:write(map_path,mapping)
  write('exports/messages_v2/SOURCE_IMPORT.json',{'source_sha256':EXPECTED,'paragraphs':rows,'authority':'Runtime extraction cache only; recreate from the immutable DOCX, never edit this cache.'})
+ if quiet:
+  print('PASS source;people=31;paragraphs=148;sha256='+EXPECTED[:12]);return
  print(json.dumps({'status':'PASS','people':len(starts),'paragraphs':len(rows),'empty_paragraphs':rows.count(''),'characters':sum(map(len,rows)),'names':[rows[e['header_paragraph']-1][e['name_range'][0]:e['name_range'][1]] for e in entries],'sha256':EXPECTED},ensure_ascii=False))
 
-if __name__=='__main__':prepare()
+if __name__=='__main__':
+ import sys
+ prepare(quiet='--quiet' in sys.argv)

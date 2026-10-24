@@ -23,7 +23,9 @@
         runtime.setStage('verify-source',{source:map.source});a.check(data.source_sha256===map.sha256 && SHAN.historySource.sha256(SHAN.historySource.read(File(root+'/'+map.source),'BINARY'))===map.sha256,'Source DOCX hash mismatch');
         a.check(data.paragraphs.length===map.source_paragraphs && map.entries.length===map.people,'Unexpected source inventory');
         runtime.setStage('resolve-messages-document');var context={warnings:[]};
-        for(var di=0;di<app.documents.length;di+=1){var candidate=app.documents[di],tag=candidate.extractLabel('SHAN_MESSAGES_BUILD');if(tag==='overprint'){doc=candidate;break;}}
+        for(var di=0;di<app.documents.length;di+=1){var candidate=app.documents[di],tag=candidate.extractLabel('SHAN_MESSAGES_BUILD');if(tag==='overprint' && !candidate.modified){doc=candidate;break;}}
+        var saved=File(out+'/SHAN_MESSAGES_REVISION_20261024.indd');
+        if(!doc && request.fast && saved.exists){runtime.setStage('open-saved-messages-document');doc=app.open(saved);a.check(!doc.modified,'Saved document has unsaved edits');}
         if(!doc){runtime.setStage('create-document');doc=a.fresh(context,request.first_page||1);
             runtime.setStage('foundation-styles');SHAN.styles.create(doc,context);runtime.setStage('parents');SHAN.parents.create(doc,context);
             runtime.setStage('base-typography');SHAN.typography.apply(doc,base,context);SHAN.runningSystem.apply(doc,base);
@@ -50,7 +52,7 @@
         var stem=request.sample?'SHAN_MESSAGES_REVISION_SAMPLES':'SHAN_MESSAGES_REVISION_20261024';
         var reportStem=request.sample?'SAMPLE_RUNTIME':'MESSAGES_RUNTIME';
         runtime.setStage('save-export',{file:stem});doc.save(File(out+'/'+stem+'.indd'));SHAN.printBook.exportPDF(doc,File(out+'/'+stem+'.pdf'),false);
-        if(!request.sample){SHAN.printBook.exportSpreads(doc,File(out+'/SHAN_MESSAGES_OVERPRINT_SPREADS.pdf'));}
+        if(!request.sample && !request.fast){SHAN.printBook.exportSpreads(doc,File(out+'/SHAN_MESSAGES_OVERPRINT_SPREADS.pdf'));}
         report.focus=a.focus(doc);runtime.setStage('write-report');a.write(out+'/'+reportStem+'.json',a.json(report));
         a.write(out+'/'+reportStem+'.txt','PASS;version='+app.version+';people='+report.people+';source_paragraphs='+report.source_paragraphs+';pages='+doc.pages.length+';overset=false;paragraphs=exact;name-plates=2;role='+t.styles.P_Message_Header.size_pt+'pt-right-centered;name-font='+t.name_family+'/'+t.name_weight+';focus='+doc.pages[0].name);
         return 'PASS Messages overprint;people='+report.people+';source_paragraphs='+report.source_paragraphs+';pages='+doc.pages.length+';overset=false';
