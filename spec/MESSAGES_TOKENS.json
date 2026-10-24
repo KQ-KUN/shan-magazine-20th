@@ -58,6 +58,15 @@
       "leading_pt": 1,
       "color": "C_TEXT",
       "space_after_mm": 0
+    },
+    "P_Message_InternalTitle": {
+      "family": "serif_cn",
+      "weight_preference": "Regular",
+      "size_pt": 9.4,
+      "leading_pt": 15.5,
+      "first_line_indent_em": 0,
+      "color": "C_TEXT",
+      "space_after_mm": 0.8
     }
   },
   "tail_balance_pages": 2,
@@ -126,5 +135,13 @@
     }
   ],
   "name_family": "serif_cn",
-  "name_weight": "SemiBold"
+  "name_weight": "SemiBold",
+  "double_underline": {
+    "stroke_style_candidates": [
+      "细 - 细",
+      "Thin - Thin"
+    ],
+    "weight_pt": 0.7,
+    "offset_pt": 1.3
+  }
 }

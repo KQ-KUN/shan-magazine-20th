@@ -1,7 +1,7 @@
 param([ValidateSet('sample','full')][string]$Phase='sample',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
 $ErrorActionPreference='Stop'
 $messagesRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
-$messagesOut=Join-Path $messagesRoot 'exports/messages_overprint'
+$messagesOut=Join-Path $messagesRoot 'exports/messages_revision_20261024'
 [IO.Directory]::CreateDirectory($messagesOut) | Out-Null
 $messagesPython=Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'
 & $messagesPython -X utf8 (Join-Path $messagesRoot 'tools/messages_source.py')
@@ -26,7 +26,7 @@ function Invoke-MessagesNative([string]$BuildPhase){
  $messagesProcessesAfter=@(Get-CimInstance Win32_Process -Filter "Name='InDesign.exe'" | Select-Object -ExpandProperty ProcessId)
  [IO.File]::WriteAllText((Join-Path $messagesOut ('HOST_'+$BuildPhase+'.txt')),([string]$messagesResult+';processesBefore='+($messagesProcessesBefore -join ',')+';processesAfter='+($messagesProcessesAfter -join ',')),[Text.UTF8Encoding]::new($false))
  Write-Output ([string]$messagesResult).Split("`n")[0]
- if($messagesResult -notlike 'PASS *'){throw 'Host failed; see exports/messages_overprint/MESSAGES_RUNTIME_ERROR.txt'}
+ if($messagesResult -notlike 'PASS *'){throw 'Host failed; see exports/messages_revision_20261024/MESSAGES_RUNTIME_ERROR.txt'}
  if($messagesProcessesBefore.Count -gt 0 -and @($messagesProcessesAfter | Where-Object {$_ -notin $messagesProcessesBefore}).Count -gt 0){throw 'Unexpected duplicate InDesign instance; do not manually launch another process'}
 }
 Invoke-MessagesNative $Phase

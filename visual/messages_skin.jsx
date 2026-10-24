@@ -15,13 +15,24 @@ SHAN.messagesSkin = {
         for (name in t.styles) { if (t.styles.hasOwnProperty(name)) {
             style = doc.paragraphStyles.itemByName(name);
             style.spanColumnType = SpanColumnTypeOptions.SINGLE_COLUMN;
-            style.justification = name === "P_Message_Body" ? Justification.LEFT_JUSTIFIED : Justification.LEFT_ALIGN;
+            style.justification = Justification.LEFT_ALIGN;
+            if (name === "P_Message_Body") { style.justification = Justification.LEFT_JUSTIFIED; }
+            if (name === "P_Message_InternalTitle") { style.justification = Justification.CENTER_ALIGN; }
             style.hyphenation = false; style.fillTint = 100;
-            style.keepWithNext = name === "P_Message_Header" ? t.header_keep_body_lines : 0;
-            style.keepAllLinesTogether = name === "P_Message_Header";
+            style.keepWithNext = (name === "P_Message_Header" || name === "P_Message_InternalTitle") ? t.header_keep_body_lines : 0;
+            style.keepAllLinesTogether = name === "P_Message_Header" || name === "P_Message_InternalTitle";
             style.keepFirstLines = 2; style.keepLastLines = 2;
             style.ruleAbove = false; style.ruleBelow = false;
         } }
+        var doubleStroke = null;
+        for (var ui = 0; ui < t.double_underline.stroke_style_candidates.length; ui += 1) {
+            var candidate = doc.strokeStyles.itemByName(t.double_underline.stroke_style_candidates[ui]);
+            if (candidate && candidate.isValid) { doubleStroke = candidate; break; }
+        }
+        SHAN.messages.check(doubleStroke, "No native double-stripe stroke style");
+        var underline = SHAN.utils.ensureNamed(doc.characterStyles,"C_Message_DoubleUnderline");
+        underline.underline = true; underline.underlineType = doubleStroke;
+        underline.underlineWeight = t.double_underline.weight_pt; underline.underlineOffset = t.double_underline.offset_pt;
         var header = doc.paragraphStyles.itemByName("P_Message_Header");
         header.characterAlignment = CharacterAlignment.ALIGN_BASELINE;
         header.firstLineIndent = SHAN.utils.pt(t.name_padding_mm[1]);

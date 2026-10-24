@@ -1,11 +1,11 @@
 """Native-PDF proofs for measured mineral overprint headers; no manuscript editing."""
 from pathlib import Path
 from collections import Counter
-import sys,json,hashlib,subprocess
+import sys,json,hashlib,subprocess,shutil
 import pdfplumber
 from pypdf import PdfReader
 from PIL import Image,ImageDraw
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_overprint'
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_revision_20261024'
 sys.path.insert(0,str(ROOT/'tools'))
 from messages_source import extract,SOURCE,UPLOAD,digest,EXPECTED
 
@@ -13,15 +13,26 @@ def read(p):return json.loads(p.read_text('utf-8-sig'))
 def write(p,v):p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 def render(pdf,dpi):
  folder=OUT/'render'/f'{digest(pdf)[:12]}_{dpi}';folder.mkdir(parents=True,exist_ok=True)
- if not list(folder.glob('page-*.png')):subprocess.run(['pdftoppm','-r',str(dpi),'-png',str(pdf),str(folder/'page')],check=True,capture_output=True)
+ if not list(folder.glob('page-*.png')):
+  poppler=shutil.which('pdftoppm')
+  if poppler:subprocess.run([poppler,'-r',str(dpi),'-png',str(pdf),str(folder/'page')],check=True,capture_output=True)
+  else:
+   import pypdfium2 as pdfium
+   document=pdfium.PdfDocument(str(pdf))
+   try:
+    for index in range(len(document)):
+     page=document[index];bitmap=page.render(scale=dpi/72)
+     try:bitmap.to_pil().convert('RGB').save(folder/f'page-{index+1}.png')
+     finally:bitmap.close();page.close()
+   finally:document.close()
  return sorted(folder.glob('page-*.png'),key=lambda p:int(p.stem.split('-')[-1]))
 
 def compare(report,pdf,suffix):
- old=read(ROOT/'exports/messages_type_refinement/before/MESSAGES_RUNTIME.json');oldpdf=ROOT/'exports/messages_type_refinement/before/SHAN_MESSAGES_OVERPRINT.pdf'
+ old=read(ROOT/'exports/messages_type_refinement/MESSAGES_RUNTIME.json');oldpdf=ROOT/'exports/messages_type_refinement/SHAN_MESSAGES_TYPE_REFINEMENT.pdf'
  dpi=220;ppm=dpi/25.4;older=render(oldpdf,dpi);newer=render(pdf,dpi)
  for name,key in [('邵珠瑜','SHORT'),('刘慧颖（昼温）','LONG')]:
   panels=[]
-  for label,r,paths in [('PREVIOUS: Sans 14.5 / role 9',old,older),('NEW: Serif SemiBold / role 10.5 Medium',report,newer)]:
+  for label,r,paths in [('PREVIOUS: 28 people',old,older),('REVISED SOURCE: 31 people',report,newer)]:
    e=next(e for e in r['entries'] if e['name']==name);h=e['header'];f=r['frames'][h['frame_index']];y,x,b,right=h['rect_mm'];left=f['bounds_mm'][1]-2
    with Image.open(paths[h['page_index']-1]) as im:
     crop=im.crop(tuple(round(v*ppm) for v in (left+3,y-3+3,left+79+3,y+18+3))).convert('RGB')
@@ -31,7 +42,7 @@ def compare(report,pdf,suffix):
   canvas.save(OUT/f'SHAN_MESSAGES_{key}_BEFORE_AFTER{suffix}.png')
 
 def check(sample=False):
- report=read(OUT/('SAMPLE_RUNTIME.json' if sample else 'MESSAGES_RUNTIME.json'));pdf=OUT/('SHAN_MESSAGES_OVERPRINT_SAMPLES.pdf' if sample else 'SHAN_MESSAGES_OVERPRINT.pdf');t=read(ROOT/'spec/MESSAGES_TOKENS.json')
+ report=read(OUT/('SAMPLE_RUNTIME.json' if sample else 'MESSAGES_RUNTIME.json'));pdf=OUT/('SHAN_MESSAGES_REVISION_SAMPLES.pdf' if sample else 'SHAN_MESSAGES_REVISION_20261024.pdf');t=read(ROOT/'spec/MESSAGES_TOKENS.json')
  assert report['status']=='PASS' and not report['overset'] and report['fonts_installed'] and not report['missing_links'] and not report['focus']['active_page_is_parent']
  assert digest(SOURCE)==digest(UPLOAD)==EXPECTED
  source=extract(SOURCE);mapping=read(ROOT/'content/MESSAGES_IMPORT_MAP.json');reconstructed=[p['text'] for p in report['paragraphs']]
@@ -40,22 +51,22 @@ def check(sample=False):
   assert 13<=h['name_size_pt']<=15 and abs(h['role_size_pt']-t['styles']['P_Message_Header']['size_pt'])<.01
   assert abs(h['role_center_pt']-h['name_center_pt'])<.2 and h['same_line']
   assert abs(h['offset_mm'][0]-.9)<.01 and abs(h['offset_mm'][1]-.8)<.01 and .7<=h['plate_height_ratio']<=.85
-  assert all(l['frame_index']==h['frame_index'] for l in e['body_lines'][:2])
+  assert len(e['body_lines'])>0 and all(l['frame_index']==h['frame_index'] for l in e['body_lines'][:2])
  if not sample:
-  assert report['people']==28 and report['source_paragraphs']==130 and reconstructed==source
+  assert report['people']==31 and report['source_paragraphs']==148 and reconstructed==source
   assert len(set(e['header']['palette'] for e in report['entries']))<=4
   assert all(e['body']==[source[n-1] for n in m['body_paragraphs']] for e,m in zip(report['entries'],mapping['entries']))
   assert any(e['crosses_pages'] for e in report['entries']) and any(e['crosses_columns'] for e in report['entries'])
   assert all(not p['keep_all_lines'] for p in report['paragraphs'] if p['style']=='P_Message_Body')
-  previous=read(ROOT/'exports/messages_type_refinement/before/MESSAGES_RUNTIME.json')
-  current_body=[p for p in report['paragraphs'] if p['style']!='P_Message_Header'];previous_body=[p for p in previous['paragraphs'] if p['style']!='P_Message_Header']
-  assert len(current_body)==len(previous_body)
-  for current,old in zip(current_body,previous_body):
-   assert current['text']==old['text'] and len(current['lines'])==len(old['lines'])
-   for a,b in zip(current['lines'],old['lines']):
-    assert a['text']==b['text'] and a['page_index']==b['page_index'] and a['column']==b['column'] and abs(a['baseline_pt']-b['baseline_pt'])<.02,'Body layout changed'
+  # New manuscript content and added contributors may legitimately change pagination.
+  # Equality is against the new immutable DOCX, never against an obsolete page layout.
+  assert len(report['source_formatting'])==3
+  assert [f['source_paragraph'] for f in report['source_formatting'] if f['kind']=='centered-title']==[m['source_paragraph'] for m in mapping['centered_titles']]
+  assert all(f['centered'] for f in report['source_formatting'] if f['kind']=='centered-title')
+  underline=next(f for f in report['source_formatting'] if f['kind']=='double-underline');assert underline['text']=='word' and underline['end']-underline['start']==4
+  assert underline['stroke_style'] in t['double_underline']['stroke_style_candidates']
 
- else:assert [e['name'] for e in report['entries']]==['邵珠瑜','刘慧颖（昼温）']
+ else:assert [e['name'] for e in report['entries']]==['邵珠瑜','刘慧颖（昼温）','刘洋（笠原 JunE）']
  reader=PdfReader(pdf);assert len(reader.pages)==report['pages'];bottoms=[];rect_count=0
  with pdfplumber.open(pdf) as doc:
   for i,page in enumerate(doc.pages):
@@ -79,6 +90,18 @@ def check(sample=False):
     name_x=h['rect_mm'][1]*pt+t['name_padding_mm'][1]*pt+ox
     names=[c for c in chars if abs(c['x0']-name_x)<.2 and (h['rect_mm'][0]-5)*pt+oy<=c['top']<=(h['rect_mm'][2]+2)*pt+oy]
     assert names and 'Serif' in names[0]['fontname'] and 'SemiBold' in names[0]['fontname'],names
+   if not sample:
+    for fmt in [f for f in report['source_formatting'] if f['kind']=='centered-title' and f['lines'][0]['page_index']==i+1]:
+     native_line=fmt['lines'][0];f=report['frames'][native_line['frame_index']]
+     glyphs=[c for c in page.chars if abs(page.height-c['matrix'][5]-(oy+native_line['baseline_pt']))<.2 and f['bounds_mm'][1]*pt+ox-.2<=c['x0']<=f['bounds_mm'][3]*pt+ox+.2]
+     assert ''.join(c['text'] for c in glyphs)==fmt['text'],'Centered title PDF text mismatch'
+     actual=(min(c['x0'] for c in glyphs)+max(c['x1'] for c in glyphs))/2
+     expected_center=(f['bounds_mm'][1]+f['bounds_mm'][3])*pt/2+ox
+     assert abs(actual-expected_center)<.5,'Title not geometrically centered in exported PDF'
+    for fmt in [f for f in report['source_formatting'] if f['kind']=='double-underline' and f['line']['page_index']==i+1]:
+     left=fmt['x1_mm']*pt+ox;right=fmt['x2_mm']*pt+ox;baseline=fmt['baseline_mm']*pt+oy
+     strokes=[l for l in page.lines if abs(l['x0']-left)<.2 and abs(l['x1']-right)<.2 and baseline<l['top']<baseline+3]
+     assert len(strokes)==2 and abs(strokes[0]['top']-strokes[1]['top'])>.3,'Actual PDF must contain two separate lines under word only'
    local=[]
    for f in [f for f in report['frames'] if f['page_index']==i+1]:
     part=[c for c in chars if f['bounds_mm'][1]*pt+ox-1<=(c['x0']+c['x1'])/2<=f['bounds_mm'][3]*pt+ox+1]
@@ -106,6 +129,15 @@ def check(sample=False):
   canvas=Image.new('RGB',(sum(im.width+15 for _,im in panels),max(im.height for _,im in panels)+35),'#e5e3df');d=ImageDraw.Draw(canvas);x=5
   for label,im in panels:d.text((x,8),label,fill='black');canvas.paste(im,(x,30));x+=im.width+15
   canvas.save(OUT/'SHAN_MESSAGES_LONG_FLOW.png')
- proof={'status':'PASS','native_version':report['native_version'],'pages':report['pages'],'people':report['people'],'source_paragraphs':report['source_paragraphs'],'source_sha256':EXPECTED,'paragraph_equality':'Exact source reconstruction; header name TAB role reversed, terminal CR only; no body normalization','pdf_glyphs':'Exact per-page multiset from native visible lines','name_plates':rect_count,'name_sizes_pt':sorted(set(e['header']['name_size_pt'] for e in report['entries'])),'roles_pt':t['styles']['P_Message_Header']['size_pt'],'centering':'Native glyph centers, PDF role size/font and no-overlap verified','body_size_leading':'9.4/15.5 unchanged','bottom_blank_mm':bottoms,'all_pages_rendered':len(paths),'visual_review':'PENDING_AGENT_INSPECTION','overset':False,'sample':sample}
+ if not sample:
+  detail=render(pdf,360);ppm=360/25.4
+  for index,fmt in enumerate(report['source_formatting']):
+   if fmt['kind']=='centered-title':
+    line=fmt['lines'][0];f=report['frames'][line['frame_index']];baseline=line['baseline_pt']/ (72/25.4)
+    box=(f['bounds_mm'][1]-1,baseline-12,f['bounds_mm'][3]+1,baseline+13);page_index=line['page_index'];stem='TITLE_'+str(index+1)
+   else:
+    box=(fmt['x1_mm']-2,fmt['baseline_mm']-6,fmt['x2_mm']+16,fmt['baseline_mm']+8);page_index=fmt['line']['page_index'];stem='WORD_DOUBLE_UNDERLINE'
+   with Image.open(detail[page_index-1]) as im:im.crop(tuple(round((v+3)*ppm) for v in box)).save(OUT/('SHAN_MESSAGES_'+stem+'.png'))
+ proof={'status':'PASS','native_version':report['native_version'],'pages':report['pages'],'people':report['people'],'source_paragraphs':report['source_paragraphs'],'source_sha256':EXPECTED,'paragraph_equality':'Exact source reconstruction; header name TAB role reversed, terminal CR only; no body normalization','pdf_glyphs':'Exact per-page multiset from native visible lines','name_plates':rect_count,'name_sizes_pt':sorted(set(e['header']['name_size_pt'] for e in report['entries'])),'roles_pt':t['styles']['P_Message_Header']['size_pt'],'centering':'Native glyph centers, PDF role size/font and no-overlap verified','body_size_leading':'9.4/15.5 unchanged','bottom_blank_mm':bottoms,'all_pages_rendered':len(paths),'visual_review':'PENDING_AGENT_INSPECTION','overset':False,'sample':sample,'centered_titles':0 if sample else 2,'word_double_underline_pdf_lines':0 if sample else 2}
  write(OUT/('SAMPLE_VALIDATION.json' if sample else 'VALIDATION.json'),proof);print(json.dumps(proof,ensure_ascii=False))
 if __name__=='__main__':check(len(sys.argv)>1 and sys.argv[1]=='sample')

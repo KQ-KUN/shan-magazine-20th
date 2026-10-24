@@ -14,10 +14,11 @@ SHAN.messages = {
         var raw = data.paragraphs[map.header_paragraph - 1];
         return {name: raw.substring(map.name_range[0], map.name_range[1]), role: raw.substring(map.role_range[0], map.role_range[1])};
     },
-    styleFor: function (index, starts, rows) {
+    styleFor: function (index, starts, rows, centered) {
         // ExtendScript's unparenthesized nested conditional is left-associative.
         // Use explicit branches so a Header can never become an Empty paragraph.
         if (starts["$" + index] > 0) { return "P_Message_Header"; }
+        if (centered && centered["$" + index]) { return "P_Message_InternalTitle"; }
         if (rows[index] === "") { return "P_Message_Empty"; }
         return "P_Message_Body";
     },
@@ -142,17 +143,23 @@ SHAN.messages = {
     render: function (doc, data, map, t, runtime) {
         this.clearOutput(doc);
         while (doc.pages.length > 1) { doc.pages[doc.pages.length - 1].remove(); }
-        var frames = [], rows = data.paragraphs.slice(0), starts = {}, i, j, e, m, formats = [];
+        var frames = [], rows = data.paragraphs.slice(0), starts = {}, centered = {}, i, j, e, m, formats = [];
         for (i = 0; i < map.entries.length; i += 1) {
             m = map.entries[i]; e = this.entry(data, m); starts["$" + (m.header_paragraph - 1)] = i + 1; rows[m.header_paragraph - 1] = e.name + "\t" + e.role;
         }
+        for (i = 0; i < map.centered_titles.length; i += 1) { centered["$" + (map.centered_titles[i].source_paragraph-1)] = true; }
         runtime.setStage("create-messages-threaded-story"); this.addPage(doc, frames, t, true);
         var story = frames[0].parentStory; story.contents = rows.join("\r") + "\r";
         this.check(story.paragraphs.length === data.paragraphs.length, "Source paragraph count changed");
         for (i = 0; i < rows.length; i += 1) {
             var p = this.at(story.paragraphs, i), header = (starts["$" + i] > 0);
-            p.applyParagraphStyle(doc.paragraphStyles.itemByName(this.styleFor(i, starts, rows)), true);
+            p.applyParagraphStyle(doc.paragraphStyles.itemByName(this.styleFor(i, starts, rows, centered)), true);
             if (i === 0) { p.spaceBefore = 0; }
+        }
+        for (i = 0; i < map.double_underlines.length; i += 1) {
+            var um = map.double_underlines[i];
+            p = this.at(story.paragraphs,um.source_paragraph-1);
+            p.characters.itemByRange(um.start,um.end-1).appliedCharacterStyle = doc.characterStyles.itemByName(um.character_style);
         }
         // Complete paragraph mapping before any header measurement triggers recomposition.
         // Resolve each header again after that pass; never keep a live paragraph specifier across it.
@@ -201,7 +208,7 @@ SHAN.messages = {
         this.check(!story.overflows, "Final story overset"); runtime.setStage("messages-paragraph-integrity");
         var paragraphs = [], entries = [], allLines = [];
         for (i = 0; i < rows.length; i += 1) {
-            p = this.at(story.paragraphs, i); var expectedStyle = this.styleFor(i, starts, rows);
+            p = this.at(story.paragraphs, i); var expectedStyle = this.styleFor(i, starts, rows, centered);
             this.check(p.appliedParagraphStyle.name === expectedStyle, "Unexpected paragraph style " + (i+1) + ": actual=" + p.appliedParagraphStyle.name + "; expected=" + expectedStyle); this.check(this.text(p) === rows[i], "Changed source paragraph " + (i+1));
             var lines = [], ls = p.lines; this.check(ls && ls.length > 0, "Invisible source paragraph " + (i+1));
             for (j = 0; j < ls.length; j += 1) { var lineInfo = this.lineRecord(this.at(ls,j), frames); lines.push(lineInfo); allLines.push(lineInfo); }
@@ -216,7 +223,11 @@ SHAN.messages = {
                 var pr = paragraphs[m.body_paragraphs[j]-1]; bodyRows.push(pr.text);
                 if (pr.text !== "") { bodyLines = bodyLines.concat(pr.lines); }
             }
-            this.check(bodyLines.length >= 2 && bodyLines[0].frame_index === decoration.frame_index && bodyLines[1].frame_index === decoration.frame_index, "Header detached from first two body lines " + e.name);
+            // A complete one-line message has only one body line to keep (new source includes this case).
+            this.check(bodyLines.length > 0, "Missing message body " + e.name);
+            for (var keep = 0; keep < Math.min(t.header_keep_body_lines,bodyLines.length); keep += 1) {
+                this.check(bodyLines[keep].frame_index === decoration.frame_index, "Header detached from body opening " + e.name);
+            }
             var flowFrames = [], flowPages = [];
             for (j = 0; j < bodyLines.length; j += 1) {
                 var fr = bodyLines[j].frame_index, pg = bodyLines[j].page_index;
@@ -227,13 +238,45 @@ SHAN.messages = {
                 body_paragraphs:m.body_paragraphs,body:bodyRows,header:decoration,format:formats[i],frames:flowFrames,pages:flowPages,
                 crosses_columns:flowFrames.length>1,crosses_pages:flowPages.length>1,body_lines:bodyLines});
         }
+        var sourceFormatting = [];
+        for (i = 0; i < map.centered_titles.length; i += 1) {
+            var cm = map.centered_titles[i]; runtime.setStage("validate-source-centered-title",{source_paragraph:cm.source_paragraph}); p = this.at(story.paragraphs,cm.source_paragraph-1);
+            this.check(p.justification === Justification.CENTER_ALIGN,"Source title not centered " + cm.source_paragraph);
+            var following = [], next = cm.source_paragraph;
+            while(next < paragraphs.length && following.length < 2) {
+                if(paragraphs[next].text !== "") { following = following.concat(paragraphs[next].lines); }
+                next += 1;
+            }
+            this.check(following.length > 0,"Title missing following body");
+            for(j=0;j<Math.min(2,following.length);j+=1){this.check(following[j].frame_index===paragraphs[cm.source_paragraph-1].lines[0].frame_index,"Internal title detached from body " + cm.source_paragraph);}
+            sourceFormatting.push({kind:"centered-title",source_paragraph:cm.source_paragraph,text:this.text(p),centered:true,lines:paragraphs[cm.source_paragraph-1].lines});
+        }
+        for (i = 0; i < map.double_underlines.length; i += 1) {
+            um=map.double_underlines[i];p=this.at(story.paragraphs,um.source_paragraph-1);
+            runtime.setStage("validate-source-double-underline",{source_paragraph:um.source_paragraph,start:um.start,end:um.end});
+            var firstGlyph=this.at(p.characters,um.start), lastGlyph=this.at(p.characters,um.end-1), underlinedText="";
+            // Character ranges expose array-valued properties in InDesign 2026.
+            // Validate concrete glyphs instead of comparing that array to boolean true.
+            for(j=um.start;j<um.end;j+=1){
+                var glyph=this.at(p.characters,j);this.check(glyph && glyph.underline===true,"Source double underline missing at character "+j);
+                var glyphStroke=glyph.underlineType;this.check(glyphStroke && glyphStroke.isValid!==false,"Double underline stroke unresolved");
+                this.check(glyphStroke.name===doc.characterStyles.itemByName(um.character_style).underlineType.name,"Unexpected underline style");
+                underlinedText+=String(glyph.contents);
+            }
+            var stroke=firstGlyph.underlineType;
+            var lineInfo=this.lineRecord(this.at(p.lines,0),frames), owner=frames[lineInfo.frame_index], pageBounds=owner.parentPage.bounds;
+            sourceFormatting.push({kind:"double-underline",source_paragraph:um.source_paragraph,text:underlinedText,stroke_style:stroke.name,
+                start:um.start,end:um.end,line:lineInfo,offset_pt:firstGlyph.underlineOffset,weight_pt:firstGlyph.underlineWeight,
+                x1_mm:(firstGlyph.horizontalOffset-pageBounds[1])/SHAN.utils.pt(1),x2_mm:(lastGlyph.endHorizontalOffset-pageBounds[1])/SHAN.utils.pt(1),
+                baseline_mm:(firstGlyph.baseline-pageBounds[0])/SHAN.utils.pt(1)});
+        }
         var fonts=doc.fonts; for(i=0;i<fonts.length;i+=1){this.check(fonts[i].status===FontStatus.INSTALLED,"Missing font "+fonts[i].name);}
         this.check(doc.links.length===0,"Unexpected media link");
         var frameReport=[];
         for(i=0;i<frames.length;i+=1){var f=frames[i],fb=f.geometricBounds,pb=f.parentPage.bounds;this.check(!f.overflows || i<frames.length-1,"Last frame overset");
             frameReport.push({index:i,page_index:Math.floor(i/2)+1,page:Number(f.parentPage.name),column:i%2,bounds_mm:[(fb[0]-pb[0])/SHAN.utils.pt(1),(fb[1]-pb[1])/SHAN.utils.pt(1),(fb[2]-pb[0])/SHAN.utils.pt(1),(fb[3]-pb[1])/SHAN.utils.pt(1)],characters:f.characters.length});}
         return {status:"PASS",pages:doc.pages.length,first_page:Number(doc.pages[0].name),people:entries.length,source_paragraphs:paragraphs.length,
-            entries:entries,paragraphs:paragraphs,frames:frameReport,overset:false,fonts_installed:true,missing_links:false,native_version:app.version,
+            entries:entries,source_formatting:sourceFormatting,paragraphs:paragraphs,frames:frameReport,overset:false,fonts_installed:true,missing_links:false,native_version:app.version,
             story_id:story.id,story_paragraph_equality:true,header_transform:"role SPACE name -> name TAB role; only headers; reversible",body_normalization:"None; only terminal paragraph CR excluded from comparison"};
     }
 };
