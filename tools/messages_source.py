@@ -7,7 +7,7 @@ import hashlib,json,re,subprocess,shutil
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_v2'
 SOURCE=ROOT/'manuscripts/source/messages/寄语（24号修订版）.docx'
 UPLOAD=Path(r'C:/Users/22974/Downloads/寄语（24号修订版）.docx')
-EXPECTED='f495767b57568eb15db92774851a52b80a5c120ec7652a81e29fa59bdc8f39e1'
+EXPECTED='d066130ff038c7746c0361baf0fb4c19bebd25f4b1fee845feab07d789356b13'
 UPLOAD_EXPECTED='ceffc5f57816e36350853899cce25097b1d96f2924e0d5f47e2c7d460052c0fb'
 def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def git(*args):return subprocess.check_output(['git','-c',f'safe.directory={ROOT.as_posix()}','-c','core.quotePath=false',*args],cwd=ROOT)
@@ -30,7 +30,8 @@ def verify_source():
  assert digest(SOURCE)==EXPECTED and digest(UPLOAD)==UPLOAD_EXPECTED
  original=extract(UPLOAD);current=extract(SOURCE)
  assert sum(p.count('颜东') for p in original)==1
- assert current==[p.replace('颜东','颜冬') for p in original], 'Only the user-authorized name correction is allowed'
+ assert sum(p.count('2017级中心校区会长 于淼') for p in original)==1
+ assert current==[p.replace('颜东','颜冬').replace('2017级中心校区会长 于淼','2017级会长 于淼') for p in original], 'Only the user-authorized corrections are allowed'
  return current
 
 def prepare(update_mapping=False):
@@ -57,7 +58,7 @@ def prepare(update_mapping=False):
     if u is not None and u.get(w+'val')=='double':underlines.append({'source_paragraph':i+1,'start':offset,'end':offset+len(value),'character_style':'C_Message_DoubleUnderline'})
     offset+=len(value)
   assert len(centered)==2 and len(underlines)==1,'Unexpected approved source formatting inventory'
- mapping['source_corrections']=[{'source_paragraph':129,'original':'颜东','replacement':'颜冬','authorization':'Explicit user name correction'}]
+ mapping['source_corrections']=[{'source_paragraph':129,'original':'颜东','replacement':'颜冬','authorization':'Explicit user name correction'},{'source_paragraph':64,'original':'2017级中心校区会长','replacement':'2017级会长','authorization':'Explicit user PDF annotation: remove 中心校区'}]
  mapping['centered_titles']=centered;mapping['double_underlines']=underlines
  mapping['styles']['internal_title']='P_Message_InternalTitle'
  mapping['header_typography']='Names Source Han Serif SemiBold 13.25–15pt measured; roles Source Han Sans Medium 10.5pt; name/role glyph centers aligned; no text edits'

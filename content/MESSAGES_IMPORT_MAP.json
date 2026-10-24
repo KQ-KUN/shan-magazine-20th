@@ -1,6 +1,6 @@
 {
   "source": "manuscripts/source/messages/寄语（24号修订版）.docx",
-  "sha256": "f495767b57568eb15db92774851a52b80a5c120ec7652a81e29fa59bdc8f39e1",
+  "sha256": "d066130ff038c7746c0361baf0fb4c19bebd25f4b1fee845feab07d789356b13",
   "source_paragraphs": 148,
   "people": 31,
   "entries": [
@@ -325,15 +325,15 @@
       "header_paragraph": 64,
       "role_range": [
         0,
-        11
+        7
       ],
       "separator_range": [
-        11,
-        12
+        7,
+        8
       ],
       "name_range": [
-        12,
-        14
+        8,
+        10
       ],
       "body_paragraphs": [
         65,
@@ -725,6 +725,12 @@
       "original": "颜东",
       "replacement": "颜冬",
       "authorization": "Explicit user name correction"
+    },
+    {
+      "source_paragraph": 64,
+      "original": "2017级中心校区会长",
+      "replacement": "2017级会长",
+      "authorization": "Explicit user PDF annotation: remove 中心校区"
     }
   ],
   "centered_titles": [
