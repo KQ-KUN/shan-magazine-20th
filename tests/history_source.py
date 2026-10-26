@@ -176,9 +176,12 @@ def staged_input_check(audit):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--prepare', action='store_true')
+    parser.add_argument('--source-dir', type=Path, help='Local folder containing the authorized source DOCX')
     args = parser.parse_args()
     if args.prepare:
-        put('manuscripts/source/' + NAME, (Path(r'D:\HuaweiMoveData\Users\22974\Desktop') / NAME).read_bytes())
+        if args.source_dir is None:
+            parser.error('--prepare requires --source-dir')
+        put('manuscripts/source/' + NAME, (args.source_dir / NAME).read_bytes())
     fixture = inspect(args.prepare)
     if not args.prepare:
         frozen_check()
