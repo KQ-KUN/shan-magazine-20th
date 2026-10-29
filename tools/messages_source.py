@@ -7,7 +7,7 @@ import hashlib,json,re,subprocess,shutil
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_v2'
 SOURCE=ROOT/'manuscripts/source/messages/寄语（24号修订版）.docx'
 UPLOAD=Path(r'C:/Users/22974/Downloads/寄语（24号修订版）.docx')
-EXPECTED='d066130ff038c7746c0361baf0fb4c19bebd25f4b1fee845feab07d789356b13'
+EXPECTED='94d93e4b637883c301391789fd125e0282945f37a7eec53788f2149f0e69add9'
 UPLOAD_EXPECTED='ceffc5f57816e36350853899cce25097b1d96f2924e0d5f47e2c7d460052c0fb'
 def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def git(*args):return subprocess.check_output(['git','-c',f'safe.directory={ROOT.as_posix()}','-c','core.quotePath=false',*args],cwd=ROOT)
@@ -31,7 +31,7 @@ def verify_source():
  original=extract(UPLOAD);current=extract(SOURCE)
  assert sum(p.count('颜东') for p in original)==1
  assert sum(p.count('2017级中心校区会长 于淼') for p in original)==1
- assert current==[p.replace('颜东','颜冬').replace('2017级中心校区会长 于淼','2017级会长 于淼') for p in original], 'Only the user-authorized corrections are allowed'
+ assert current==[p.replace('颜东','颜冬').replace('2017级中心校区会长 于淼','2017级会长 余淼') for p in original], 'Only the user-authorized corrections are allowed'
  return current
 
 def prepare(update_mapping=False,quiet=False):
@@ -59,6 +59,7 @@ def prepare(update_mapping=False,quiet=False):
     offset+=len(value)
   assert len(centered)==2 and len(underlines)==1,'Unexpected approved source formatting inventory'
  mapping['source_corrections']=[{'source_paragraph':129,'original':'颜东','replacement':'颜冬','authorization':'Explicit user name correction'},{'source_paragraph':64,'original':'2017级中心校区会长','replacement':'2017级会长','authorization':'Explicit user PDF annotation: remove 中心校区'}]
+ mapping['source_corrections'].append({'source_paragraph':64,'original':'于淼','replacement':'余淼','authorization':'Explicit user name correction: 余淼 2017级会长'})
  mapping['centered_titles']=centered;mapping['double_underlines']=underlines
  mapping['no_indent_paragraphs']=[19,20,21,22] # User-authorized riddle formatting; source text is unchanged.
  mapping['styles']['internal_title']='P_Message_InternalTitle'

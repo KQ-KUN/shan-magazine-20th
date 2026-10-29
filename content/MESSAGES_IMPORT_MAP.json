@@ -1,6 +1,6 @@
 {
   "source": "manuscripts/source/messages/寄语（24号修订版）.docx",
-  "sha256": "d066130ff038c7746c0361baf0fb4c19bebd25f4b1fee845feab07d789356b13",
+  "sha256": "94d93e4b637883c301391789fd125e0282945f37a7eec53788f2149f0e69add9",
   "source_paragraphs": 148,
   "people": 31,
   "entries": [
@@ -731,6 +731,12 @@
       "original": "2017级中心校区会长",
       "replacement": "2017级会长",
       "authorization": "Explicit user PDF annotation: remove 中心校区"
+    },
+    {
+      "source_paragraph": 64,
+      "original": "于淼",
+      "replacement": "余淼",
+      "authorization": "Explicit user name correction: 余淼 2017级会长"
     }
   ],
   "centered_titles": [
