@@ -1,0 +1,43 @@
+{
+  "baseline_commit": "4e28ee981e2f3f5f7c73453801b91f5717da1c17",
+  "authorization": "用户要求修正左右图说明分隔、题注后间距、双图尺寸，并明确要求九张签名左下图拉伸；随后确认：允许裁切边缘，优先保持等宽等高。",
+  "skill": "D:/Codex/skills/indesign-publication-production/SKILL.md; updated image-geometry.md and scripts/image_layout.py",
+  "source_protection": "Canonical Word, History source import, all 105 original images and current final names remain unchanged",
+  "display": {
+    "caption_separators": "32 original semicolon boundaries -> two forced line breaks (one blank line)",
+    "caption_body_gap_mm": 2,
+    "same_orientation_pairs": "equal width and height",
+    "mixed_pairs": "equal height; landscape/portrait width ratio 2:1",
+    "autograph_grid": "nine equal frames; only lower-left early_rId56 nonuniform stretch"
+  },
+  "exceptions": [
+    "Original three-image flyer/photos table retains a named complete-content layout",
+    "Nine-image signature grid retains a named two-column layout with user-authorized stretch",
+    "Award-banner photograph uses a 53mm height with blank upper wall cropped; default portrait width retained to resolve the bounded ending"
+  ],
+  "derivatives": "Six zero-alpha-edge trims and two lossless EXIF derivatives (orientation 8 transposed; invalid orientation 0 leaves pixels unchanged); source files untouched",
+  "runtime_repairs": [
+    "Read geometry from a Skill-generated sidecar; validate actual native frame and graphic bounds",
+    "Use explicit style selection to preserve signature span and avoid chaining no-caption images to later events",
+    "Preserve task-owned open Assembly outputs before replacing the current working export"
+  ],
+  "frozen_files_changed": [],
+  "preexisting_unrelated_changes": "content/ASSEMBLY_V0_MANIFEST.json, spec/COVER_ARTWORK_STATUS.md, workflow/MODULE_STATUS.json and existing cover/memoir diagnostics excluded",
+  "verification": [
+    "tests/test_history_v2.py",
+    "tests/test_history_v2_layout.py",
+    "tests/history_v2.test.cjs",
+    "native History assertions",
+    "shared Skill validate_geometry against actual InDesign objects",
+    "source/footnote/final-reader text checks",
+    "affected pages and History overview visual inspection"
+  ],
+  "delivery": "../交付文件/会史新版排版与总装_20261029_图片题注R1",
+  "native_results": {
+    "history_pages": 19,
+    "images": 105,
+    "native_footnotes": 3,
+    "groups_with_native_geometry_checks": 62,
+    "original_sources_unchanged": true
+  }
+}

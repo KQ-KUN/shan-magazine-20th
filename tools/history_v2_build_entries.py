@@ -12,6 +12,11 @@ s=s.replace('  var report=SHAN.printBook.run(root,runtime);', '''  var guard=SHA
    var f=File(r+'/'+file),record=guard.files[file];
    this.check(record && record.sha256===sha && f.exists && f.length===record.bytes && Math.floor(f.modified.getTime()/1000)===record.modified_seconds,'Host/native input guard mismatch '+file);return f;
   };
+  // Preserve only task-owned open outputs before replacing this revision.
+  var targets=[out+'/SHAN_INTERIOR_PRINT_HISTORY_V2.indd',out+'/SHAN_REVIEW_HISTORY_V2.indd'];
+  for(var di=app.documents.length-1;di>=0;di-=1){var prior=app.documents[di].getElements()[0],priorPath='';try{priorPath=prior.fullName.fsName.replace(/\\\\/g,'/');}catch(unsaved){}
+   for(var ti=0;ti<targets.length;ti+=1){if(priorPath===targets[ti]){if(prior.modified){prior.save(File(out+'/ASSEMBLY_PRESERVED_'+di+'_'+new Date().getTime()+'.indd'));}else{prior.close(SaveOptions.NO);}break;}}
+  }
   var report=SHAN.printBook.run(root,runtime);''')
 s=s.replace('}finally{SHAN.editorialTocSkin.apply=originalToc;', '}finally{SHAN.printBook.verify=originalVerify;SHAN.editorialTocSkin.apply=originalToc;')
 (r/'build/52_history_v2_assembly.jsx').write_text(s,encoding='utf-8-sig')

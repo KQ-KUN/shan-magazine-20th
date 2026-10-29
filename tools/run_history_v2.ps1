@@ -11,7 +11,7 @@ if($Phase -in @('standalone','resume')){
  $historySource=Join-Path $historyRoot $historyData.source
  $historyHash=(Get-FileHash -LiteralPath $historySource -Algorithm SHA256).Hash.ToLower()
  if($historyHash -ne $historyData.source_sha256){throw 'Revised DOCX hash mismatch before dispatch'}
- $historyGuard=@{source=$historyData.source;sha256=$historyHash;bytes=(Get-Item -LiteralPath $historySource).Length;import_sha256=(Get-FileHash -LiteralPath $historyImport -Algorithm SHA256).Hash.ToLower();verified_at=(Get-Date -Format o)}
+ $historyGuard=@{source=$historyData.source;sha256=$historyHash;bytes=(Get-Item -LiteralPath $historySource).Length;import_sha256=(Get-FileHash -LiteralPath $historyImport -Algorithm SHA256).Hash.ToLower();layout_sha256=(Get-FileHash -LiteralPath (Join-Path $historyRoot 'content/HISTORY_V2_LAYOUT.json') -Algorithm SHA256).Hash.ToLower();verified_at=(Get-Date -Format o)}
  [IO.File]::WriteAllText((Join-Path $historyOut 'SOURCE_HOST_GUARD.json'),($historyGuard | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
 }
 if($Phase -eq 'assembly'){

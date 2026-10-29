@@ -23,6 +23,9 @@
   var guard=a.read(root,'exports/history_v2/SOURCE_HOST_GUARD.json');
   a.check(guard.source===data.source && guard.sha256===data.source_sha256 && File(root+'/'+data.source).length===guard.bytes,'Runner source hash/size guard differs');
   a.check(SHAN.historySource.sha256(SHAN.historySource.read(File(root+'/content/HISTORY_V2_IMPORT.json'),'BINARY'))===guard.import_sha256,'Import map differs from runner-verified source');
+  a.check(SHAN.historySource.sha256(SHAN.historySource.read(File(root+'/content/HISTORY_V2_LAYOUT.json'),'BINARY'))===guard.layout_sha256,'Geometry differs from runner-verified plan');
+  data.layout=a.read(root,'content/HISTORY_V2_LAYOUT.json');
+  for(var bi=0;bi<data.blocks.length;bi+=1){if(data.blocks[bi].type==='media'){data.blocks[bi].geometry=data.layout.groups[data.blocks[bi].id];}}
   var context={warnings:[],runtime:runtime},request=a.read(root,'exports/history_v2/REQUEST.json'),result;
   if(request.resume_only){doc=app.activeDocument.getElements()[0];result=SHAN.historyV2.auditExisting(doc,data,runtime);}
   else{

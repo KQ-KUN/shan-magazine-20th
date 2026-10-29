@@ -51,6 +51,11 @@
    var f=File(r+'/'+file),record=guard.files[file];
    this.check(record && record.sha256===sha && f.exists && f.length===record.bytes && Math.floor(f.modified.getTime()/1000)===record.modified_seconds,'Host/native input guard mismatch '+file);return f;
   };
+  // Preserve only task-owned open outputs before replacing this revision.
+  var targets=[out+'/SHAN_INTERIOR_PRINT_HISTORY_V2.indd',out+'/SHAN_REVIEW_HISTORY_V2.indd'];
+  for(var di=app.documents.length-1;di>=0;di-=1){var prior=app.documents[di].getElements()[0],priorPath='';try{priorPath=prior.fullName.fsName.replace(/\\/g,'/');}catch(unsaved){}
+   for(var ti=0;ti<targets.length;ti+=1){if(priorPath===targets[ti]){if(prior.modified){prior.save(File(out+'/ASSEMBLY_PRESERVED_'+di+'_'+new Date().getTime()+'.indd'));}else{prior.close(SaveOptions.NO);}break;}}
+  }
   var report=SHAN.printBook.run(root,runtime);if(report.status==='CAPACITY_CHANGED'){return 'REBUILD TOC;required_pages='+report.toc_required_pages;}return 'PASS History V2 Assembly;interior='+report.interior_pages+';reader='+report.total_reader_pdf_pages+';C2=blank';
  }catch(e){var error='stage='+runtime.stage+';component='+runtime.component_id+';name='+e.name+';message='+e.message+';file='+e.fileName+';line='+e.line+(e.source?';source='+e.source:'')+';context='+SHAN.assemblyV0.json(runtime.detail)+';stack='+$.stack;
   try{SHAN.assemblyV0.write(out+'/PRINT_RUNTIME_ERROR.txt',error);if(runtime.report){runtime.report.status='FAIL';runtime.report.error=error;SHAN.assemblyV0.write(out+'/FINAL_PRINT_REPORT.json',SHAN.assemblyV0.json(runtime.report));}}catch(log){$.writeln(error);}return 'FAIL stage='+runtime.stage+';message='+e.message+';log='+out+'/PRINT_RUNTIME_ERROR.txt';

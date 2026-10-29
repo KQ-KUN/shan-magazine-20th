@@ -1,0 +1,6010 @@
+{
+  "version": "HISTORY_V2_IMAGE_REVISION_R1",
+  "skill_file": "D:\\Codex\\skills\\indesign-publication-production\\SKILL.md",
+  "calculator_sha256": "d8805e3410bcbc19f6031783209f89293a7fcfa5c81d5cd938b74b73adecc519",
+  "source_import_sha256": "a244b4ab71e14bb4ca68b8a16566ce5e0522449234d2f3b5beec6eb6105d6b14",
+  "column_width_mm": 73,
+  "image_gap_mm": 2,
+  "caption_body_gap_mm": 2,
+  "crop_authorization": "User explicitly confirmed: 允许裁切边缘，优先保持等宽等高",
+  "caption_separation": "one blank line between left/right descriptions; semicolon removed only at this boundary",
+  "captions": {
+    "early_p44": {
+      "source": "左图：2007年5月，“视觉的盛宴、科幻迷的天堂——山东大学科幻电影节”活动海报；右图：2007年5月26日，山大幻协早期成员在中心校区小树林进行讨论",
+      "display": "左图：2007年5月，“视觉的盛宴、科幻迷的天堂——山东大学科幻电影节”活动海报\n\n右图：2007年5月26日，山大幻协早期成员在中心校区小树林进行讨论",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p55": {
+      "source": "左图：2007年10月，山大幻协新成员见面会现场；右图：2007年全国高校第三届“原创之星”征稿启事",
+      "display": "左图：2007年10月，山大幻协新成员见面会现场\n\n右图：2007年全国高校第三届“原创之星”征稿启事",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p61": {
+      "source": "左图：肖兆旭2007年的工作笔记；右图：2007年11月，“中国科幻发展史”沙龙海报",
+      "display": "左图：肖兆旭2007年的工作笔记\n\n右图：2007年11月，“中国科幻发展史”沙龙海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p66": {
+      "source": "左图：2007年11月9日，沙龙现场图片；右图：2007年11月10日，活动报道网站截图",
+      "display": "左图：2007年11月9日，沙龙现场图片\n\n右图：2007年11月10日，活动报道网站截图",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p69": {
+      "source": "左图：2007年11月，“我眼中的科幻世界”沙龙海报；右图：2007年11月25日，沙龙现场图片",
+      "display": "左图：2007年11月，“我眼中的科幻世界”沙龙海报\n\n右图：2007年11月25日，沙龙现场图片",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p119": {
+      "source": "左图：2011年11月，山大幻协纳新宣传单；右上图：2011年11月，山大幻协中心校区小树林纳新现场图；右下图：2011年秋季，山大幻协纳新宣传照片，适逢山东大学110周年校庆",
+      "display": "左图：2011年11月，山大幻协纳新宣传单\n\n右上图：2011年11月，山大幻协中心校区小树林纳新现场图\n\n右下图：2011年秋季，山大幻协纳新宣传照片，适逢山东大学110周年校庆",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p122": {
+      "source": "左图：2011年11月，山大幻协“科联杯”征文海报；右图：2011年11月，山大幻协在纳新传单上附带的“科联杯”征文启事",
+      "display": "左图：2011年11月，山大幻协“科联杯”征文海报\n\n右图：2011年11月，山大幻协在纳新传单上附带的“科联杯”征文启事",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p125": {
+      "source": "左图：2011年12月，清华大学科幻协会王炳程写给山东大学科幻协会会员们的贺卡；右图：2012年1月，川大幻协致山大幻协的贺卡",
+      "display": "左图：2011年12月，清华大学科幻协会王炳程写给山东大学科幻协会会员们的贺卡\n\n右图：2012年1月，川大幻协致山大幻协的贺卡",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p132": {
+      "source": "左图：2012年3月，“与马伯庸面对面”活动海报；右图：马伯庸老师在活动现场",
+      "display": "左图：2012年3月，“与马伯庸面对面”活动海报\n\n右图：马伯庸老师在活动现场",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p153": {
+      "source": "左图：2012年10月，山大幻协中心校区宣传海报；右图：2012年10月，山大幻协社联展板海报",
+      "display": "左图：2012年10月，山大幻协中心校区宣传海报\n\n右图：2012年10月，山大幻协社联展板海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p155": {
+      "source": "左图：2012年10月，山大幻协中心校区小树林纳新现场图；右图：2012年10月，山大幻协兴隆山校区纳新现场图",
+      "display": "左图：2012年10月，山大幻协中心校区小树林纳新现场图\n\n右图：2012年10月，山大幻协兴隆山校区纳新现场图",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p157": {
+      "source": "左图：2012年10月，山大幻协纳新宣传单；右图：2012年10月，山大幻协纳新海报",
+      "display": "左图：2012年10月，山大幻协纳新宣传单\n\n右图：2012年10月，山大幻协纳新海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p160": {
+      "source": "左图：2012年11月，“有关时间旅行的热门问题”沙龙海报；右图：2012年11月，“以太——欢迎来到真实的绿洲”沙龙海报",
+      "display": "左图：2012年11月，“有关时间旅行的热门问题”沙龙海报\n\n右图：2012年11月，“以太——欢迎来到真实的绿洲”沙龙海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p184": {
+      "source": "左图：2013年9月，兰欣然修改后的山大幻协第二代会徽；右图：2021年8月，【河流】整理的《高校科幻联谊册》中所收录的对外官方颜色版山大幻协会徽",
+      "display": "左图：2013年9月，兰欣然修改后的山大幻协第二代会徽\n\n右图：2021年8月，【河流】整理的《高校科幻联谊册》中所收录的对外官方颜色版山大幻协会徽",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p187": {
+      "source": "左图：2013年10月，山大幻协纳新海报，制作者：刘慧颖；右图：2013年10月，山大幻协纳新海报第二版。原稿另提及同月的纳新宣传单",
+      "display": "左图：2013年10月，山大幻协纳新海报，制作者：刘慧颖\n\n右图：2013年10月，山大幻协纳新海报第二版。原稿另提及同月的纳新宣传单",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p226": {
+      "source": "左图：2014年10月，山大幻协纳新时，张璐手绘的纳新海报；右图：2014年11-12月，“科幻风暴”电影大放送活动海报",
+      "display": "左图：2014年10月，山大幻协纳新时，张璐手绘的纳新海报\n\n右图：2014年11-12月，“科幻风暴”电影大放送活动海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p236": {
+      "source": "左图：2014年12月，“异星球的来客”的科幻小说创作讲座海报；右图：2014年12月7日，刘慧颖和王政超在讲座现场",
+      "display": "左图：2014年12月，“异星球的来客”的科幻小说创作讲座海报\n\n右图：2014年12月7日，刘慧颖和王政超在讲座现场",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p249": {
+      "source": "左图：2015年10月，山大幻协纳新海报；右图：2015年10月，山大幻协纳新现场",
+      "display": "左图：2015年10月，山大幻协纳新海报\n\n右图：2015年10月，山大幻协纳新现场",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p256": {
+      "source": "左图：2015年11月21日，【山东大学科幻协会】公众号首篇推送截图；右图：2015年12月15日，山大幻协“畅想科技，启迪未来”科幻征文大赛结束的人人网通知截图",
+      "display": "左图：2015年11月21日，【山东大学科幻协会】公众号首篇推送截图\n\n右图：2015年12月15日，山大幻协“畅想科技，启迪未来”科幻征文大赛结束的人人网通知截图",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p261": {
+      "source": "左图：2015年12月，“科学幻想交响曲”活动海报；右图：2015年12月20日，“科学幻想交响曲”活动现场",
+      "display": "左图：2015年12月，“科学幻想交响曲”活动海报\n\n右图：2015年12月20日，“科学幻想交响曲”活动现场",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p265": {
+      "source": "左图：2016年4月，“百字玄机”科幻征文宣传单；右图：2016年4月，中心校区“百字玄机”科幻征文海报",
+      "display": "左图：2016年4月，“百字玄机”科幻征文宣传单\n\n右图：2016年4月，中心校区“百字玄机”科幻征文海报",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p267": {
+      "source": "左图：2016年4月，“百字玄机”科幻征文活动现场横幅；右图：2016年5月，山大幻协邀请游者老师来开讲座。左：李新雨，中：游者，右：刘慧颖",
+      "display": "左图：2016年4月，“百字玄机”科幻征文活动现场横幅\n\n右图：2016年5月，山大幻协邀请游者老师来开讲座。左：李新雨，中：游者，右：刘慧颖",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p287": {
+      "source": "左图：2016年10月，山大幻协纳新黑板报；右图：2016年10月，山大幻协纳新宣传单",
+      "display": "左图：2016年10月，山大幻协纳新黑板报\n\n右图：2016年10月，山大幻协纳新宣传单",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p289": {
+      "source": "左图：2016年10月，山大幻协纳新海报；右图：2016年11月5日，《奇异博士》观影结束后，山大幻协成员在电影海报前合影留念",
+      "display": "左图：2016年10月，山大幻协纳新海报\n\n右图：2016年11月5日，《奇异博士》观影结束后，山大幻协成员在电影海报前合影留念",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p294": {
+      "source": "左图：2016年11月，山大幻协“遇见未来”科幻征文大赛海报；右图：2016年11月，山大幻协“遇见未来”科幻征文大赛宣传单",
+      "display": "左图：2016年11月，山大幻协“遇见未来”科幻征文大赛海报\n\n右图：2016年11月，山大幻协“遇见未来”科幻征文大赛宣传单",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p297": {
+      "source": "左图：2016年11月26日，山大幻协老会员刘慧颖在见面会现场；右图：2016年11月26日，“遇见未来”辅助活动之科幻作家见面会结束后，游者、刘慧颖与山大幻协新成员们合影留念",
+      "display": "左图：2016年11月26日，山大幻协老会员刘慧颖在见面会现场\n\n右图：2016年11月26日，“遇见未来”辅助活动之科幻作家见面会结束后，游者、刘慧颖与山大幻协新成员们合影留念",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p301": {
+      "source": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动海报；右图：2017年5月，“济南·折叠”未来城市科幻分享会活动门票正反面",
+      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动海报\n\n右图：2017年5月，“济南·折叠”未来城市科幻分享会活动门票正反面",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p303": {
+      "source": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动宣传单；右图：2017年5月13日，嘉宾与山大幻协成员们在“济南·折叠”未来城市科幻分享会活动现场合影留念。原稿另述2017年5月13日滕野讲座PPT剪影，以及嘉宾在活动现场与同学们讨论",
+      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动宣传单\n\n右图：2017年5月13日，嘉宾与山大幻协成员们在“济南·折叠”未来城市科幻分享会活动现场合影留念。原稿另述2017年5月13日滕野讲座PPT剪影，以及嘉宾在活动现场与同学们讨论",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p327": {
+      "source": "左图：2018年9月25日，公众号【SDU微言动听】推文《社团 山东大学科幻协会：不止是科幻》截图；右图：2018年10月，山大幻协纳新海报，设计者：刘洋",
+      "display": "左图：2018年9月25日，公众号【SDU微言动听】推文《社团 山东大学科幻协会：不止是科幻》截图\n\n右图：2018年10月，山大幻协纳新海报，设计者：刘洋",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p331": {
+      "source": "左图：2018年10月，山大幻协纳新现场；右图：2018年10月，山大幻协纳新现场老会员们的合照",
+      "display": "左图：2018年10月，山大幻协纳新现场\n\n右图：2018年10月，山大幻协纳新现场老会员们的合照",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p348": {
+      "source": "左图：2019年10月24日，山大幻协写作部QQ群成立；右图：2019年10月，山大幻协纳新海报，设计者：刘洋",
+      "display": "左图：2019年10月24日，山大幻协写作部QQ群成立\n\n右图：2019年10月，山大幻协纳新海报，设计者：刘洋",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    },
+    "early_p351": {
+      "source": "左图：2019年10月，山大幻协纳新现场①；右图：2019年10月，山大幻协纳新现场②",
+      "display": "左图：2019年10月，山大幻协纳新现场①\n\n右图：2019年10月，山大幻协纳新现场②",
+      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+    }
+  },
+  "groups": {
+    "early_g1": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId6",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 64.70807117595541,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId6_image1.png",
+            "width_px": 628,
+            "height_px": 835,
+            "content_bounds_px": [
+              0,
+              0,
+              628,
+              835
+            ],
+            "sha256": "02cdd75afe954ce981635d2284d8871d03706689c885ae221b94ae41d8c6011f",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 12.166665450000004,
+            "y": 0.0,
+            "width": 48.66666909999999,
+            "height": 64.70807117595541
+          }
+        }
+      ],
+      "captions": [],
+      "height": 64.70807117595541,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p7",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g2": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId7",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 43.675213675213676,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId7_image2.jpeg",
+            "width_px": 468,
+            "height_px": 280,
+            "content_bounds_px": [
+              0,
+              0,
+              468,
+              280
+            ],
+            "sha256": "d330f6fe60ba24c25c38d90eda2efebe2ae765f663ea85600eab1598acbd5e4d",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 43.675213675213676
+          }
+        }
+      ],
+      "captions": [],
+      "height": 43.675213675213676,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p24",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g3": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId8",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 32.79684044233808,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId8_image3.jpeg",
+            "width_px": 1055,
+            "height_px": 1462,
+            "content_bounds_px": [
+              0,
+              0,
+              1055,
+              1462
+            ],
+            "sha256": "1a6ad1c2e13c28d8ff1ea96fa4741c85ab9ba946ba581167a802b9796bef8472",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -1.7763568394002505e-15,
+            "y": 0.0,
+            "width": 23.66666666666667,
+            "height": 32.79684044233808
+          }
+        },
+        {
+          "image_id": "early_rId9",
+          "x": 25.666666666666668,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 32.79684044233808,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId9_image4.jpeg",
+            "width_px": 1186,
+            "height_px": 890,
+            "content_bounds_px": [
+              0,
+              0,
+              1186,
+              890
+            ],
+            "sha256": "7e9a3c0a272a586686427ea6d4ae26da1ae111526d9062e6e55e1d6ad017490f",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.07666435912455383,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 25.666666666666668,
+            "y": -1.3615572942890815,
+            "width": 47.333333333333336,
+            "height": 35.51995503091624
+          }
+        }
+      ],
+      "captions": [],
+      "height": 32.79684044233808,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p44",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g4": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId10",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 51.585089141004865,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId10_image5.jpeg",
+            "width_px": 617,
+            "height_px": 436,
+            "content_bounds_px": [
+              0,
+              0,
+              617,
+              436
+            ],
+            "sha256": "73e38b2b85414bf87864c3b653addd18783c154bac0af3e80946cc1588dd13ca",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 51.585089141004865
+          }
+        }
+      ],
+      "captions": [],
+      "height": 51.585089141004865,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p51",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g5": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId11",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 30.540031397174253,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId11_image6.jpeg",
+            "width_px": 1170,
+            "height_px": 878,
+            "content_bounds_px": [
+              0,
+              0,
+              1170,
+              878
+            ],
+            "sha256": "5b053c2754d3b56a7fe6c3825e2e1f7b920eaf5a19121259c6d4bf0548d77db7",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.1402073357816931,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -2.490098261526832,
+            "width": 47.333333333333336,
+            "height": 35.52022792022792
+          }
+        },
+        {
+          "image_id": "early_rId12",
+          "x": 49.333333333333336,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 30.540031397174253,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId12_image7.png",
+            "width_px": 637,
+            "height_px": 822,
+            "content_bounds_px": [
+              0,
+              0,
+              637,
+              822
+            ],
+            "sha256": "cd82604a5b76e93b987ab75718b24abc02d9030aed7b357d94f94a57b1e7e266",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 49.333333333333336,
+            "y": -1.7763568394002505e-15,
+            "width": 23.666666666666668,
+            "height": 30.540031397174257
+          }
+        }
+      ],
+      "captions": [],
+      "height": 30.540031397174253,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p55",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g6": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId13",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.14951876292762,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId13_image8.png",
+            "width_px": 558,
+            "height_px": 835,
+            "content_bounds_px": [
+              0,
+              0,
+              558,
+              835
+            ],
+            "sha256": "805f6f0832626924a2e4cd598050e92b4ef4af150bc4db7910733ffb5e2eb8b9",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.055969251253652375,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -1.4866205468516043,
+            "width": 35.5,
+            "height": 53.12275985663083
+          }
+        },
+        {
+          "image_id": "early_rId14",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.14951876292762,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId14_image9.jpeg",
+            "width_px": 1265,
+            "height_px": 1687,
+            "content_bounds_px": [
+              0,
+              0,
+              1265,
+              1687
+            ],
+            "sha256": "1bb93ac26451a9b740ac82f9a5c212cedb474104062811b250ba5c1ed716c2aa",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.055969251253652375,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 36.4476463440713,
+            "y": 0.0,
+            "width": 37.6047073118574,
+            "height": 50.14951876292762
+          }
+        }
+      ],
+      "captions": [],
+      "height": 50.14951876292762,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p61",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g7": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId15",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 30.05198636123066,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId15_image10.jpeg",
+            "width_px": 1134,
+            "height_px": 850,
+            "content_bounds_px": [
+              0,
+              0,
+              1134,
+              850
+            ],
+            "sha256": "26843c341aef89fa7083ff8e09a47857283ce57c27d4c5707ccce331cd09daee",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.11455611875929594,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -2.2964426668444524,
+            "y": 1.7763568394002505e-15,
+            "width": 40.092885333688905,
+            "height": 30.051986361230657
+          }
+        },
+        {
+          "image_id": "early_rId16",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 30.05198636123066,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId16_image11.png",
+            "width_px": 842,
+            "height_px": 805,
+            "content_bounds_px": [
+              0,
+              0,
+              842,
+              805
+            ],
+            "sha256": "1ae078dff4d46f4c3411dd17389f171c5df0135e6e02aa9d768cfb24d090fef0",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.11455611875929628,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -1.9440186958692323,
+            "width": 35.5,
+            "height": 33.940023752969125
+          }
+        }
+      ],
+      "captions": [],
+      "height": 30.05198636123066,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p66",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g8": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId17",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.60291919780705,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId17_image12.jpeg",
+            "width_px": 486,
+            "height_px": 364,
+            "content_bounds_px": [
+              0,
+              0,
+              486,
+              364
+            ],
+            "sha256": "c8cbfb80b2843f2ada5b5f597029fc5937d13d01a3af8f48cbf0c123b25ed665",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0005428664217083101,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.009641112821739739,
+            "y": 0.0,
+            "width": 35.51928222564348,
+            "height": 26.60291919780705
+          }
+        },
+        {
+          "image_id": "early_rId18",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.60291919780705,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId18_image13.jpeg",
+            "width_px": 1163,
+            "height_px": 872,
+            "content_bounds_px": [
+              0,
+              0,
+              1163,
+              872
+            ],
+            "sha256": "c7617c20798433eb0484505292dd92c43067e57ed0246a50882d0db5f84be59e",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0005428664217084211,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.007224837897851444,
+            "width": 35.5,
+            "height": 26.617368873602754
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.60291919780705,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p69",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g9": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId19",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 16.208474576271186,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_early_rId19.png",
+            "width_px": 590,
+            "height_px": 131,
+            "content_bounds_px": [
+              0,
+              0,
+              590,
+              131
+            ],
+            "sha256": "f69c0a3598c1b0d4447e0c1c9441123f1bd5d27949736031db3027876758c99d",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId19_image14.png",
+              "sha256": "f00079770732033be8b2a1a74fb802fc593e77fe4d0ade3b0531c5cc22fe263b",
+              "alpha_trim_bounds": [
+                0,
+                0,
+                590,
+                131
+              ]
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 16.208474576271186
+          }
+        }
+      ],
+      "captions": [],
+      "height": 16.208474576271186,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p72",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g10": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId20",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 54.765828274067644,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId20_image15.jpeg",
+            "width_px": 1153,
+            "height_px": 865,
+            "content_bounds_px": [
+              0,
+              0,
+              1153,
+              865
+            ],
+            "sha256": "45e92419987fd0e8f33daacf004e164b813e491bd9077286de802d5bb4ad5734",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 4.440892098500626e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -7.105427357601002e-15,
+            "y": -7.105427357601002e-15,
+            "width": 73.00000000000001,
+            "height": 54.76582827406766
+          }
+        }
+      ],
+      "captions": [],
+      "height": 54.765828274067644,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p75",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g11": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId21",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 38.34407665505226,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId21_image16.png",
+            "width_px": 1148,
+            "height_px": 603,
+            "content_bounds_px": [
+              0,
+              0,
+              1148,
+              603
+            ],
+            "sha256": "a559eb9da16337bb5a048a1f1d92b995cd52b43e3c11f20e3aa1033edea0cc36",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -3.552713678800501e-15,
+            "width": 73.0,
+            "height": 38.34407665505227
+          }
+        }
+      ],
+      "captions": [],
+      "height": 38.34407665505226,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p117",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g12": {
+      "kind": "NAMED_EXCEPTION",
+      "layout_mode": "SOURCE_FLYER_TWO_PHOTOS",
+      "width": 73,
+      "height": 50.319876600161464,
+      "frames": [
+        {
+          "image_id": "early_rId24",
+          "x": 0,
+          "y": 0,
+          "width": 35.5,
+          "height": 50.216110019646365,
+          "graphic": {
+            "x": 0,
+            "y": 0,
+            "width": 35.5,
+            "height": 50.216110019646365
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId24_image19.jpeg",
+            "width_px": 509,
+            "height_px": 720,
+            "content_bounds_px": [
+              0,
+              0,
+              509,
+              720
+            ],
+            "sha256": "f751f78310c49b535533b46e4fc5a4c15bf0c6d3b4e88f211b1afbe0a30b28fb",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId22",
+          "x": 37.5,
+          "y": 0,
+          "width": 35.5,
+          "height": 26.599275362318842,
+          "graphic": {
+            "x": 37.5,
+            "y": 0,
+            "width": 35.5,
+            "height": 26.599275362318842
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId22_image17.jpeg",
+            "width_px": 690,
+            "height_px": 517,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              517
+            ],
+            "sha256": "65fdd5fa72e93fa8aaf60c1261a7b7e213d7041c0b96148f2467c3f8194b9423",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId23",
+          "x": 37.5,
+          "y": 28.599275362318842,
+          "width": 35.5,
+          "height": 21.72060123784262,
+          "graphic": {
+            "x": 37.5,
+            "y": 28.599275362318842,
+            "width": 35.5,
+            "height": 21.72060123784262
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId23_image18.png",
+            "width_px": 1131,
+            "height_px": 692,
+            "content_bounds_px": [
+              0,
+              0,
+              1131,
+              692
+            ],
+            "sha256": "fa5fbaadb345f2c16d3c2aab25e3954f7cee00494dc8099f7dcfe1a35dd462ea",
+            "alpha_padding": false
+          }
+        }
+      ],
+      "exception": "Original three-image table: one complete flyer plus two complete photographs; five-mode calculator accepts one/two images only; source order and no distortion retained"
+    },
+    "early_g13": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId25",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 51.68207366876198,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId25_image20.jpeg",
+            "width_px": 600,
+            "height_px": 899,
+            "content_bounds_px": [
+              0,
+              0,
+              600,
+              899
+            ],
+            "sha256": "8eaf8d72a2e047044735a7fce7c80555a4727dbd2d8c2f556749d759fe258c1c",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.028365031529330342,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -0.7543798322856752,
+            "width": 35.5,
+            "height": 53.19083333333333
+          }
+        },
+        {
+          "image_id": "early_rId26",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 51.68207366876198,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId26_image21.jpeg",
+            "width_px": 509,
+            "height_px": 720,
+            "content_bounds_px": [
+              0,
+              0,
+              509,
+              720
+            ],
+            "sha256": "ac25c2580d9c033cfd6a59fb2efce84c271b55bbaece299462af55814c8c4761",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.028365031529330453,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 36.981822571250106,
+            "y": 0.0,
+            "width": 36.53635485749979,
+            "height": 51.68207366876198
+          }
+        }
+      ],
+      "captions": [],
+      "height": 51.68207366876198,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p122",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g14": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId27",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.612134572817325,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId27_image22.jpeg",
+            "width_px": 690,
+            "height_px": 517,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              517
+            ],
+            "sha256": "0ee9c002ce56f22c6b37b5439023778d063086bf9eee36b4e90687f53555bb3c",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.00048320853268257746,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.008581097914849067,
+            "y": 0.0,
+            "width": 35.5171621958297,
+            "height": 26.612134572817325
+          }
+        },
+        {
+          "image_id": "early_rId28",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.612134572817325,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId28_image23.jpeg",
+            "width_px": 800,
+            "height_px": 600,
+            "content_bounds_px": [
+              0,
+              0,
+              800,
+              600
+            ],
+            "sha256": "97535d6160c43051e7bac4e0cc5a6f4a1ad2cc1bd6772158a19a9c56c025747c",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.00048320853268257746,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.006432713591337347,
+            "width": 35.5,
+            "height": 26.625
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.612134572817325,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p125",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g15": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId29",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 27.463592233009706,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId29_image24.jpeg",
+            "width_px": 1236,
+            "height_px": 465,
+            "content_bounds_px": [
+              0,
+              0,
+              1236,
+              465
+            ],
+            "sha256": "eeb4332ad2557eada4b3c9766ee4bafb95e437e4959413e60a397ca7dca81c94",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -1.7763568394002505e-15,
+            "width": 73.0,
+            "height": 27.46359223300971
+          }
+        }
+      ],
+      "captions": [],
+      "height": 27.463592233009706,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p127",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g16": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId30",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 53.18592057761733,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId30_image25.jpeg",
+            "width_px": 554,
+            "height_px": 830,
+            "content_bounds_px": [
+              0,
+              0,
+              554,
+              830
+            ],
+            "sha256": "22ec34a5e48b2ed08fd954a3e6652450a4dbd7af3e83e681727bc4e556345bf1",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 3.3306690738754696e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -3.552713678800501e-15,
+            "y": -3.552713678800501e-15,
+            "width": 35.50000000000001,
+            "height": 53.18592057761734
+          }
+        },
+        {
+          "image_id": "early_rId31",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 53.18592057761733,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId31_image26.jpeg",
+            "width_px": 600,
+            "height_px": 800,
+            "content_bounds_px": [
+              0,
+              0,
+              600,
+              800
+            ],
+            "sha256": "17483f3397c69ca04a005ff4a06ed04a82e51d099c080003e935f305db8d2074",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.11004016064257038,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 35.3052797833935,
+            "y": 0.0,
+            "width": 39.889440433213,
+            "height": 53.18592057761733
+          }
+        }
+      ],
+      "captions": [],
+      "height": 53.18592057761733,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p132",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g17": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId32",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 54.69710144927536,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId32_image27.jpeg",
+            "width_px": 690,
+            "height_px": 517,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              517
+            ],
+            "sha256": "9765908283ca2d968cdc8f77288e60eb0dd5442d655f6c500ddca06831c4bd6c",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 54.69710144927536
+          }
+        }
+      ],
+      "captions": [],
+      "height": 54.69710144927536,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p136",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g18": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId33",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 73.0,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId33_image28.png",
+            "width_px": 615,
+            "height_px": 615,
+            "content_bounds_px": [
+              0,
+              0,
+              615,
+              615
+            ],
+            "sha256": "fd51c7b9db4ed152a113135a42d53293cb6bd174338e3dc7e3aec7e088dbae01",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 73.0
+          }
+        }
+      ],
+      "captions": [],
+      "height": 73.0,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p150",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g19": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId34",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 60.48229676092427,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId34_image29.jpeg",
+            "width_px": 596,
+            "height_px": 865,
+            "content_bounds_px": [
+              0,
+              0,
+              596,
+              865
+            ],
+            "sha256": "ca9ea09466e85253d5d28573d8a71d67d642ef873e6b46b0b4d38d2ea4c888fd",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.14813666533909486,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -3.0866756471161096,
+            "y": 0.0,
+            "width": 41.67335129423222,
+            "height": 60.48229676092427
+          }
+        },
+        {
+          "image_id": "early_rId35",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 60.48229676092427,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId35_image30.jpeg",
+            "width_px": 690,
+            "height_px": 1380,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              1380
+            ],
+            "sha256": "170d4758910e9f914799f289668d2f638fd572534bea7f90b6a92bd375e59fb8",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.14813666533909464,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -5.2588516195378645,
+            "width": 35.5,
+            "height": 71.0
+          }
+        }
+      ],
+      "captions": [],
+      "height": 60.48229676092427,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p153",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g20": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId36",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.60378042582986,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId36_image31.jpeg",
+            "width_px": 531,
+            "height_px": 398,
+            "content_bounds_px": [
+              0,
+              0,
+              531,
+              398
+            ],
+            "sha256": "6510df3bac8cbfd149c2b41efe2dec7c704d6f21bc9be02eaae4a78c5ec83344",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0001693392231825186,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -0.002252913262095646,
+            "width": 35.5,
+            "height": 26.608286252354052
+          }
+        },
+        {
+          "image_id": "early_rId37",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.60378042582986,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId37_image32.jpeg",
+            "width_px": 690,
+            "height_px": 517,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              517
+            ],
+            "sha256": "5a96f00361621aab0125bc1130b0b213ac9d5d4a1793c90893dbffc2c1cf5f74",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.00016933922318218553,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.49699371970735,
+            "y": 0.0,
+            "width": 35.506012560585305,
+            "height": 26.60378042582986
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.60378042582986,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p155",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g21": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId38",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.89082669183246,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId38_image33.jpeg",
+            "width_px": 1267,
+            "height_px": 1793,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              1793
+            ],
+            "sha256": "c93a888c5d50af60491437c0640cdc301774537d4a91f238bc27846683c73217",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.012828697046346926,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.2306685495124725,
+            "y": 0.0,
+            "width": 35.961337099024945,
+            "height": 50.89082669183246
+          }
+        },
+        {
+          "image_id": "early_rId39",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.89082669183246,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId39_image34.jpeg",
+            "width_px": 690,
+            "height_px": 1002,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              1002
+            ],
+            "sha256": "ca1de3894d1b4cd144a0fdd8940bdfa8e40db17657b6dd576c37fbae51be4ec2",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.012828697046346815,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.3306736106055084,
+            "width": 35.5,
+            "height": 51.552173913043475
+          }
+        }
+      ],
+      "captions": [],
+      "height": 50.89082669183246,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p157",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g22": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId40",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.16304347826087,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId40_image35.jpeg",
+            "width_px": 690,
+            "height_px": 975,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              975
+            ],
+            "sha256": "2ad8ded347fafe4a3f223c8deb5ea49fca8ab1e9d3e307947cf98b7a677d6b7b",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 35.5,
+            "height": 50.16304347826087
+          }
+        },
+        {
+          "image_id": "early_rId41",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.16304347826087,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId41_image36.jpeg",
+            "width_px": 690,
+            "height_px": 975,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              975
+            ],
+            "sha256": "969bbea598d798794c832bd2a877903b499b293b6f2f34ad78d4d026616b5728",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": 0.0,
+            "width": 35.5,
+            "height": 50.16304347826087
+          }
+        }
+      ],
+      "captions": [],
+      "height": 50.16304347826087,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p160",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g23": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId42",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 58.4,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId42_image37.jpeg",
+            "width_px": 690,
+            "height_px": 552,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              552
+            ],
+            "sha256": "5b08de8a7f458ca4be2968f640c463779444d1f2f2439733cfeb67284db5d966",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 58.4
+          }
+        }
+      ],
+      "captions": [],
+      "height": 58.4,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p164",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g24": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId43",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 34.542586750788644,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId43_image38.png",
+            "width_px": 1268,
+            "height_px": 600,
+            "content_bounds_px": [
+              0,
+              0,
+              1268,
+              600
+            ],
+            "sha256": "3e647ccea90265cef2b9ac70f03abdf952faea2ef79005ceb8e43e794c51f14b",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 34.542586750788644
+          }
+        }
+      ],
+      "captions": [],
+      "height": 34.542586750788644,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p168",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g25": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId44",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 28.11640625,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId44_image39.jpeg",
+            "width_px": 1280,
+            "height_px": 493,
+            "content_bounds_px": [
+              0,
+              0,
+              1280,
+              493
+            ],
+            "sha256": "a76b4d0d9e54b07c616d0a1809cde79614a469c0578c513ffc4463cbda4d5096",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 28.11640625
+          }
+        }
+      ],
+      "captions": [],
+      "height": 28.11640625,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p171",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g26": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId45",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 35.5,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId45_image40.jpeg",
+            "width_px": 623,
+            "height_px": 623,
+            "content_bounds_px": [
+              0,
+              0,
+              623,
+              623
+            ],
+            "sha256": "adad4d185a4e3d30da7ad102d3f69bf98241f02fd8b5dc60e709fc78f6cfa977",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 35.5,
+            "height": 35.5
+          }
+        },
+        {
+          "image_id": "early_rId46",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 35.5,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId46_image41.jpeg",
+            "width_px": 621,
+            "height_px": 621,
+            "content_bounds_px": [
+              0,
+              0,
+              621,
+              621
+            ],
+            "sha256": "eba723b95fe0973b9e27e3fe1788f746e61dc0962e13877c020ec6e1608e5560",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": 0.0,
+            "width": 35.5,
+            "height": 35.5
+          }
+        }
+      ],
+      "captions": [],
+      "height": 35.5,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p184",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g27": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId47",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 55.284336145323934,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId47_image42.jpeg",
+            "width_px": 690,
+            "height_px": 1115,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              1115
+            ],
+            "sha256": "0052074732301ffe0da51adad3f6af93e2efc7586a3e025c8e972f6ae41bed48",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.03628644122343161,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -1.0408029418307834,
+            "width": 35.5,
+            "height": 57.3659420289855
+          }
+        },
+        {
+          "image_id": "early_rId48",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 55.284336145323934,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId48_image43.jpeg",
+            "width_px": 1256,
+            "height_px": 1885,
+            "content_bounds_px": [
+              0,
+              0,
+              1256,
+              1885
+            ],
+            "sha256": "4675e02f80fcaaa7d28e96f6f0ec9e28659dabee3feeb727f7daf70ab8dcc340",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.03628644122343183,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 36.831664138321784,
+            "y": 0.0,
+            "width": 36.836671723356424,
+            "height": 55.284336145323934
+          }
+        }
+      ],
+      "captions": [],
+      "height": 55.284336145323934,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p187",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g28": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId49",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 54.37971014492754,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId49_image44.jpeg",
+            "width_px": 690,
+            "height_px": 514,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              514
+            ],
+            "sha256": "680755e83d44f5b0e16fa8fff2c068639a3e06fd8bff1c10c5fcad641162a577",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 54.37971014492754
+          }
+        }
+      ],
+      "captions": [],
+      "height": 54.37971014492754,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p190",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g29": {
+      "kind": "NAMED_EXCEPTION",
+      "layout_mode": "USER_AUTOGRAPH_3X3",
+      "width": 146,
+      "height": 83.84927536231885,
+      "frames": [
+        {
+          "image_id": "early_rId50",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId50_image45.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "82b2a9a661e80dceabc8493861e8845fec91437fcf12474845f76be229a18379",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId51",
+          "x": 49.333333333333336,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 49.333333333333336,
+            "y": 0.0,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId51_image46.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "d0689c55c3e072d960457a70c89fbd62edbdf49cbf9c433adc29fe31d4986323",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId52",
+          "x": 98.66666666666667,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 98.66666666666667,
+            "y": 0.0,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId52_image47.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "eb1fbd794c6c07b0e70a6155f294d5b8066daee39361b1dd3b6368c6c98df0fc",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId53",
+          "x": 0.0,
+          "y": 28.616425120772952,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 0.0,
+            "y": 28.616425120772952,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId53_image48.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "a0495283ca72c1923cd300ad0d3148c93355816c181f5d948b62f1d92f0c02a6",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId54",
+          "x": 49.333333333333336,
+          "y": 28.616425120772952,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 49.333333333333336,
+            "y": 28.616425120772952,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId54_image49.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "4ddcd39f2eda180fb3a1489b37a64921d7fa04649d9a0fa3f7f0f30d70dc8043",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId55",
+          "x": 98.66666666666667,
+          "y": 28.616425120772952,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 98.66666666666667,
+            "y": 28.616425120772952,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId55_image50.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "2d3dcbbbedf94992e527f093002452817e8ceeafd85bca04aa5ca74e11d92930",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId56",
+          "x": 0.0,
+          "y": 57.232850241545904,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 0.0,
+            "y": 57.232850241545904,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "STRETCH",
+          "source": {
+            "path": "assets/history_v2/early_rId56_image51.jpeg",
+            "width_px": 690,
+            "height_px": 1226,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              1226
+            ],
+            "sha256": "09e13d61d18e3ec255becf8a9f23cfeeb1a88fcfc0fa3bed0b16ddfae3b4fc08",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId57",
+          "x": 49.333333333333336,
+          "y": 57.232850241545904,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 49.333333333333336,
+            "y": 57.232850241545904,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId57_image52.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "54db3b5cbc09c0d9df55556fd9edb310f41556197cb13de8caebdc73ab3983fe",
+            "alpha_padding": false
+          }
+        },
+        {
+          "image_id": "early_rId58",
+          "x": 98.66666666666667,
+          "y": 57.232850241545904,
+          "width": 47.333333333333336,
+          "height": 26.616425120772952,
+          "graphic": {
+            "x": 98.66666666666667,
+            "y": 57.232850241545904,
+            "width": 47.333333333333336,
+            "height": 26.616425120772952
+          },
+          "fit_mode": "PROPORTIONAL",
+          "source": {
+            "path": "assets/history_v2/early_rId58_image53.jpeg",
+            "width_px": 690,
+            "height_px": 388,
+            "content_bounds_px": [
+              0,
+              0,
+              690,
+              388
+            ],
+            "sha256": "ec9c65d18ad3cf087d262e59b0145008462e6bbd0337c04543ac3e4d4140d582",
+            "alpha_padding": false
+          }
+        }
+      ],
+      "exception": "User explicitly requested nonuniform stretch of lower-left signature early_rId56; all nine frames now share one size; other eight sources have matching landscape ratios"
+    },
+    "early_g30": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId59",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 26.39777468706537,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2_layout/orientation_early_rId59.png",
+            "width_px": 719,
+            "height_px": 260,
+            "content_bounds_px": [
+              0,
+              0,
+              719,
+              260
+            ],
+            "sha256": "1d870be67539fd45cbac7af41a7707e9a2e6cb37c8a353e62bcc0ecc6a0cd563",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId59_image54.jpeg",
+              "sha256": "bdfd411d21d0f12a237b598a245ee7cce23ff289a8d9c6ffca5b3b2d39f6a607",
+              "exif_orientation_normalized": 0
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 26.39777468706537
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.39777468706537,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p205",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g31": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId60",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 16.82421875,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId60_image55.jpeg",
+            "width_px": 1280,
+            "height_px": 295,
+            "content_bounds_px": [
+              0,
+              0,
+              1280,
+              295
+            ],
+            "sha256": "71175ea2b6a724a5104a5a9a755a097d380cf046578be4b6a2407c2a61c26e29",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 16.82421875
+          }
+        }
+      ],
+      "captions": [],
+      "height": 16.82421875,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p208",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g32": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId61",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 47.36430051579761,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId61_image56.jpeg",
+            "width_px": 573,
+            "height_px": 765,
+            "content_bounds_px": [
+              0,
+              0,
+              573,
+              765
+            ],
+            "sha256": "5519b092dd75828b2c708ed8342653a9d87265a5db30add02294520e008d92ab",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0006538085040217467,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -0.01549372115878711,
+            "width": 35.5,
+            "height": 47.39528795811518
+          }
+        },
+        {
+          "image_id": "early_rId62",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 47.36430051579761,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId62_image57.jpeg",
+            "width_px": 600,
+            "height_px": 800,
+            "content_bounds_px": [
+              0,
+              0,
+              600,
+              800
+            ],
+            "sha256": "38aff07ef833a313543166a9f218b0f25bfd8d0a495cf86127fd4301e2fb8a6f",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0006538085040217467,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.4883873065759,
+            "y": 0.0,
+            "width": 35.5232253868482,
+            "height": 47.36430051579761
+          }
+        }
+      ],
+      "captions": [],
+      "height": 47.36430051579761,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p226",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g33": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId63",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 48.488563586459286,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_early_rId63.png",
+            "width_px": 1093,
+            "height_px": 726,
+            "content_bounds_px": [
+              0,
+              0,
+              1093,
+              726
+            ],
+            "sha256": "bf20ab6ca3060bf8006ee0c0f294c2f8551c416850f63c9433f5609a7ffbb8fd",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId63_image58.png",
+              "sha256": "e3019416904e96ef233bd1b89df6e8759300769f5e266ffa3863e267b4c04f56",
+              "alpha_trim_bounds": [
+                0,
+                0,
+                1093,
+                726
+              ]
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 48.488563586459286
+          }
+        }
+      ],
+      "captions": [],
+      "height": 48.488563586459286,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p229",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g34": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId64",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 34.34857723577235,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_early_rId64.png",
+            "width_px": 984,
+            "height_px": 463,
+            "content_bounds_px": [
+              0,
+              0,
+              984,
+              463
+            ],
+            "sha256": "3cc98390d2e9c1f23be1e8688c0a868e2f669a200413ab3927d3c0356c1e0c88",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId64_image59.png",
+              "sha256": "3edcd806a899d1f4c6ed5b8938b0bbb25ce397eb8953edd58215c7d9e3084c6e",
+              "alpha_trim_bounds": [
+                0,
+                0,
+                984,
+                463
+              ]
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 2.220446049250313e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -3.552713678800501e-15,
+            "width": 73.0,
+            "height": 34.34857723577236
+          }
+        }
+      ],
+      "captions": [],
+      "height": 34.34857723577235,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p233",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g35": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId65",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 33.42507970244421,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_early_rId65.png",
+            "width_px": 941,
+            "height_px": 1329,
+            "content_bounds_px": [
+              0,
+              0,
+              941,
+              1329
+            ],
+            "sha256": "6a46719788251983893eb174700bd9e17c5231400cfe5a596e42676b9c2a9f8b",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId65_image60.png",
+              "sha256": "1530809e07484494e0db34bf4d82948e61fc3445325ad6f15a3a0ccacfe76cb1",
+              "alpha_trim_bounds": [
+                0,
+                0,
+                941,
+                1329
+              ]
+            },
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 23.666666666666668,
+            "height": 33.42507970244421
+          }
+        },
+        {
+          "image_id": "early_rId66",
+          "x": 25.666666666666668,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 33.42507970244421,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_early_rId66.png",
+            "width_px": 950,
+            "height_px": 633,
+            "content_bounds_px": [
+              0,
+              0,
+              950,
+              633
+            ],
+            "sha256": "4b86e2f27922c114f8db0b3a45771fca0f52280a8154991ad62bc5a28a1f2d32",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId66_image61.png",
+              "sha256": "7b40b5c868b90ec9458c570d5163124ee35f73649f2de79f4a1f12337f3f2ace",
+              "alpha_trim_bounds": [
+                0,
+                0,
+                950,
+                633
+              ]
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05642865629083993,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 24.251322498165884,
+            "y": 0.0,
+            "width": 50.164021670334904,
+            "height": 33.42507970244421
+          }
+        }
+      ],
+      "captions": [],
+      "height": 33.42507970244421,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p236",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g36": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId67",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.938557625253992,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId67_image62.png",
+            "width_px": 565,
+            "height_px": 407,
+            "content_bounds_px": [
+              0,
+              0,
+              565,
+              407
+            ],
+            "sha256": "caa5bc98b51084484fe512421c454e015e2bf92b0222779076def93398de5c82",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.014109930816517013,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.25403569811855675,
+            "y": 0.0,
+            "width": 36.00807139623711,
+            "height": 25.938557625253992
+          }
+        },
+        {
+          "image_id": "early_rId68",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.938557625253992,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId68_image63.jpeg",
+            "width_px": 1267,
+            "height_px": 939,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              939
+            ],
+            "sha256": "d26cef221d980946fe557e46dde559efc71637c1b5323012dd5346cb090e9aa4",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.014109930816517013,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.18561463646534726,
+            "width": 35.5,
+            "height": 26.309786898184687
+          }
+        }
+      ],
+      "captions": [],
+      "height": 25.938557625253992,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p249",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g37": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId69",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 54.73158425832492,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId69_image64.jpeg",
+            "width_px": 991,
+            "height_px": 743,
+            "content_bounds_px": [
+              0,
+              0,
+              991,
+              743
+            ],
+            "sha256": "0b3fee3c54cd3f2f416c17842427768c416fbb102d17621e0c391ef948d52462",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 2.220446049250313e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -3.552713678800501e-15,
+            "width": 73.0,
+            "height": 54.73158425832493
+          }
+        }
+      ],
+      "captions": [],
+      "height": 54.73158425832492,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p252",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g38": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId70",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 36.38537037718168,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId70_image65.png",
+            "width_px": 358,
+            "height_px": 663,
+            "content_bounds_px": [
+              0,
+              0,
+              358,
+              663
+            ],
+            "sha256": "a644634b8a4c1c49019675dc9698807f5815d6ac39ac4a6c6d3e354798bca2bb",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.16984496876992916,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -3.7221192806829038,
+            "width": 23.666666666666668,
+            "height": 43.82960893854749
+          }
+        },
+        {
+          "image_id": "early_rId71",
+          "x": 25.666666666666668,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 36.38537037718168,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId71_image66.png",
+            "width_px": 970,
+            "height_px": 619,
+            "content_bounds_px": [
+              0,
+              0,
+              970,
+              619
+            ],
+            "sha256": "2e17b09bc49f87ef29a1d49f5d176840e927a998a2dcef6af8b6b6be13b09ead",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.16984496876992927,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 20.82460210080811,
+            "y": 0.0,
+            "width": 57.01746246505045,
+            "height": 36.38537037718168
+          }
+        }
+      ],
+      "captions": [],
+      "height": 36.38537037718168,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p256",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g39": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId72",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 35.10390516039052,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId72_image67.png",
+            "width_px": 478,
+            "height_px": 709,
+            "content_bounds_px": [
+              0,
+              0,
+              478,
+              709
+            ],
+            "sha256": "0ad378187b2068786054e243c9dd788409f34bea090a59c7f73fa97bbf8a1b63",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 23.666666666666668,
+            "height": 35.10390516039052
+          }
+        },
+        {
+          "image_id": "early_rId73",
+          "x": 25.666666666666668,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 35.10390516039052,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId73_image68.jpeg",
+            "width_px": 673,
+            "height_px": 673,
+            "content_bounds_px": [
+              0,
+              0,
+              673,
+              673
+            ],
+            "sha256": "e73307719a94cbf56b9358f644a71c1f3396c20ae430163c86ee1e79b12a4247",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.2583682008368202,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 25.666666666666668,
+            "y": -6.114714086471409,
+            "width": 47.333333333333336,
+            "height": 47.333333333333336
+          }
+        }
+      ],
+      "captions": [],
+      "height": 35.10390516039052,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p261",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g40": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId74",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 52.786561477743426,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId74_image69.jpeg",
+            "width_px": 526,
+            "height_px": 744,
+            "content_bounds_px": [
+              0,
+              0,
+              526,
+              744
+            ],
+            "sha256": "ff5296b2813083e20795c43d54723a5384ca03e2dbad5c5e865b38474bc7b4e0",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.04875547201866082,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.9097656836646806,
+            "y": 0.0,
+            "width": 37.31953136732936,
+            "height": 52.786561477743426
+          }
+        },
+        {
+          "image_id": "early_rId75",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 52.786561477743426,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId75_image70.png",
+            "width_px": 380,
+            "height_px": 594,
+            "content_bounds_px": [
+              0,
+              0,
+              380,
+              594
+            ],
+            "sha256": "1c5a8c69be473603ce4a114bd06827a64e50bcd800dde3bd35620b870a1306ca",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.048755472018660706,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -1.352771892707235,
+            "width": 35.5,
+            "height": 55.492105263157896
+          }
+        }
+      ],
+      "captions": [],
+      "height": 52.786561477743426,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p265",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g41": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId76",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.709548357689815,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId76_image71.jpeg",
+            "width_px": 693,
+            "height_px": 390,
+            "content_bounds_px": [
+              0,
+              0,
+              693,
+              390
+            ],
+            "sha256": "c0ef0c8c4451ef7eeab28efe857a532280c97460b250185374da1672f07d79ea",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05000825090645067,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -4.835177011391998,
+            "y": 0.0,
+            "width": 47.4608128509719,
+            "height": 26.709548357689815
+          }
+        },
+        {
+          "image_id": "early_rId77",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.709548357689815,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId77_image72.jpeg",
+            "width_px": 1269,
+            "height_px": 713,
+            "content_bounds_px": [
+              0,
+              0,
+              1269,
+              713
+            ],
+            "sha256": "cea921976d5608452c9ab4e2141ad4290277c103aa22db8b3664eb38822c663a",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05000825090645056,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 32.804230156604596,
+            "y": -0.7030049456449508,
+            "width": 50.04017309671144,
+            "height": 28.115558248979717
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.709548357689815,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p267",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g42": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId78",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 43.771484375,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2_layout/orientation_early_rId78.png",
+            "width_px": 1024,
+            "height_px": 614,
+            "content_bounds_px": [
+              0,
+              0,
+              1024,
+              614
+            ],
+            "sha256": "2c44f723eb6521c5729033c2a1caf83bd84555baaf4b610b9e083e6a0a4cbf09",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history_v2/early_rId78_image73.jpeg",
+              "sha256": "53e3979046f39b023901ffb4e132cc21bb71974ebf1ad83055c039a5f3f7e5eb",
+              "exif_orientation_normalized": 8
+            },
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 43.771484375
+          }
+        }
+      ],
+      "captions": [],
+      "height": 43.771484375,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p284",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g43": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId79",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 48.164056507499375,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId79_image74.jpeg",
+            "width_px": 625,
+            "height_px": 813,
+            "content_bounds_px": [
+              0,
+              0,
+              625,
+              813
+            ],
+            "sha256": "9b892ad0d3ae1775b0fd833f87341c2cb33293761df90ebcc982fbee2d60a464",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.04122693667196009,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.763244352513599,
+            "y": 0.0,
+            "width": 37.0264887050272,
+            "height": 48.164056507499375
+          }
+        },
+        {
+          "image_id": "early_rId80",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 48.164056507499375,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId80_image75.jpeg",
+            "width_px": 889,
+            "height_px": 1258,
+            "content_bounds_px": [
+              0,
+              0,
+              889,
+              1258
+            ],
+            "sha256": "d819ce07b3eec9e14cc54c1b0cdbaa548db04c5159215806bc9215a8ca6793cb",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.04122693667195998,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -1.035519552774499,
+            "width": 35.5,
+            "height": 50.23509561304837
+          }
+        }
+      ],
+      "captions": [],
+      "height": 48.164056507499375,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p287",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g44": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId81",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.112194970318875,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId81_image76.jpeg",
+            "width_px": 1146,
+            "height_px": 764,
+            "content_bounds_px": [
+              0,
+              0,
+              1146,
+              764
+            ],
+            "sha256": "75e3a51ac8fb147becd55e10b6425d5c229fae9b3defbdfe636e8d888b8afd1b",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05756280187218732,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -1.0841462277391543,
+            "y": 1.7763568394002505e-15,
+            "width": 37.66829245547831,
+            "height": 25.11219497031887
+          }
+        },
+        {
+          "image_id": "early_rId82",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.112194970318875,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId82_image77.jpeg",
+            "width_px": 1267,
+            "height_px": 951,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              951
+            ],
+            "sha256": "7a7182d211a5caf0873b0c616039c43793826ed198bb4d53b357bcbdd3583126",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05756280187218743,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.766909618234406,
+            "width": 35.5,
+            "height": 26.646014206787687
+          }
+        }
+      ],
+      "captions": [],
+      "height": 25.112194970318875,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p289",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g45": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId83",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.54163025487005,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId83_image78.jpeg",
+            "width_px": 504,
+            "height_px": 722,
+            "content_bounds_px": [
+              0,
+              0,
+              504,
+              722
+            ],
+            "sha256": "98a8a14f67b2cef417b45fe1aceeb77ec2f1d75d6aade8f067cd611ec6fc855b",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.006165126274647603,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -0.15676423764433878,
+            "width": 35.5,
+            "height": 50.85515873015873
+          }
+        },
+        {
+          "image_id": "early_rId84",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 50.54163025487005,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId84_image79.jpeg",
+            "width_px": 1152,
+            "height_px": 1630,
+            "content_bounds_px": [
+              0,
+              0,
+              1152,
+              1630
+            ],
+            "sha256": "aa7452165eefbf236c552ff3c33d61a3cb396e1553108b866f3684b05521edef",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.006165126274647603,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.38989016760421,
+            "y": 0.0,
+            "width": 35.72021966479159,
+            "height": 50.54163025487005
+          }
+        }
+      ],
+      "captions": [],
+      "height": 50.54163025487005,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p294",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g46": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId85",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.620149831456253,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId85_image80.jpeg",
+            "width_px": 915,
+            "height_px": 686,
+            "content_bounds_px": [
+              0,
+              0,
+              915,
+              686
+            ],
+            "sha256": "e91a4c39d5e8fd1b19cbf35305642442732b68159a4af912483ec311a680ab46",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0001821659546948906,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.0032340348268746766,
+            "y": 0.0,
+            "width": 35.50646806965375,
+            "height": 26.620149831456253
+          }
+        },
+        {
+          "image_id": "early_rId86",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 26.620149831456253,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId86_image81.jpeg",
+            "width_px": 1340,
+            "height_px": 1005,
+            "content_bounds_px": [
+              0,
+              0,
+              1340,
+              1005
+            ],
+            "sha256": "89d0dd78846f5c4c4e090e35b15fcaace5756c02037a6837f0be832521b19dfd",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.00018216595469477959,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.002425084271873601,
+            "width": 35.5,
+            "height": 26.625
+          }
+        }
+      ],
+      "captions": [],
+      "height": 26.620149831456253,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p297",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g47": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId87",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 29.916801388715925,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId87_image82.jpeg",
+            "width_px": 638,
+            "height_px": 478,
+            "content_bounds_px": [
+              0,
+              0,
+              638,
+              478
+            ],
+            "sha256": "d4af46307ae1d01c8f572a0f059d8424de15b81e1aeb742a75e092ddbdb73edd",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.11096181915298087,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -2.2153967426786174,
+            "y": 0.0,
+            "width": 39.930793485357235,
+            "height": 29.916801388715925
+          }
+        },
+        {
+          "image_id": "early_rId88",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 29.916801388715925,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId88_image83.jpeg",
+            "width_px": 1267,
+            "height_px": 1201,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              1201
+            ],
+            "sha256": "66ffd484dc07e5fa4cee1c01208a610d9acb196bbaffde6f640115c6731b5cb9",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.11096181915298098,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -1.866974206983791,
+            "width": 35.5,
+            "height": 33.65074980268351
+          }
+        }
+      ],
+      "captions": [],
+      "height": 29.916801388715925,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p301",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g48": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_MIXED",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId89",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 23.666666666666668,
+          "height": 38.43015873015873,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId89_image84.jpeg",
+            "width_px": 420,
+            "height_px": 682,
+            "content_bounds_px": [
+              0,
+              0,
+              420,
+              682
+            ],
+            "sha256": "2aae0e437586a797c58c65f9248833e906364cb8803e5cc0a9a28c154f911cad",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 23.666666666666668,
+            "height": 38.43015873015873
+          }
+        },
+        {
+          "image_id": "early_rId90",
+          "x": 25.666666666666668,
+          "y": 0.0,
+          "width": 47.333333333333336,
+          "height": 38.43015873015873,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_MIXED",
+          "source": {
+            "path": "assets/history_v2/early_rId90_image85.jpeg",
+            "width_px": 405,
+            "height_px": 270,
+            "content_bounds_px": [
+              0,
+              0,
+              405,
+              270
+            ],
+            "sha256": "93747fb09ac2ccc3932c0fa78a0dad5ab51445ddc6176169f8b9ace0507a33aa",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.17888563049853368,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 20.51071428571429,
+            "y": 0.0,
+            "width": 57.64523809523809,
+            "height": 38.43015873015873
+          }
+        }
+      ],
+      "captions": [],
+      "height": 38.43015873015873,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p303",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g49": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId91",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 30.479084451460142,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId91_image86.png",
+            "width_px": 1267,
+            "height_px": 529,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              529
+            ],
+            "sha256": "3570b8c3217a3493036e0b5d092462e9f5704373e4ba179f8688a9121674738d",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 30.479084451460142
+          }
+        }
+      ],
+      "captions": [],
+      "height": 30.479084451460142,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p313",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g50": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId92",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 51.39539743043554,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId92_image87.png",
+            "width_px": 434,
+            "height_px": 781,
+            "content_bounds_px": [
+              0,
+              0,
+              434,
+              781
+            ],
+            "sha256": "07bb7c2ce2cae7c9786ff41e9c5a4c04cfcd3b65bd38c30fd84553ad193b32a5",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.04377989164265306,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -7.568110011740765,
+            "width": 35.5,
+            "height": 63.8836405529954
+          }
+        },
+        {
+          "image_id": "early_rId93",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 51.39539743043554,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId93_image88.jpeg",
+            "width_px": 640,
+            "height_px": 886,
+            "content_bounds_px": [
+              0,
+              0,
+              640,
+              886
+            ],
+            "sha256": "1d2487b23a2bc3909834777642b1aec972fb0548b74bf89f90cdbf24fc8b9882",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.04377989164265261,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 36.68732824182915,
+            "y": 0.0,
+            "width": 37.125343516341694,
+            "height": 51.39539743043554
+          }
+        }
+      ],
+      "captions": [],
+      "height": 51.39539743043554,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p327",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g51": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId94",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.102290732122437,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId94_image89.png",
+            "width_px": 900,
+            "height_px": 600,
+            "content_bounds_px": [
+              0,
+              0,
+              900,
+              600
+            ],
+            "sha256": "0dcbe79cc473675ac9478c5c8d1c1f11b69872b1645594239895b73f8db1df75",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05719095841793653,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -1.0767180490918271,
+            "y": 0.0,
+            "width": 37.653436098183654,
+            "height": 25.102290732122437
+          }
+        },
+        {
+          "image_id": "early_rId95",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.102290732122437,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId95_image90.jpeg",
+            "width_px": 1284,
+            "height_px": 963,
+            "content_bounds_px": [
+              0,
+              0,
+              1284,
+              963
+            ],
+            "sha256": "ae0094644c977df75f6ea08fe270cefb2721e6a508f8ec9cc7723a29cca6d378",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.05719095841793653,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.7613546339387813,
+            "width": 35.5,
+            "height": 26.625
+          }
+        }
+      ],
+      "captions": [],
+      "height": 25.102290732122437,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p331",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g52": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId96",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 48.028055819059155,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId96_image91.jpeg",
+            "width_px": 558,
+            "height_px": 766,
+            "content_bounds_px": [
+              0,
+              0,
+              558,
+              766
+            ],
+            "sha256": "3d61c23368b2a1ce7fffc3a1212718933254abf52ffcaac82b2e896e9ddeb868",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.01446493042198338,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": -0.352459545667557,
+            "width": 35.5,
+            "height": 48.73297491039427
+          }
+        },
+        {
+          "image_id": "early_rId97",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 48.028055819059155,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2/early_rId97_image92.png",
+            "width_px": 600,
+            "height_px": 800,
+            "content_bounds_px": [
+              0,
+              0,
+              600,
+              800
+            ],
+            "sha256": "07e4250c3c0a1825b7d18e75bd97c2240c7ecf4ec50cd7714b7e7357fbc13eb1",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.01446493042198338,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.23947906785281,
+            "y": 0.0,
+            "width": 36.02104186429437,
+            "height": 48.028055819059155
+          }
+        }
+      ],
+      "captions": [],
+      "height": 48.028055819059155,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p348",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "early_g53": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "early_rId98",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.667213790443704,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId98_image93.png",
+            "width_px": 429,
+            "height_px": 305,
+            "content_bounds_px": [
+              0,
+              0,
+              429,
+              305
+            ],
+            "sha256": "7c19e5b7020355226b57ee750a0b17f17e5203759ae564c1e6289f89c0da9107",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.016686113849856965,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.3012044526235229,
+            "y": 0.0,
+            "width": 36.102408905247046,
+            "height": 25.667213790443704
+          }
+        },
+        {
+          "image_id": "early_rId99",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 25.667213790443704,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history_v2/early_rId99_image94.jpeg",
+            "width_px": 1267,
+            "height_px": 1155,
+            "content_bounds_px": [
+              0,
+              0,
+              1267,
+              1155
+            ],
+            "sha256": "b850045dd1570ae53b1d547adb8d8184a961bbfb20790904609f66c7133260f6",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.016686113849856965,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.21777687549638003,
+            "width": 35.5,
+            "height": 32.36187845303867
+          }
+        }
+      ],
+      "captions": [],
+      "height": 25.667213790443704,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "early_p351",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g54": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId17",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 68.75933953755187,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history/image14.png",
+            "width_px": 482,
+            "height_px": 681,
+            "content_bounds_px": [
+              0,
+              0,
+              482,
+              681
+            ],
+            "sha256": "4a9da108ee37a99aa3e0dc37d0307b044e51bcaec09522519c1fa84d13a06abb",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 2.220446049250313e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 12.16666545,
+            "y": 0.0,
+            "width": 48.6666691,
+            "height": 68.75933953755187
+          }
+        }
+      ],
+      "captions": [],
+      "height": 68.75933953755187,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g55": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId18",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 48.636919315403425,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history/image15.jpeg",
+            "width_px": 818,
+            "height_px": 545,
+            "content_bounds_px": [
+              0,
+              0,
+              818,
+              545
+            ],
+            "sha256": "41038421c43366dcbfa9cfd24f5895f8740be6bcf4cc288e54cfdac0d893d55f",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -7.105427357601002e-15,
+            "y": 0.0,
+            "width": 73.00000000000001,
+            "height": 48.636919315403425
+          }
+        }
+      ],
+      "captions": [],
+      "height": 48.636919315403425,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g56": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId19",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 72.81908666449813,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history/image16.jpeg",
+            "width_px": 538,
+            "height_px": 805,
+            "content_bounds_px": [
+              0,
+              0,
+              538,
+              805
+            ],
+            "sha256": "623b814c5552fcb06fe52566b9591a37785576c5edb7777dddb544b8c911a494",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 12.166665450000007,
+            "y": 0.0,
+            "width": 48.666669099999986,
+            "height": 72.81908666449813
+          }
+        }
+      ],
+      "captions": [],
+      "height": 72.81908666449813,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g57": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_PORTRAIT",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId20",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 45.34651247451465,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history_v2_layout/alpha_trim_approved_tail_rId20.png",
+            "width_px": 265,
+            "height_px": 306,
+            "content_bounds_px": [
+              0,
+              0,
+              265,
+              306
+            ],
+            "sha256": "3d7522510d3bf5325751fb1d3b4dab9ae38bcf43eb264eebe148b202d2d40b71",
+            "alpha_padding": false,
+            "original": {
+              "file": "assets/history/image17.png",
+              "sha256": "47c866c2abb492fb9230d784618d97324f6dd5b33932fb4cc096c2653a8c51e1",
+              "alpha_trim_bounds": [
+                0,
+                35,
+                265,
+                341
+              ]
+            },
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.09601751946796377,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -1.885336283899317,
+            "y": 0.0,
+            "width": 39.270672567798634,
+            "height": 45.34651247451465
+          }
+        },
+        {
+          "image_id": "approved_tail_rId21",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 45.34651247451465,
+          "orientation": "PORTRAIT",
+          "image_count": 2,
+          "layout_mode": "PAIR_PORTRAIT",
+          "source": {
+            "path": "assets/history/image18.jpeg",
+            "width_px": 414,
+            "height_px": 585,
+            "content_bounds_px": [
+              0,
+              0,
+              414,
+              585
+            ],
+            "sha256": "d647367bd87c062752f8b27f15fdecbd681135199becb38673512127f55b0e72",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.09601751946796377,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -2.408265501873114,
+            "width": 35.5,
+            "height": 50.163043478260875
+          }
+        }
+      ],
+      "captions": [],
+      "height": 45.34651247451465,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "approved_tail_p190",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g58": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId22",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 53.0,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history/image19.jpeg",
+            "width_px": 640,
+            "height_px": 853,
+            "content_bounds_px": [
+              0,
+              0,
+              640,
+              853
+            ],
+            "sha256": "270353a3c2bfb3243d6131f132fbbe125cd7ebc52bd365ccb575997421b7b25c",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.1829000392490624,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false,
+            "crop_focus": "BOTTOM: crop blank upper wall; preserve full award banners and floor edge"
+          },
+          "graphic": {
+            "x": 12.166665450000004,
+            "y": -11.863544909843739,
+            "width": 48.66666909999999,
+            "height": 64.86354490984374
+          }
+        }
+      ],
+      "captions": [],
+      "height": 53.0,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": "approved_tail_p193",
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "height_override_reason": "Bounded tail treatment: remove upper blank wall from award-banner photo; keep default 2/3-column width and final activity text/poster on the same page"
+    },
+    "approved_tail_g59": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId23",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 86.54924675170453,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history/image20.jpeg",
+            "width_px": 528,
+            "height_px": 939,
+            "content_bounds_px": [
+              0,
+              0,
+              528,
+              939
+            ],
+            "sha256": "5078e8cdd7c0fe65fd1ee6675f2c5ae236155bf6c8761f242fead7a4c805ceb2",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 12.166665450000004,
+            "y": 0.0,
+            "width": 48.66666909999999,
+            "height": 86.54924675170453
+          }
+        }
+      ],
+      "captions": [],
+      "height": 86.54924675170453,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g60": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "PAIR_LANDSCAPE",
+      "image_count": 2,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 2.0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId24",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 30.12890992841168,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history/image21.jpeg",
+            "width_px": 575,
+            "height_px": 487,
+            "content_bounds_px": [
+              0,
+              0,
+              575,
+              487
+            ],
+            "sha256": "5890dc7f0146fa68b5b83d62c504035b69dc22cf1854e6db99f6922434058643",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0020562777352302053,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": -0.036574136382665046,
+            "y": 0.0,
+            "width": 35.57314827276533,
+            "height": 30.12890992841168
+          }
+        },
+        {
+          "image_id": "approved_tail_rId25",
+          "x": 37.5,
+          "y": 0.0,
+          "width": 35.5,
+          "height": 30.12890992841168,
+          "orientation": "LANDSCAPE",
+          "image_count": 2,
+          "layout_mode": "PAIR_LANDSCAPE",
+          "source": {
+            "path": "assets/history/image22.jpeg",
+            "width_px": 555,
+            "height_px": 472,
+            "content_bounds_px": [
+              0,
+              0,
+              555,
+              472
+            ],
+            "sha256": "fee2f62d10e548309b5d05e3cabdd86e0f0e8dee083e18d667d88dd96637b207",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0.0020562777352302053,
+            "stretch_limit": 1,
+            "crop_review_required": true,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 37.5,
+            "y": -0.031040531289654893,
+            "width": 35.5,
+            "height": 30.19099099099099
+          }
+        }
+      ],
+      "captions": [],
+      "height": 30.12890992841168,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g61": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_LANDSCAPE",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId26",
+          "x": 0.0,
+          "y": 0.0,
+          "width": 73.0,
+          "height": 52.33778371161549,
+          "orientation": "LANDSCAPE",
+          "image_count": 1,
+          "layout_mode": "SINGLE_LANDSCAPE",
+          "source": {
+            "path": "assets/history/image23.jpeg",
+            "width_px": 749,
+            "height_px": 537,
+            "content_bounds_px": [
+              0,
+              0,
+              749,
+              537
+            ],
+            "sha256": "b3c74474a61c1abeb8aea70a4e90e5772301b230da88bcf4b5adcf3f312b9582",
+            "alpha_padding": false,
+            "orientation": "LANDSCAPE"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 0,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 73.0,
+            "height": 52.33778371161549
+          }
+        }
+      ],
+      "captions": [],
+      "height": 52.33778371161549,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    },
+    "approved_tail_g62": {
+      "status": "READY",
+      "units": "mm",
+      "layout_mode": "SINGLE_PORTRAIT",
+      "image_count": 1,
+      "column": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 73.0,
+        "height": 110.0
+      },
+      "gap": 0,
+      "defaults": {
+        "single_landscape_width_ratio": 1.0,
+        "single_portrait_width_ratio": 0.6666667,
+        "pair_same_orientation_equal_width": true,
+        "pair_same_orientation_equal_height": true,
+        "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
+        "pair_top_alignment": true,
+        "pair_bottom_alignment": true
+      },
+      "frames": [
+        {
+          "image_id": "approved_tail_rId27",
+          "x": 12.166665450000004,
+          "y": 0.0,
+          "width": 48.66666909999999,
+          "height": 65.04882954352112,
+          "orientation": "PORTRAIT",
+          "image_count": 1,
+          "layout_mode": "SINGLE_PORTRAIT",
+          "source": {
+            "path": "assets/history/image24.png",
+            "width_px": 710,
+            "height_px": 949,
+            "content_bounds_px": [
+              0,
+              0,
+              710,
+              949
+            ],
+            "sha256": "0932aa5fba912072035e81c445a1723052dd8b7bcf558318f36fce9bbd65bc7b",
+            "alpha_padding": false,
+            "orientation": "PORTRAIT"
+          },
+          "fit_mode": "COVER",
+          "crop_or_stretch_policy": {
+            "crop_fraction": 1.1102230246251565e-16,
+            "stretch_limit": 1,
+            "crop_review_required": false,
+            "protected_content": false
+          },
+          "graphic": {
+            "x": 12.16666545,
+            "y": 0.0,
+            "width": 48.6666691,
+            "height": 65.04882954352112
+          }
+        }
+      ],
+      "captions": [],
+      "height": 65.04882954352112,
+      "visual_review": "REQUIRED",
+      "min_effective_ppi": 150.0,
+      "exceptions": [],
+      "kind": "FIVE_MODE",
+      "width": 73,
+      "caption_block": null,
+      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+    }
+  }
+}

@@ -24,6 +24,8 @@ def render(file,folder,scale=1.7):
  return len(pdf),contacts
 
 def standalone():
+ from history_v2_layout import validate as validate_layout
+ validate_layout()
  data=read('content/HISTORY_V2_IMPORT.json');r=read('exports/history_v2/HISTORY_RUNTIME.json');pdf=OUT/'SHAN_HISTORY_V2.pdf'
  assert r['status']=='PASS' and not r['overset'] and len(r['images'])==105 and len(r['footnotes'])==3
  assert r['source_sha256']==data['source_sha256']==digest(ROOT/data['source'])
@@ -35,9 +37,9 @@ def standalone():
  for img in r['images']:
   block=byid[img['block']];asset=next(a for a in block['items'] if a['id']==img['id']);assert digest(ROOT/img['file'])==img['source_sha256']==asset['sha256']
   if img['caption_block']:assert img['page']==img['caption_page']
-  ppi=asset['pixel_width']*(1-asset['crop']['l']-asset['crop']['r'])/img['width_mm']*25.4
-  assert ppi>=149.9
-  rows.append(dict(image_id=img['id'],file=img['file'],year=block['year'],source_paragraph=block['source_paragraph'],caption=byid[img['caption_block']]['text'] if img['caption_block'] else '',related_activity=byid[block['description_block']]['text'] if block.get('description_block') else '',page=img['page'],caption_page=img['caption_page'],effective_ppi=round(ppi,1),links=img['link_status'],crop=json.dumps(asset['crop'])))
+  ppi=min(img['effective_ppi'])
+  displayed=next((p['display_text'] for p in r['paragraphs'] if p['id']==img['caption_block']),'')
+  rows.append(dict(image_id=img['id'],file=img['file'],linked_file=img['linked_file'],year=block['year'],source_paragraph=block['source_paragraph'],source_caption=byid[img['caption_block']]['text'] if img['caption_block'] else '',displayed_caption=displayed,related_activity=byid[block['description_block']]['text'] if block.get('description_block') else '',page=img['page'],caption_page=img['caption_page'],effective_ppi=round(ppi,1),links=img['link_status'],crop=json.dumps(asset['crop'])))
  for fn in r['footnotes']:
   expected=next(n for n in byid[fn['block']]['footnotes'] if n['source_id']==fn['source_id']);assert fn['text']==expected['text'] and fn['automatic_number_marker'] and fn['automatic_number_prefix_codes'][0]==4
  current='\n'.join(p['text'] for p in r['paragraphs']);assert current.count('2017级会长：余淼')==1 and '于淼' not in current and '楚修红' not in current
@@ -48,6 +50,7 @@ def standalone():
  assert '于淼' not in text and '楚修红' not in text and '2017级会长：余淼' in text
  folder=OUT/'review_final'/digest(pdf)[:12];pages,contacts=render(pdf,folder)
  write(Path('HISTORY_CONTENT_INTEGRITY.json'),{'status':'PASS','source_sha256':data['source_sha256'],'native_pdf_sha256':digest(pdf),'pages':pages,'old_history_pages':7,'audited_prefix_images':94,'approved_tail_images':11,'exact_source_blocks':427,'native_footnotes':[dict(id=n['source_id'],text=n['text'],automatic_marker=n['automatic_number_marker'],page=n['anchor_page']) for n in r['footnotes']],'year_order':'EXACT; boundary 2020—2021 appears once','name_checks':'余淼／2017级会长；楚休红；no 于淼/楚修红 in current display','body_text_normalization':'NONE; generated native anchor/footnote markers only excluded from exact comparison','minimum_effective_ppi':min(row['effective_ppi'] for row in rows),'preview_directory':str(folder.relative_to(ROOT)),'contacts':contacts,'visual':'PENDING_AGENT_INSPECTION'})
+ integrity=read('exports/history_v2/HISTORY_CONTENT_INTEGRITY.json');integrity['body_text_normalization']='Body and footnotes exact; only 32 explicitly mapped left/right caption semicolon separators display as two forced line breaks';integrity['geometry_report']='IMAGE_GEOMETRY_CHECK.json';integrity['image_sources']='All 105 originals unchanged; 6 traceable zero-alpha trims and 2 lossless EXIF derivatives (orientation 8 transposed; invalid orientation 0 leaves pixels unchanged)';write(Path('HISTORY_CONTENT_INTEGRITY.json'),integrity)
  print('PASS standalone:',pages,'pages; 105 linked images; 3 original native footnotes with automatic markers; all 427 blocks exact')
 
 def imported():

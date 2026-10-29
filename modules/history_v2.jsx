@@ -6,47 +6,29 @@ SHAN.historyV2 = {
         // Assigning Footnote.contents would delete it; append after that marker.
         foot.insertionPoints.item(-1).contents=text;
     },
-    mediaSize: function (item, width, maxHeight) {
-        var crop = item.crop, ratio = item.pixel_height * (1-crop.t-crop.b) / (item.pixel_width * (1-crop.l-crop.r));
-        width = Math.min(width, item.pixel_width * (1-crop.l-crop.r) * 25.4 / 150);
-        var height = width * ratio;
-        if (height > maxHeight) { width *= maxHeight/height; height=maxHeight; }
-        return { width:width, height:height };
+    displayText: function(data,block){
+        var mapped=data.layout.captions[block.id];
+        this.check(!mapped || mapped.source===block.text,'Caption display source differs '+block.id);
+        return mapped?mapped.display:block.text;
+    },
+    styleForBlock: function(block){
+        if(block.type!=='media'){return block.style;}
+        if(Number(block.span_columns)===2){return 'P_History_Media_Span';}
+        if(block.caption_block){return 'P_History_Media_Caption';}
+        return 'P_History_Media';
     },
     groupGeometry: function (block) {
-        var items=block.items, width=block.span_columns===2?146:70, gap=2, rows=[],i,size,x=0,max=0;
-        if (block.layout==='autograph_grid') {
-            var rowY=0;
-            for(var row=0;row<3;row+=1){
-                var rowHeight=0;
-                for(i=row*3;i<row*3+3;i+=1){size=this.mediaSize(items[i],(width-2*gap)/3,48);rows.push({item:items[i],x:(i%3)*((width-2*gap)/3+gap),y:rowY,width:size.width,height:size.height});rowHeight=Math.max(rowHeight,size.height);}
-                rowY+=rowHeight+gap;
-            }
-            return {width:width,height:rowY-gap,placements:rows};
+        // Geometry is calculated once in Python with the updated Skill utility.
+        // JSX places that plan and reports independently measured DOM geometry.
+        var plan=block.geometry,rows=[],i,j,f,item;
+        this.check(plan && plan.frames.length===block.items.length,'Missing geometry '+block.id);
+        for(i=0;i<plan.frames.length;i+=1){
+            f=plan.frames[i];item=null;
+            for(j=0;j<block.items.length;j+=1){if(block.items[j].id===f.image_id){item=block.items[j];}}
+            this.check(item,'Unmapped geometry source '+f.image_id);
+            rows.push({item:item,x:f.x,y:f.y,width:f.width,height:f.height,graphic:f.graphic,linked_file:f.source.path,linked_sha256:f.source.sha256,fit_mode:f.fit_mode});
         }
-        if(block.layout==='flyer_two_photos'){
-            var flyer=null,photos=[];
-            for(i=0;i<items.length;i+=1){if(items[i].relationship==='rId24'){flyer=items[i];}else{photos.push(items[i]);}}
-            size=this.mediaSize(flyer,34,63);rows.push({item:flyer,x:0,y:0,width:size.width,height:size.height});max=size.height;
-            var y=0;
-            for(i=0;i<photos.length;i+=1){size=this.mediaSize(photos[i],34,31);rows.push({item:photos[i],x:36,y:y,width:size.width,height:size.height});y+=size.height+gap;}
-            return {width:70,height:Math.max(max,y-gap),placements:rows};
-        }
-        var widths=[],sum=0;
-        for(i=0;i<items.length;i+=1){
-            var aspect=items[i].pixel_height/items[i].pixel_width;
-            var requestedWidth=44,requestedHeight=64;
-            if(Number(items.length)===1){requestedWidth=aspect>1.35?46:65;requestedHeight=84;}
-            else if(aspect>1.35){requestedWidth=30;}
-            size=this.mediaSize(items[i],requestedWidth,requestedHeight);
-            widths.push(size);sum+=size.width;
-        }
-        var scale=Math.min(1,(width-gap*(items.length-1))/sum);
-        for(i=0;i<items.length;i+=1){size=widths[i];rows.push({item:items[i],x:x,y:0,width:size.width*scale,height:size.height*scale});x+=size.width*scale+gap;max=Math.max(max,size.height*scale);}
-        // Centre within a column without reserving invisible horizontal artwork.
-        var occupied=x-gap,shift=(width-occupied)/2;
-        for(i=0;i<rows.length;i+=1){rows[i].x+=shift;}
-        return {width:width,height:max,placements:rows};
+        return {width:plan.width,height:plan.height,placements:rows};
     },
     placeGroup: function(doc,page,story,index,block,root,runtime){
         var geom=this.groupGeometry(block),pt=SHAN.utils.pt,rects=[],records=[],i,p,rect,graphic,anchor;
@@ -56,12 +38,11 @@ SHAN.historyV2 = {
             rect.appliedObjectStyle=doc.objectStyles.itemByName('O_Image_Archive');rect.strokeWeight=0;
             rect.fillColor=doc.swatches.itemByName('None');rect.strokeColor=doc.swatches.itemByName('None');
             rect.geometricBounds=[pt(p.y),pt(p.x),pt(p.y+p.height),pt(p.x+p.width)];
-            var file=File(root+'/'+p.item.file);this.check(file.exists,'Missing '+p.item.file);
+            var file=File(root+'/'+p.linked_file);this.check(file.exists,'Missing '+p.linked_file);
             var placed=rect.place(file,false);this.check(placed && placed.length===1,'Place '+p.item.id);
             rect.fit(FitOptions.PROPORTIONALLY);rect.fit(FitOptions.CENTER_CONTENT);graphic=placed[0];
-            var c=p.item.crop,fw=p.width/(1-c.l-c.r),fh=fw*p.item.pixel_height/p.item.pixel_width;
-            graphic.geometricBounds=[pt(p.y-fh*c.t),pt(p.x-fw*c.l),pt(p.y+fh*(1-c.t)),pt(p.x+fw*(1-c.l))];
-            rects.push(rect);records.push({id:p.item.id,file:p.item.file,source_sha256:p.item.sha256,block:block.id,caption_block:block.caption_block,rect:rect,graphic:graphic,width_mm:p.width,height_mm:p.height});
+            var g=p.graphic;graphic.geometricBounds=[pt(g.y),pt(g.x),pt(g.y+g.height),pt(g.x+g.width)];
+            rects.push(rect);records.push({id:p.item.id,file:p.item.file,source_sha256:p.item.sha256,linked_file:p.linked_file,linked_sha256:p.linked_sha256,block:block.id,caption_block:block.caption_block,rect:rect,graphic:graphic});
         }
         if(rects.length>1){anchor=doc.groups.add(rects);anchor.label='SHAN_HISTORY_V2_GROUP:'+block.id;}else{anchor=rects[0];}
         var paragraph=story.paragraphs.item(index),ip=paragraph.insertionPoints.item(0);
@@ -73,12 +54,12 @@ SHAN.historyV2 = {
         var check=this.check,blocks=data.blocks,first=SHAN.history.addFrame(doc,doc.pages[0],true,tokens),strings=[],i,j;
         SHAN.history.chapterMarker(doc,doc.pages[0],section);
         doc.textPreferences.smartTextReflow=false;
-        for(i=0;i<blocks.length;i+=1){strings.push(blocks[i].type==='text'?blocks[i].text:'');}
+        for(i=0;i<blocks.length;i+=1){strings.push(blocks[i].type==='text'?this.displayText(data,blocks[i]):'');}
         first.contents=strings.join('\r')+'\r';var story=first.parentStory;story.label='SHAN_HISTORY_V2:main';
         check(story.paragraphs.length===blocks.length,'Initial paragraphs '+story.paragraphs.length);
         var indexById={};
         for(i=0;i<blocks.length;i+=1){
-            var block=blocks[i],p=story.paragraphs.item(i),name=block.type==='media'?(block.span_columns===2?'P_History_Media_Span':'P_History_Media_Caption'):block.style;
+            var block=blocks[i],p=story.paragraphs.item(i),name=this.styleForBlock(block);
             if(i>0 && blocks[i-1].type==='media' && blocks[i-1].span_columns===2){name='P_History_Caption_Span';}
             p.applyParagraphStyle(doc.paragraphStyles.itemByName(name),true);indexById['$'+block.id]=i;
             if(name==='P_History_Roster' && (i+1===blocks.length || blocks[i+1].style!=='P_History_Roster')){p.keepWithNext=0;p.spaceAfter=SHAN.utils.pt(4);}
@@ -158,21 +139,29 @@ SHAN.historyV2 = {
                 actual=actual.slice(0,off)+actual.slice(off+1);
             }
             actual=actual.replace(/\uFFFC/g,'');
-            check(actual===(block.type==='text'?block.text:''),'Text differs '+block.id+' actual='+actual.slice(0,90));
+            check(actual===(block.type==='text'?this.displayText(data,block):''),'Text differs '+block.id+' actual='+actual.slice(0,90));
             check(p.lines.length>0 && p.parentTextFrames.length>0,'Invisible paragraph '+block.id);
             var firstLine=p.lines[0],lastLine=p.lines[p.lines.length-1],page=p.parentTextFrames[0].parentPage;
-            paragraphReport.push({id:block.id,type:block.type,style:p.appliedParagraphStyle.name,text:actual,page:Number(page.name),first_baseline:firstLine.baseline,last_baseline:lastLine.baseline,source_paragraph:block.source_paragraph,origin:block.origin});
+            paragraphReport.push({id:block.id,type:block.type,style:p.appliedParagraphStyle.name,text:block.type==='text'?block.text:'',display_text:actual,page:Number(page.name),first_baseline:firstLine.baseline,last_baseline:lastLine.baseline,space_after_pt:Number(p.spaceAfter),source_paragraph:block.source_paragraph,origin:block.origin});
             if(block.style==='P_History_Year'){years.push({text:block.text,page:Number(page.name),source:block.id});}
         }
         for(i=0;i<imageRecords.length;i+=1){
             var record=imageRecords[i],rect=record.rect,page=rect.parentPage,gb=rect.geometricBounds,pb=page.bounds;
             check(page && page.isValid,'Missing image page '+record.id);
             check(record.graphic.itemLink.status===LinkStatus.NORMAL,'Broken link '+record.id);
+            if(gb[1]<pb[1]+SHAN.utils.pt(14)-.5 || gb[3]>pb[3]-SHAN.utils.pt(14)+.5){runtime.setStage('image-bounds-failure',{id:record.id,block:record.block,page:Number(page.name),frame:gb,page_bounds:pb,style:story.paragraphs.item(indexById['$'+record.block]).appliedParagraphStyle.name});}
             check(gb[0]>=pb[0]+SHAN.utils.pt(16)-.5 && gb[2]<=pb[2]-SHAN.utils.pt(19)+.5,'Image outside vertical body '+record.id);
             check(gb[1]>=pb[1]+SHAN.utils.pt(14)-.5 && gb[3]<=pb[3]-SHAN.utils.pt(14)+.5,'Image outside horizontal body '+record.id);
             var capPage=null;
             if(record.caption_block){var cap=story.paragraphs.item(indexById['$'+record.caption_block]);capPage=Number(cap.parentTextFrames[0].parentPage.name);check(capPage===Number(page.name),'Caption split '+record.id);}
-            imageReport.push({id:record.id,file:record.file,source_sha256:record.source_sha256,block:record.block,caption_block:record.caption_block,page:Number(page.name),caption_page:capPage,bounds_pt:gb,width_mm:record.width_mm,height_mm:record.height_mm,link_status:'NORMAL'});
+            if(record.block==='approved_tail_g62'){var activity=story.paragraphs.item(indexById['$approved_tail_p215']);check(Number(activity.parentTextFrames[0].parentPage.name)===Number(page.name),'Final event separated from its poster');}
+            var mediaP=story.paragraphs.item(indexById['$'+record.block]),tf=mediaP.parentTextFrames[0],tb=tf.geometricBounds;
+            var columns=Number(tf.textFramePreferences.textColumnCount),gutter=Number(tf.textFramePreferences.textColumnGutter),columnWidth=(tb[3]-tb[1]-(columns-1)*gutter)/columns;
+            var columnLeft=tb[1];if(blocks[indexById['$'+record.block]].span_columns!==2 && (gb[1]+gb[3])/2>tb[1]+columnWidth){columnLeft+=columnWidth+gutter;}
+            var parent=rect.parent,anchor=parent.constructor.name==='Group'?parent:rect,ab=anchor.geometricBounds;
+            function mmBox(b){return {x:(b[1]-pb[1])*25.4/72,y:(b[0]-pb[0])*25.4/72,width:(b[3]-b[1])*25.4/72,height:(b[2]-b[0])*25.4/72};}
+            var linked=record.linked_file || String(record.graphic.itemLink.filePath).replace(/\\/g,'/');
+            imageReport.push({id:record.id,file:record.file,source_sha256:record.source_sha256,linked_file:linked,linked_sha256:record.linked_sha256,block:record.block,caption_block:record.caption_block,page:Number(page.name),page_id:page.id,caption_page:capPage,bounds_pt:gb,width_mm:(gb[3]-gb[1])*25.4/72,height_mm:(gb[2]-gb[0])*25.4/72,frame_mm:mmBox(gb),graphic_mm:mmBox(record.graphic.geometricBounds),column_origin_x_mm:(columnLeft-pb[1])*25.4/72,column_width_mm:columnWidth*25.4/72,anchor_height_mm:(ab[2]-ab[0])*25.4/72,effective_ppi:record.graphic.effectivePpi,rotation:Number(record.graphic.rotationAngle),shear:Number(record.graphic.shearAngle),link_status:'NORMAL'});
         }
         for(i=0;i<notes.length;i+=1){
             var n=notes[i],fn=n.nativeObject,nativeText=String(fn.contents),prefix=nativeText.slice(0,nativeText.length-n.text.length);
