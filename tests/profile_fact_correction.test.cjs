@@ -1,0 +1,30 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const cp = require('node:child_process');
+const root = path.resolve(__dirname, '..');
+const read = f => fs.readFileSync(path.join(root, f));
+const json = f => JSON.parse(read(f));
+const hash = f => crypto.createHash('sha256').update(read(f)).digest('hex');
+const exception = json('workflow/HISTORY_PROFILE_FACT_CORRECTION.json');
+assert.equal(exception.type, 'USER_APPROVED_FACT_CORRECTION');
+const source = 'content/ASSOCIATION_PROFILE.json';
+const before = JSON.parse(cp.execFileSync('git', ['-c', `safe.directory=${root.replaceAll('\\', '/')}`, 'show', `${exception.baseline_commit}:${source}`], { cwd: root, encoding: 'utf8' }));
+const after = json(source);
+const expected = structuredClone(before);
+expected.fields.find(f => f.label === '创立时间').value = '2006年5月';
+assert.deepEqual(after, expected, 'Only the approved profile date may change');
+assert.equal(hash(source), json('spec/INPUT_HASHES.json')[source]);
+assert.equal(hash(source), exception.corrected_source_sha256);
+for (const [name, digest] of Object.entries(exception.frozen_scope_hashes)) {
+  assert.equal(hash(name), digest, `Frozen source changed: ${name}`);
+}
+const status = json('workflow/MODULE_STATUS.json').association_profile;
+assert.equal(status.status, 'FROZEN');
+assert.equal(status.frozen, true);
+assert.equal(status.runtimeTested, true);
+const tokens = json('spec/ASSOCIATION_PROFILE_TOKENS.json');
+assert.equal(tokens.ending.year_text, '2006—2026');
+assert.equal(read('build/50_association_profile_fact_correction.jsx').subarray(0, 3).toString('hex'), 'efbbbf');
+console.log('PASS exact one-field correction, source hash, all frozen scopes, anniversary and JSX BOM.');
