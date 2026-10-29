@@ -27,7 +27,13 @@
   data.layout=a.read(root,'content/HISTORY_V2_LAYOUT.json');
   for(var bi=0;bi<data.blocks.length;bi+=1){if(data.blocks[bi].type==='media'){data.blocks[bi].geometry=data.layout.groups[data.blocks[bi].id];}}
   var context={warnings:[],runtime:runtime},request=a.read(root,'exports/history_v2/REQUEST.json'),result;
-  if(request.resume_only){doc=app.activeDocument.getElements()[0];result=SHAN.historyV2.auditExisting(doc,data,runtime);}
+  if(request.caption_revision){
+   var baselinePath=root+'/'+request.caption_baseline_file;
+   for(var ci=0;ci<app.documents.length;ci+=1){var candidate=app.documents[ci].getElements()[0],path='';try{path=candidate.fullName.fsName.replace(/\\/g,'/');}catch(unsaved){}if(path===baselinePath){doc=candidate;break;}}
+   if(!doc){doc=app.open(File(baselinePath));}
+   result=SHAN.historyV2.reviseCaptions(doc,data,a.read(root,'exports/history_v2/CAPTION_BASELINE_LAYOUT.json'),tokens,root,runtime);
+  }
+  else if(request.resume_only){doc=app.activeDocument.getElements()[0];result=SHAN.historyV2.auditExisting(doc,data,runtime);}
   else{
   doc=a.fresh(context,data.first_page);
   SHAN.styles.create(doc,context);SHAN.parents.create(doc,context);SHAN.typography.apply(doc,base,context);SHAN.runningSystem.apply(doc,base);SHAN.historySkin.apply(doc,tokens,base,context);

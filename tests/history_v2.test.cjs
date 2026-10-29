@@ -15,7 +15,7 @@ assert.strictEqual(g.placements[0].width,35.5);assert(g.placements[0].height>50)
 assert.throws(()=>h.groupGeometry({id:'missing',items:[]}));
 const caption=Object.values(layout.captions)[0],key=Object.keys(layout.captions)[0];
 assert.strictEqual(h.displayText({layout},{id:key,text:caption.source}),caption.display);
-assert(caption.display.includes('\n\n'));assert.throws(()=>h.displayText({layout},{id:key,text:'wrong source'}));
+assert(caption.display.includes('\n')&&!caption.display.includes('\n\n'));assert.throws(()=>h.displayText({layout},{id:key,text:'wrong source'}));
 let contents='\u0004\u3000';const foot={insertionPoints:{item(i){assert.strictEqual(i,-1);return {set contents(v){contents+=v}}}}};
 h.appendFootnoteText(foot,'original note');assert.strictEqual(contents,'\u0004\u3000original note');
 // A live app.documents[index] specifier resolves to another document after activation.

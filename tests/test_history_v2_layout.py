@@ -24,7 +24,8 @@ class ImageRevision(unittest.TestCase):
  def test_caption_source_is_verbatim_with_only_authorized_separator_transform(self):
   import re
   self.assertEqual(len(self.layout['captions']),32)
-  for mapping in self.layout['captions'].values():self.assertEqual(mapping['display'],re.sub(r'[；;]\s*(?=(?:左图|右图|右上图|右下图)[：:])','\n\n',mapping['source']))
+  for mapping in self.layout['captions'].values():self.assertEqual(mapping['display'],re.sub(r'[；;]\s*(?=(?:左图|右图|右上图|右下图)[：:])','\n',mapping['source']));self.assertNotIn('\n\n',mapping['display'])
+  self.assertAlmostEqual(self.layout['caption_body_gap_mm']*72/25.4,11)
  def test_alpha_derivatives_remove_only_zero_alpha_edges(self):
   count=0
   for group in self.layout['groups'].values():

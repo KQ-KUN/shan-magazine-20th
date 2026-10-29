@@ -1,11 +1,11 @@
-param([ValidateSet('standalone','resume','assembly','folios')][string]$Phase='standalone',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
+param([ValidateSet('standalone','resume','captions','assembly','folios')][string]$Phase='standalone',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
 $ErrorActionPreference='Stop'
 $historyRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
 $historyOut=Join-Path $historyRoot 'exports/history_v2'
 New-Item -ItemType Directory -Force -Path $historyOut | Out-Null
-$historyBuild=if($Phase -in @('standalone','resume')){'51_history_v2_standalone.jsx'}elseif($Phase -eq 'folios'){'53_history_v2_folios.jsx'}else{'52_history_v2_assembly.jsx'}
-if($Phase -in @('standalone','resume')){
- [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+'}'),[Text.UTF8Encoding]::new($false))
+$historyBuild=if($Phase -in @('standalone','resume','captions')){'51_history_v2_standalone.jsx'}elseif($Phase -eq 'folios'){'53_history_v2_folios.jsx'}else{'52_history_v2_assembly.jsx'}
+if($Phase -in @('standalone','resume','captions')){
+ [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+',"caption_revision":'+($Phase -eq 'captions').ToString().ToLower()+',"caption_baseline_file":"exports/history_v2/CAPTION_BASELINE_NATIVE.indd"}'),[Text.UTF8Encoding]::new($false))
  $historyImport=Join-Path $historyRoot 'content/HISTORY_V2_IMPORT.json'
  $historyData=Get-Content -LiteralPath $historyImport -Raw | ConvertFrom-Json
  $historySource=Join-Path $historyRoot $historyData.source

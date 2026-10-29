@@ -1,173 +1,173 @@
 {
-  "version": "HISTORY_V2_IMAGE_REVISION_R1",
+  "version": "HISTORY_V2_CAPTION_SPACING_R2",
   "skill_file": "D:\\Codex\\skills\\indesign-publication-production\\SKILL.md",
   "calculator_sha256": "d8805e3410bcbc19f6031783209f89293a7fcfa5c81d5cd938b74b73adecc519",
   "source_import_sha256": "a244b4ab71e14bb4ca68b8a16566ce5e0522449234d2f3b5beec6eb6105d6b14",
   "column_width_mm": 73,
   "image_gap_mm": 2,
-  "caption_body_gap_mm": 2,
+  "caption_body_gap_mm": 3.880555555555555,
   "crop_authorization": "User explicitly confirmed: 允许裁切边缘，优先保持等宽等高",
-  "caption_separation": "one blank line between left/right descriptions; semicolon removed only at this boundary",
+  "caption_separation": "left/right descriptions on consecutive lines; one 11pt caption-leading blank after complete caption before body",
   "captions": {
     "early_p44": {
       "source": "左图：2007年5月，“视觉的盛宴、科幻迷的天堂——山东大学科幻电影节”活动海报；右图：2007年5月26日，山大幻协早期成员在中心校区小树林进行讨论",
-      "display": "左图：2007年5月，“视觉的盛宴、科幻迷的天堂——山东大学科幻电影节”活动海报\n\n右图：2007年5月26日，山大幻协早期成员在中心校区小树林进行讨论",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2007年5月，“视觉的盛宴、科幻迷的天堂——山东大学科幻电影节”活动海报\n右图：2007年5月26日，山大幻协早期成员在中心校区小树林进行讨论",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p55": {
       "source": "左图：2007年10月，山大幻协新成员见面会现场；右图：2007年全国高校第三届“原创之星”征稿启事",
-      "display": "左图：2007年10月，山大幻协新成员见面会现场\n\n右图：2007年全国高校第三届“原创之星”征稿启事",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2007年10月，山大幻协新成员见面会现场\n右图：2007年全国高校第三届“原创之星”征稿启事",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p61": {
       "source": "左图：肖兆旭2007年的工作笔记；右图：2007年11月，“中国科幻发展史”沙龙海报",
-      "display": "左图：肖兆旭2007年的工作笔记\n\n右图：2007年11月，“中国科幻发展史”沙龙海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：肖兆旭2007年的工作笔记\n右图：2007年11月，“中国科幻发展史”沙龙海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p66": {
       "source": "左图：2007年11月9日，沙龙现场图片；右图：2007年11月10日，活动报道网站截图",
-      "display": "左图：2007年11月9日，沙龙现场图片\n\n右图：2007年11月10日，活动报道网站截图",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2007年11月9日，沙龙现场图片\n右图：2007年11月10日，活动报道网站截图",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p69": {
       "source": "左图：2007年11月，“我眼中的科幻世界”沙龙海报；右图：2007年11月25日，沙龙现场图片",
-      "display": "左图：2007年11月，“我眼中的科幻世界”沙龙海报\n\n右图：2007年11月25日，沙龙现场图片",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2007年11月，“我眼中的科幻世界”沙龙海报\n右图：2007年11月25日，沙龙现场图片",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p119": {
       "source": "左图：2011年11月，山大幻协纳新宣传单；右上图：2011年11月，山大幻协中心校区小树林纳新现场图；右下图：2011年秋季，山大幻协纳新宣传照片，适逢山东大学110周年校庆",
-      "display": "左图：2011年11月，山大幻协纳新宣传单\n\n右上图：2011年11月，山大幻协中心校区小树林纳新现场图\n\n右下图：2011年秋季，山大幻协纳新宣传照片，适逢山东大学110周年校庆",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2011年11月，山大幻协纳新宣传单\n右上图：2011年11月，山大幻协中心校区小树林纳新现场图\n右下图：2011年秋季，山大幻协纳新宣传照片，适逢山东大学110周年校庆",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p122": {
       "source": "左图：2011年11月，山大幻协“科联杯”征文海报；右图：2011年11月，山大幻协在纳新传单上附带的“科联杯”征文启事",
-      "display": "左图：2011年11月，山大幻协“科联杯”征文海报\n\n右图：2011年11月，山大幻协在纳新传单上附带的“科联杯”征文启事",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2011年11月，山大幻协“科联杯”征文海报\n右图：2011年11月，山大幻协在纳新传单上附带的“科联杯”征文启事",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p125": {
       "source": "左图：2011年12月，清华大学科幻协会王炳程写给山东大学科幻协会会员们的贺卡；右图：2012年1月，川大幻协致山大幻协的贺卡",
-      "display": "左图：2011年12月，清华大学科幻协会王炳程写给山东大学科幻协会会员们的贺卡\n\n右图：2012年1月，川大幻协致山大幻协的贺卡",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2011年12月，清华大学科幻协会王炳程写给山东大学科幻协会会员们的贺卡\n右图：2012年1月，川大幻协致山大幻协的贺卡",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p132": {
       "source": "左图：2012年3月，“与马伯庸面对面”活动海报；右图：马伯庸老师在活动现场",
-      "display": "左图：2012年3月，“与马伯庸面对面”活动海报\n\n右图：马伯庸老师在活动现场",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2012年3月，“与马伯庸面对面”活动海报\n右图：马伯庸老师在活动现场",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p153": {
       "source": "左图：2012年10月，山大幻协中心校区宣传海报；右图：2012年10月，山大幻协社联展板海报",
-      "display": "左图：2012年10月，山大幻协中心校区宣传海报\n\n右图：2012年10月，山大幻协社联展板海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2012年10月，山大幻协中心校区宣传海报\n右图：2012年10月，山大幻协社联展板海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p155": {
       "source": "左图：2012年10月，山大幻协中心校区小树林纳新现场图；右图：2012年10月，山大幻协兴隆山校区纳新现场图",
-      "display": "左图：2012年10月，山大幻协中心校区小树林纳新现场图\n\n右图：2012年10月，山大幻协兴隆山校区纳新现场图",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2012年10月，山大幻协中心校区小树林纳新现场图\n右图：2012年10月，山大幻协兴隆山校区纳新现场图",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p157": {
       "source": "左图：2012年10月，山大幻协纳新宣传单；右图：2012年10月，山大幻协纳新海报",
-      "display": "左图：2012年10月，山大幻协纳新宣传单\n\n右图：2012年10月，山大幻协纳新海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2012年10月，山大幻协纳新宣传单\n右图：2012年10月，山大幻协纳新海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p160": {
       "source": "左图：2012年11月，“有关时间旅行的热门问题”沙龙海报；右图：2012年11月，“以太——欢迎来到真实的绿洲”沙龙海报",
-      "display": "左图：2012年11月，“有关时间旅行的热门问题”沙龙海报\n\n右图：2012年11月，“以太——欢迎来到真实的绿洲”沙龙海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2012年11月，“有关时间旅行的热门问题”沙龙海报\n右图：2012年11月，“以太——欢迎来到真实的绿洲”沙龙海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p184": {
       "source": "左图：2013年9月，兰欣然修改后的山大幻协第二代会徽；右图：2021年8月，【河流】整理的《高校科幻联谊册》中所收录的对外官方颜色版山大幻协会徽",
-      "display": "左图：2013年9月，兰欣然修改后的山大幻协第二代会徽\n\n右图：2021年8月，【河流】整理的《高校科幻联谊册》中所收录的对外官方颜色版山大幻协会徽",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2013年9月，兰欣然修改后的山大幻协第二代会徽\n右图：2021年8月，【河流】整理的《高校科幻联谊册》中所收录的对外官方颜色版山大幻协会徽",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p187": {
       "source": "左图：2013年10月，山大幻协纳新海报，制作者：刘慧颖；右图：2013年10月，山大幻协纳新海报第二版。原稿另提及同月的纳新宣传单",
-      "display": "左图：2013年10月，山大幻协纳新海报，制作者：刘慧颖\n\n右图：2013年10月，山大幻协纳新海报第二版。原稿另提及同月的纳新宣传单",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2013年10月，山大幻协纳新海报，制作者：刘慧颖\n右图：2013年10月，山大幻协纳新海报第二版。原稿另提及同月的纳新宣传单",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p226": {
       "source": "左图：2014年10月，山大幻协纳新时，张璐手绘的纳新海报；右图：2014年11-12月，“科幻风暴”电影大放送活动海报",
-      "display": "左图：2014年10月，山大幻协纳新时，张璐手绘的纳新海报\n\n右图：2014年11-12月，“科幻风暴”电影大放送活动海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2014年10月，山大幻协纳新时，张璐手绘的纳新海报\n右图：2014年11-12月，“科幻风暴”电影大放送活动海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p236": {
       "source": "左图：2014年12月，“异星球的来客”的科幻小说创作讲座海报；右图：2014年12月7日，刘慧颖和王政超在讲座现场",
-      "display": "左图：2014年12月，“异星球的来客”的科幻小说创作讲座海报\n\n右图：2014年12月7日，刘慧颖和王政超在讲座现场",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2014年12月，“异星球的来客”的科幻小说创作讲座海报\n右图：2014年12月7日，刘慧颖和王政超在讲座现场",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p249": {
       "source": "左图：2015年10月，山大幻协纳新海报；右图：2015年10月，山大幻协纳新现场",
-      "display": "左图：2015年10月，山大幻协纳新海报\n\n右图：2015年10月，山大幻协纳新现场",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2015年10月，山大幻协纳新海报\n右图：2015年10月，山大幻协纳新现场",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p256": {
       "source": "左图：2015年11月21日，【山东大学科幻协会】公众号首篇推送截图；右图：2015年12月15日，山大幻协“畅想科技，启迪未来”科幻征文大赛结束的人人网通知截图",
-      "display": "左图：2015年11月21日，【山东大学科幻协会】公众号首篇推送截图\n\n右图：2015年12月15日，山大幻协“畅想科技，启迪未来”科幻征文大赛结束的人人网通知截图",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2015年11月21日，【山东大学科幻协会】公众号首篇推送截图\n右图：2015年12月15日，山大幻协“畅想科技，启迪未来”科幻征文大赛结束的人人网通知截图",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p261": {
       "source": "左图：2015年12月，“科学幻想交响曲”活动海报；右图：2015年12月20日，“科学幻想交响曲”活动现场",
-      "display": "左图：2015年12月，“科学幻想交响曲”活动海报\n\n右图：2015年12月20日，“科学幻想交响曲”活动现场",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2015年12月，“科学幻想交响曲”活动海报\n右图：2015年12月20日，“科学幻想交响曲”活动现场",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p265": {
       "source": "左图：2016年4月，“百字玄机”科幻征文宣传单；右图：2016年4月，中心校区“百字玄机”科幻征文海报",
-      "display": "左图：2016年4月，“百字玄机”科幻征文宣传单\n\n右图：2016年4月，中心校区“百字玄机”科幻征文海报",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年4月，“百字玄机”科幻征文宣传单\n右图：2016年4月，中心校区“百字玄机”科幻征文海报",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p267": {
       "source": "左图：2016年4月，“百字玄机”科幻征文活动现场横幅；右图：2016年5月，山大幻协邀请游者老师来开讲座。左：李新雨，中：游者，右：刘慧颖",
-      "display": "左图：2016年4月，“百字玄机”科幻征文活动现场横幅\n\n右图：2016年5月，山大幻协邀请游者老师来开讲座。左：李新雨，中：游者，右：刘慧颖",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年4月，“百字玄机”科幻征文活动现场横幅\n右图：2016年5月，山大幻协邀请游者老师来开讲座。左：李新雨，中：游者，右：刘慧颖",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p287": {
       "source": "左图：2016年10月，山大幻协纳新黑板报；右图：2016年10月，山大幻协纳新宣传单",
-      "display": "左图：2016年10月，山大幻协纳新黑板报\n\n右图：2016年10月，山大幻协纳新宣传单",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年10月，山大幻协纳新黑板报\n右图：2016年10月，山大幻协纳新宣传单",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p289": {
       "source": "左图：2016年10月，山大幻协纳新海报；右图：2016年11月5日，《奇异博士》观影结束后，山大幻协成员在电影海报前合影留念",
-      "display": "左图：2016年10月，山大幻协纳新海报\n\n右图：2016年11月5日，《奇异博士》观影结束后，山大幻协成员在电影海报前合影留念",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年10月，山大幻协纳新海报\n右图：2016年11月5日，《奇异博士》观影结束后，山大幻协成员在电影海报前合影留念",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p294": {
       "source": "左图：2016年11月，山大幻协“遇见未来”科幻征文大赛海报；右图：2016年11月，山大幻协“遇见未来”科幻征文大赛宣传单",
-      "display": "左图：2016年11月，山大幻协“遇见未来”科幻征文大赛海报\n\n右图：2016年11月，山大幻协“遇见未来”科幻征文大赛宣传单",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年11月，山大幻协“遇见未来”科幻征文大赛海报\n右图：2016年11月，山大幻协“遇见未来”科幻征文大赛宣传单",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p297": {
       "source": "左图：2016年11月26日，山大幻协老会员刘慧颖在见面会现场；右图：2016年11月26日，“遇见未来”辅助活动之科幻作家见面会结束后，游者、刘慧颖与山大幻协新成员们合影留念",
-      "display": "左图：2016年11月26日，山大幻协老会员刘慧颖在见面会现场\n\n右图：2016年11月26日，“遇见未来”辅助活动之科幻作家见面会结束后，游者、刘慧颖与山大幻协新成员们合影留念",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2016年11月26日，山大幻协老会员刘慧颖在见面会现场\n右图：2016年11月26日，“遇见未来”辅助活动之科幻作家见面会结束后，游者、刘慧颖与山大幻协新成员们合影留念",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p301": {
       "source": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动海报；右图：2017年5月，“济南·折叠”未来城市科幻分享会活动门票正反面",
-      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动海报\n\n右图：2017年5月，“济南·折叠”未来城市科幻分享会活动门票正反面",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动海报\n右图：2017年5月，“济南·折叠”未来城市科幻分享会活动门票正反面",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p303": {
       "source": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动宣传单；右图：2017年5月13日，嘉宾与山大幻协成员们在“济南·折叠”未来城市科幻分享会活动现场合影留念。原稿另述2017年5月13日滕野讲座PPT剪影，以及嘉宾在活动现场与同学们讨论",
-      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动宣传单\n\n右图：2017年5月13日，嘉宾与山大幻协成员们在“济南·折叠”未来城市科幻分享会活动现场合影留念。原稿另述2017年5月13日滕野讲座PPT剪影，以及嘉宾在活动现场与同学们讨论",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2017年5月，“济南·折叠”未来城市科幻分享会活动宣传单\n右图：2017年5月13日，嘉宾与山大幻协成员们在“济南·折叠”未来城市科幻分享会活动现场合影留念。原稿另述2017年5月13日滕野讲座PPT剪影，以及嘉宾在活动现场与同学们讨论",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p327": {
       "source": "左图：2018年9月25日，公众号【SDU微言动听】推文《社团 山东大学科幻协会：不止是科幻》截图；右图：2018年10月，山大幻协纳新海报，设计者：刘洋",
-      "display": "左图：2018年9月25日，公众号【SDU微言动听】推文《社团 山东大学科幻协会：不止是科幻》截图\n\n右图：2018年10月，山大幻协纳新海报，设计者：刘洋",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2018年9月25日，公众号【SDU微言动听】推文《社团 山东大学科幻协会：不止是科幻》截图\n右图：2018年10月，山大幻协纳新海报，设计者：刘洋",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p331": {
       "source": "左图：2018年10月，山大幻协纳新现场；右图：2018年10月，山大幻协纳新现场老会员们的合照",
-      "display": "左图：2018年10月，山大幻协纳新现场\n\n右图：2018年10月，山大幻协纳新现场老会员们的合照",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2018年10月，山大幻协纳新现场\n右图：2018年10月，山大幻协纳新现场老会员们的合照",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p348": {
       "source": "左图：2019年10月24日，山大幻协写作部QQ群成立；右图：2019年10月，山大幻协纳新海报，设计者：刘洋",
-      "display": "左图：2019年10月24日，山大幻协写作部QQ群成立\n\n右图：2019年10月，山大幻协纳新海报，设计者：刘洋",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2019年10月24日，山大幻协写作部QQ群成立\n右图：2019年10月，山大幻协纳新海报，设计者：刘洋",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     },
     "early_p351": {
       "source": "左图：2019年10月，山大幻协纳新现场①；右图：2019年10月，山大幻协纳新现场②",
-      "display": "左图：2019年10月，山大幻协纳新现场①\n\n右图：2019年10月，山大幻协纳新现场②",
-      "transform": "Only left/right separator semicolon -> two forced line breaks (one blank caption line)"
+      "display": "左图：2019年10月，山大幻协纳新现场①\n右图：2019年10月，山大幻协纳新现场②",
+      "transform": "Only left/right separator semicolon -> one forced line break; no blank line inside caption"
     }
   },
   "groups": {

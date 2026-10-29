@@ -79,7 +79,7 @@
       "size_pt": 7.5,
       "leading_pt": 11,
       "first_line_indent_em": 0,
-      "space_after_mm": 2,
+      "space_after_mm": 3.880555555555555,
       "color": "C_MUTED",
       "keep_with_next": 0
     },
@@ -88,7 +88,7 @@
       "size_pt": 7.5,
       "leading_pt": 11,
       "first_line_indent_em": 0,
-      "space_after_mm": 2,
+      "space_after_mm": 3.880555555555555,
       "color": "C_MUTED",
       "keep_with_next": 0
     },
@@ -163,7 +163,7 @@
       "size_pt": 7.5,
       "leading_pt": 11,
       "first_line_indent_em": 0,
-      "space_after_mm": 2,
+      "space_after_mm": 3.880555555555555,
       "color": "C_MUTED",
       "keep_with_next": 0
     }

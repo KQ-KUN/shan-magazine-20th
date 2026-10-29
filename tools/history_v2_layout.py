@@ -16,8 +16,8 @@ def prepare():
  data=read('content/HISTORY_V2_IMPORT.json');groups={};captions={};byid={b['id']:b for b in data['blocks']}
  for b in data['blocks']:
   if b.get('style','').startswith('P_History_Caption'):
-   display=re.sub(r'[；;]\s*(?=(?:左图|右图|右上图|右下图)[：:])','\n\n',b['text'])
-   if display!=b['text']:captions[b['id']]={'source':b['text'],'display':display,'transform':'Only left/right separator semicolon -> two forced line breaks (one blank caption line)'}
+   display=re.sub(r'[；;]\s*(?=(?:左图|右图|右上图|右下图)[：:])','\n',b['text'])
+   if display!=b['text']:captions[b['id']]={'source':b['text'],'display':display,'transform':'Only left/right separator semicolon -> one forced line break; no blank line inside caption'}
   if b['type']!='media':continue
   items=b['items'];inspected={a['id']:inspect_image(ROOT/a['file']) for a in items}
   for a in items:
@@ -74,11 +74,11 @@ def prepare():
   plan.update(kind='FIVE_MODE',width=73,caption_block=b['caption_block'],caption_validation='Native story caption measured separately from the anchored image-only group')
   groups[b['id']]=plan
   if b['id']=='approved_tail_g58':plan['height_override_reason']='Bounded tail treatment: remove upper blank wall from award-banner photo; keep default 2/3-column width and final activity text/poster on the same page'
- result={'version':'HISTORY_V2_IMAGE_REVISION_R1','skill_file':str(SKILL/'SKILL.md'),'calculator_sha256':sha(SKILL/'scripts/image_layout.py'),'source_import_sha256':sha(ROOT/'content/HISTORY_V2_IMPORT.json'),'column_width_mm':73,'image_gap_mm':2,'caption_body_gap_mm':2,'crop_authorization':'User explicitly confirmed: 允许裁切边缘，优先保持等宽等高','caption_separation':'one blank line between left/right descriptions; semicolon removed only at this boundary','captions':captions,'groups':groups}
+ result={'version':'HISTORY_V2_CAPTION_SPACING_R2','skill_file':str(SKILL/'SKILL.md'),'calculator_sha256':sha(SKILL/'scripts/image_layout.py'),'source_import_sha256':sha(ROOT/'content/HISTORY_V2_IMPORT.json'),'column_width_mm':73,'image_gap_mm':2,'caption_body_gap_mm':11*25.4/72,'crop_authorization':'User explicitly confirmed: 允许裁切边缘，优先保持等宽等高','caption_separation':'left/right descriptions on consecutive lines; one 11pt caption-leading blank after complete caption before body','captions':captions,'groups':groups}
  write('content/HISTORY_V2_LAYOUT.json',result)
  tokens=read('spec/HISTORY_V2_TOKENS.json')
  for name,d in tokens['paragraph_styles'].items():
-  if name.startswith('P_History_Caption'):d['space_after_mm']=2
+  if name.startswith('P_History_Caption'):d['space_after_mm']=11*25.4/72
  write('spec/HISTORY_V2_TOKENS.json',tokens)
  print('Prepared',len(groups),'groups;',len(captions),'caption display transforms; source text and files unchanged')
 
@@ -121,8 +121,8 @@ def validate():
   results.append({'block':key,'mode':plan['layout_mode'],'check':result})
  for p in runtime['paragraphs']:
   if p['id'] in layout['captions']:assert p['display_text']==layout['captions'][p['id']]['display']
-  if p['style'].startswith('P_History_Caption'):assert abs(p['space_after_pt']-2*72/25.4)<.01
- write('exports/history_v2/IMAGE_GEOMETRY_CHECK.json',{'status':'PASS','groups':results,'source_images_unchanged':True,'caption_display_transforms':layout['captions'],'caption_body_gap_mm':2,'native_evidence':'Actual rectangle/graphic bounds, effective PPI, link paths and anchor bounds read after recomposition','visual':'PENDING'})
+  if p['style'].startswith('P_History_Caption'):assert abs(p['space_after_pt']-11)<.01
+ write('exports/history_v2/IMAGE_GEOMETRY_CHECK.json',{'status':'PASS','groups':results,'source_images_unchanged':True,'caption_display_transforms':layout['captions'],'caption_body_gap_mm':layout['caption_body_gap_mm'],'native_evidence':'Actual rectangle/graphic bounds, effective PPI, link paths and anchor bounds read after recomposition','visual':'PENDING'})
  print('PASS geometry:',len(results),'groups; same-size pairs; 2:1 mixed pairs; separate named 3-image and user-stretched signature exceptions')
 
 if __name__=='__main__':{'prepare':prepare,'preview':preview,'validate':validate}[sys.argv[1]]()

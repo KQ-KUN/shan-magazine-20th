@@ -37,12 +37,13 @@ def main():
  dump(DEST/'FINAL_FILE_HASHES.json',{str(p.relative_to(DEST)):sha(p) for p in DEST.rglob('*') if p.is_file() and p.name!='FINAL_FILE_HASHES.json'})
  print('PASS delivery prepared:',DEST)
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['图片题注R1']);args=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--revision',choices=['图片题注R1','题注间距R2']);args=parser.parse_args()
  if args.revision:DEST=DEST.with_name(DEST.name+'_'+args.revision)
  main()
  if args.revision:
   p=DEST/'交付说明.md';text=p.read_text('utf-8');text=text.replace('会史18页已逐页检查','会史全部页面总览及图片处理、题注、脚注、末尾重点页已检查')
-  text+='\n本次图片题注R1：32组左右图说明去掉分隔分号，改为中间空一行；题注后留2mm；按更新Skill统一同向双图宽高、混合双图等高及2:1宽度；依用户确认允许边缘裁切。九张签名统一格子，仅左下图按用户要求拉伸。修复无题注图片的连续保持规则，末尾活动文字与海报不再分离。原始Word和105张图片保持原样。\n'
+  if args.revision=='图片题注R1':text+='\n本次图片题注R1：32组左右图说明去掉分隔分号，改为中间空一行；题注后留2mm；按更新Skill统一同向双图宽高、混合双图等高及2:1宽度；依用户确认允许边缘裁切。九张签名统一格子，仅左下图按用户要求拉伸。修复无题注图片的连续保持规则，末尾活动文字与海报不再分离。原始Word和105张图片保持原样。\n'
+  else:text+='\n本次题注间距R2遵照最终澄清：左右图说明仅连续换行，不在它们之间空一行；整段题注结束后与正文空一行（11pt题注行距，约3.88mm）。图片尺寸、裁切和签名拉伸与R1完全相同。所有源文、姓名和脚注保留。以本目录为最新交付，R1保留为历史归档。\n'
   p.write_text(text,'utf-8')
-  comparison=DEST/'验证报告/PAGE_COMPARISON_AND_TOC.json';d=json.loads(comparison.read_text('utf-8'));d['previous_revision']={'history_pages':18,'interior_pages':86,'reader_pages':88};dump(comparison,d)
+  comparison=DEST/'验证报告/PAGE_COMPARISON_AND_TOC.json';d=json.loads(comparison.read_text('utf-8'));d['previous_revision']={'history_pages':19 if args.revision=='题注间距R2' else 18,'interior_pages':86,'reader_pages':88};dump(comparison,d)
   dump(DEST/'FINAL_FILE_HASHES.json',{str(p.relative_to(DEST)):sha(p) for p in DEST.rglob('*') if p.is_file() and p.name!='FINAL_FILE_HASHES.json'})

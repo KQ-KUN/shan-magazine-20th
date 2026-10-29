@@ -17,6 +17,28 @@ SHAN.historyV2 = {
         if(block.caption_block){return 'P_History_Media_Caption';}
         return 'P_History_Media';
     },
+    reviseCaptions: function(doc,data,baseline,tokens,root,runtime){
+        var current=data.layout,i,p,lastUsed=0,page,prior,baselineRuntime=SHAN.assemblyV0.read(root,'exports/history_v2/CAPTION_BASELINE_RUNTIME.json');
+        data.layout=baseline;prior=this.auditExisting(doc,data,runtime);data.layout=current;
+        doc.save(File(root+'/exports/history_v2/SHAN_HISTORY_CAPTIONS_R1_PRESERVED_'+new Date().getTime()+'.indd'));
+        runtime.setStage('caption-spacing-only');
+        for(i=0;i<data.blocks.length;i+=1){
+            if(current.captions[data.blocks[i].id]){
+                p=prior.story.paragraphs.item(i);
+                // Keep the paragraph terminator: replacing its CR can transfer
+                // the caption style to the following body paragraph.
+                p.characters.itemByRange(0,p.characters.length-2).contents=current.captions[data.blocks[i].id].display;
+            }
+        }
+        for(var key in tokens.paragraph_styles){if(tokens.paragraph_styles.hasOwnProperty(key) && key.indexOf('P_History_Caption')===0){doc.paragraphStyles.itemByName(key).spaceAfter=SHAN.utils.pt(tokens.paragraph_styles[key].space_after_mm);}}
+        doc.recompose();this.check(!prior.story.overflows,'Caption-only edit overflowed existing frames');
+        for(i=0;i<data.blocks.length;i+=1){this.check(prior.story.paragraphs.item(i).appliedParagraphStyle.name===baselineRuntime.paragraphs[i].style,'Caption edit changed paragraph style '+data.blocks[i].id);}
+        // Remove a trailing page only when no source paragraph or image owns it.
+        for(i=0;i<prior.story.paragraphs.length;i+=1){p=prior.story.paragraphs.item(i);for(var j=0;j<p.parentTextFrames.length;j+=1){page=p.parentTextFrames[j].parentPage;lastUsed=Math.max(lastUsed,page.documentOffset);}}
+        for(i=0;i<doc.allGraphics.length;i+=1){page=doc.allGraphics[i].parentPage;if(page){lastUsed=Math.max(lastUsed,page.documentOffset);}}
+        while(doc.pages.length-1>lastUsed){doc.pages.item(-1).remove();}
+        doc.recompose();return this.auditExisting(doc,data,runtime);
+    },
     groupGeometry: function (block) {
         // Geometry is calculated once in Python with the updated Skill utility.
         // JSX places that plan and reports independently measured DOM geometry.
