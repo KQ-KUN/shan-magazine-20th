@@ -6,7 +6,7 @@ import hashlib,json,re,subprocess,shutil
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'exports/messages_v2'
 SOURCE=ROOT/'manuscripts/source/messages/寄语（24号修订版）.docx'
-UPLOAD=Path(r'C:/Users/22974/Downloads/寄语（24号修订版）.docx')
+UPLOAD=Path.home()/'Downloads'/'寄语（24号修订版）.docx'
 EXPECTED='94d93e4b637883c301391789fd125e0282945f37a7eec53788f2149f0e69add9'
 UPLOAD_EXPECTED='ceffc5f57816e36350853899cce25097b1d96f2924e0d5f47e2c7d460052c0fb'
 def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
