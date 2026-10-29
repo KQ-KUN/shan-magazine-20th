@@ -1,4 +1,4 @@
-param([ValidateSet('fast','sample','full')][string]$Phase='fast',[switch]$Recheck,[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
+param([ValidateSet('fast','sample','full')][string]$Phase='fast',[switch]$Recheck,[int]$FirstPage=1,[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
 $ErrorActionPreference='Stop'
 $messagesRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
 $messagesOut=Join-Path $messagesRoot 'exports/messages_revision_20261024'
@@ -20,12 +20,17 @@ $messagesMode=$Phase
 if($Phase -eq 'fast'){
  $messagesMode=(& $messagesPython -X utf8 (Join-Path $messagesRoot 'tools/messages_fast.py') plan)
  if($LASTEXITCODE -ne 0){throw 'Fast planning failed'}
+ if($messagesMode -in @('reuse','fast')){
+  $messagesPrevious=Get-Content -LiteralPath (Join-Path $messagesOut 'MESSAGES_RUNTIME.json') -Raw | ConvertFrom-Json
+  # Changing the first folio can change page side and binding margins.
+  if([int]$messagesPrevious.first_page -ne $FirstPage){$messagesMode='full'}
+ }
  $messagesTiming.mode=$messagesMode
  if($messagesMode -eq 'reuse' -and !$Recheck){Save-MessagesTiming;Write-Output ('PASS reused verified PDF; InDesign not started; ms='+$messagesTiming.total_ms);return}
  if($messagesMode -eq 'reuse' -and $Recheck){$messagesMode='fast';$messagesTiming.mode='fast';$messagesTiming.recheck=$true}
  if($messagesMode -eq 'blocked'){throw 'Saved artifacts changed outside the verified build; inspect FAST_PLAN.json before replacing them'}
 }
-[IO.File]::WriteAllText((Join-Path $messagesOut 'REQUEST.json'),('{"first_page":1,"sample":'+($messagesMode -eq 'sample').ToString().ToLower()+',"fast":'+($messagesMode -eq 'fast').ToString().ToLower()+'}'),[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllText((Join-Path $messagesOut 'REQUEST.json'),('{"first_page":'+$FirstPage+',"sample":'+($messagesMode -eq 'sample').ToString().ToLower()+',"fast":'+($messagesMode -eq 'fast').ToString().ToLower()+'}'),[Text.UTF8Encoding]::new($false))
 $messagesNativeTimer=[Diagnostics.Stopwatch]::StartNew()
 $messagesProcessesBefore=@(Get-CimInstance Win32_Process -Filter "Name='InDesign.exe'" | Select-Object -ExpandProperty ProcessId)
 if($messagesProcessesBefore.Count -eq 0){

@@ -186,12 +186,16 @@ SHAN.assemblyV0 = {
     },
     focus: function (doc) {
         this.check(doc && doc.isValid && doc.pages.length > 0, "Review document unavailable for focus");
+        // Reusing an open document can reorder app.documents when its window is
+        // activated. Resolve concrete objects before bringToFront changes that order.
+        doc = doc.getElements()[0];
+        var target = doc.pages.item(0).getElements()[0];
         var windows = doc.layoutWindows; this.check(windows.length > 0, "Review layout window missing");
-        var window = windows.item(0);
+        var window = windows.item(0).getElements()[0];
         this.check(typeof window.bringToFront === "function", "Review window cannot be activated");
-        window.bringToFront(); window.activePage = doc.pages.item(0);
-        this.check(app.activeWindow.activePage.id === doc.pages.item(0).id, "Focus remained on Parent/other document");
-        return {target_page: doc.pages.item(0).name, active_page: app.activeWindow.activePage.name, active_page_is_parent: false};
+        window.bringToFront(); window.activePage = target;
+        this.check(app.activeWindow.activePage.id === target.id, "Focus remained on Parent/other document");
+        return {target_page: target.name, active_page: app.activeWindow.activePage.name, active_page_is_parent: false};
     },
     run: function (root, runtime) {
         var output = root + "/exports/assembly_v0", folder = Folder(output), componentsFolder;

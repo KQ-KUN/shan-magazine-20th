@@ -23,7 +23,15 @@
         runtime.setStage('verify-source',{source:map.source});a.check(data.source_sha256===map.sha256 && SHAN.historySource.sha256(SHAN.historySource.read(File(root+'/'+map.source),'BINARY'))===map.sha256,'Source DOCX hash mismatch');
         a.check(data.paragraphs.length===map.source_paragraphs && map.entries.length===map.people,'Unexpected source inventory');
         runtime.setStage('resolve-messages-document');var context={warnings:[]};
-        for(var di=0;di<app.documents.length;di+=1){var candidate=app.documents[di],tag=candidate.extractLabel('SHAN_MESSAGES_BUILD');if(tag==='overprint' && !candidate.modified){doc=candidate;break;}}
+        for(var di=0;di<app.documents.length;di+=1){
+            var candidate=app.documents[di].getElements()[0],tag=candidate.extractLabel('SHAN_MESSAGES_BUILD'),ownedPath='';
+            try{ownedPath=candidate.fullName.fsName.replace(/\\/g,'/');}catch(unsaved){}
+            if(tag==='overprint' && candidate.modified && ownedPath===out+'/SHAN_MESSAGES_REVISION_20261024.indd'){
+                candidate.save(File(out+'/SHAN_MESSAGES_PRESERVED_'+new Date().getTime()+'.indd'));
+                continue;
+            }
+            if(tag==='overprint' && !candidate.modified){doc=candidate;break;}
+        }
         var saved=File(out+'/SHAN_MESSAGES_REVISION_20261024.indd');
         if(!doc && request.fast && saved.exists){runtime.setStage('open-saved-messages-document');doc=app.open(saved);a.check(!doc.modified,'Saved document has unsaved edits');}
         if(!doc){runtime.setStage('create-document');doc=a.fresh(context,request.first_page||1);

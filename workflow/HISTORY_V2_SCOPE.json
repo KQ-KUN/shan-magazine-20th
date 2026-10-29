@@ -1,0 +1,23 @@
+{
+  "type": "USER_AUTHORIZED_HISTORY_INTEGRATION_AND_FINAL_NAME_CORRECTION",
+  "baseline_commit": "634a138cacaeb548d65f2c61fdb1bb096f36156b",
+  "authority": "用户执行粘贴的新版会史排版与总装任务，并最终确认余淼／2017级会长、楚休红；该最终口径覆盖旧交接中的错误姓名修改。",
+  "history_boundary": "新版已审校部分截至2019—2020；2020—2021起沿用旧会刊已批准内容",
+  "names": {"name": "余淼", "role": "2017级会长", "other_name": "楚休红"},
+  "preserve": ["年度中真实的其他历史任职", "其他文章正文及图片", "现有已批准设计系统", "原始资料与历史交付归档"],
+  "frozen_baseline": "workflow/HISTORY_PROFILE_FACT_CORRECTION.json:frozen_scope_hashes",
+  "frozen_edits": [],
+  "runtime_repairs": {
+    "modules/assembly_v0.jsx": "窗口激活前解析具体Document/Page对象，避免app.documents顺序变化误指另一文档",
+    "build/49_messages_overprint_test.jsx": "遇到本任务同名已修改文档先另存保留再重建，不关闭或覆盖无关文档",
+    "tools/run_messages_overprint.ps1": "增加可选FirstPage；在置入总装前以实际页码及正确左右页生成寄语",
+    "build/52_history_v2_assembly.jsx": "大型PDF完整SHA256由Windows在调度前计算；InDesign绑定哈希、文件大小及修改时间；小型计划文件仍原生校验。任务结束恢复原共享verify函数"
+  },
+  "native_results": {"history_pages": 18, "source_blocks": 427, "images": 105, "native_footnotes": 3, "messages_pages": 7, "messages_people": 31, "messages_paragraphs": 148, "interior_pages": 86, "reader_pages": 88},
+  "tests": ["tests/test_history_v2.py", "tests/history_v2.test.cjs", "tools/history_v2_validate.py standalone", "tools/history_v2_validate.py book", "tools/messages_overprint.py validation through native runner"],
+  "preexisting_unrelated_files_excluded_from_commit": ["content/ASSEMBLY_V0_MANIFEST.json", "spec/COVER_ARTWORK_STATUS.md", "workflow/MODULE_STATUS.json", "SHAN_MEMOIR_CLEAN_IMPORT_PROBE/", "assets/cover/emblem/", "build/46_cover_emblem_r1_test.jsx", "build/SHAN_MEMOIR_IMPORT_PROBE.jsx", "content/COVER_EMBLEM_R1_MANIFEST.json", "tests/cover_emblem_r1.test.cjs", "tools/cover_emblem_r1.py", "tools/messages_layout.py", "workflow/TASK25_SCOPE.json", "workflow/TASK26_SCOPE.json"],
+  "reused_cover": "assets/cover/SHAN_FRONT_COVER_EMBLEM_R1.pdf unchanged existing artwork",
+  "back_cover": "No approved existing back-cover file found; retain original front-cover plus blank C2 reader structure",
+  "print_conversion": "NONE; online ebook delivery only",
+  "delivery": "../交付文件/会史新版排版与总装_20261029"
+}

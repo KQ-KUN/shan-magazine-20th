@@ -1,6 +1,6 @@
 {
   "source": "manuscripts/source/messages/寄语（24号修订版）.docx",
-  "sha256": "94d93e4b637883c301391789fd125e0282945f37a7eec53788f2149f0e69add9",
+  "sha256": "c9c08e134c5b9afef5653fef91978fce89de67f4e546faca8db62db05d367fb5",
   "source_paragraphs": 148,
   "people": 31,
   "entries": [
@@ -737,6 +737,12 @@
       "original": "于淼",
       "replacement": "余淼",
       "authorization": "Explicit user name correction: 余淼 2017级会长"
+    },
+    {
+      "source_paragraph": 50,
+      "original": "楚修红",
+      "replacement": "楚休红",
+      "authorization": "User final confirmed name: 楚休红"
     }
   ],
   "centered_titles": [
