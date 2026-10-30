@@ -1,13 +1,13 @@
-param([ValidateSet('standalone','resume','captions','assembly','folios')][string]$Phase='standalone',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
+param([ValidateSet('standalone','resume','captions','inspect','assembly','folios')][string]$Phase='standalone',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
 $ErrorActionPreference='Stop'
 $historyRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
 $historyOut=Join-Path $historyRoot 'exports/history_v2'
 New-Item -ItemType Directory -Force -Path $historyOut | Out-Null
-$historyBuild=if($Phase -in @('standalone','resume','captions')){'51_history_v2_standalone.jsx'}elseif($Phase -eq 'folios'){'53_history_v2_folios.jsx'}else{'52_history_v2_assembly.jsx'}
-if($Phase -in @('standalone','resume','captions')){
- [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+',"caption_revision":'+($Phase -eq 'captions').ToString().ToLower()+',"caption_baseline_file":"exports/history_v2/CAPTION_BASELINE_NATIVE.indd"}'),[Text.UTF8Encoding]::new($false))
+$historyBuild=if($Phase -in @('standalone','resume','captions','inspect')){'51_history_v2_standalone.jsx'}elseif($Phase -eq 'folios'){'53_history_v2_folios.jsx'}else{'52_history_v2_assembly.jsx'}
+if($Phase -in @('standalone','resume','captions','inspect')){
+ [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+',"caption_revision":'+($Phase -eq 'captions').ToString().ToLower()+',"inspect_only":'+($Phase -eq 'inspect').ToString().ToLower()+',"caption_baseline_file":"exports/history_v2/CAPTION_BASELINE_NATIVE.indd"}'),[Text.UTF8Encoding]::new($false))
  $historyImport=Join-Path $historyRoot 'content/HISTORY_V2_IMPORT.json'
- $historyData=Get-Content -LiteralPath $historyImport -Raw | ConvertFrom-Json
+ $historyData=Get-Content -LiteralPath $historyImport -Raw -Encoding UTF8 | ConvertFrom-Json
  $historySource=Join-Path $historyRoot $historyData.source
  $historyHash=(Get-FileHash -LiteralPath $historySource -Algorithm SHA256).Hash.ToLower()
  if($historyHash -ne $historyData.source_sha256){throw 'Revised DOCX hash mismatch before dispatch'}
@@ -15,9 +15,9 @@ if($Phase -in @('standalone','resume','captions')){
  [IO.File]::WriteAllText((Join-Path $historyOut 'SOURCE_HOST_GUARD.json'),($historyGuard | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
 }
 if($Phase -eq 'assembly'){
- $historyPlan=Get-Content -LiteralPath (Join-Path $historyOut 'RESOLVED_BOOK_PLAN.json') -Raw | ConvertFrom-Json
- $historyInputs=Get-Content -LiteralPath (Join-Path $historyOut 'PRINT_COMPONENT_INPUTS.json') -Raw | ConvertFrom-Json
- $historyConfig=Get-Content -LiteralPath (Join-Path $historyRoot 'content/HISTORY_V2_BOOK.json') -Raw | ConvertFrom-Json
+ $historyPlan=Get-Content -LiteralPath (Join-Path $historyOut 'RESOLVED_BOOK_PLAN.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+ $historyInputs=Get-Content -LiteralPath (Join-Path $historyOut 'PRINT_COMPONENT_INPUTS.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+ $historyConfig=Get-Content -LiteralPath (Join-Path $historyRoot 'content/HISTORY_V2_BOOK.json') -Raw -Encoding UTF8 | ConvertFrom-Json
  $historyRows=@($historyPlan.components | Where-Object {$_.kind -notin @('chapter','editorial_toc','toc')})+@($historyInputs.components)+@(@{file=$historyConfig.approved_cover;sha256=$historyPlan.approved_cover_sha256})
  $historyFiles=@{}
  foreach($historyRow in $historyRows){

@@ -17,6 +17,29 @@ SHAN.historyV2 = {
         if(block.caption_block){return 'P_History_Media_Caption';}
         return 'P_History_Media';
     },
+    orderBlocks: function(blocks,layout){
+        var moves=layout.flow_moves||[],result=blocks.slice(0),m,i,j,move,lookup,next,skip;
+        for(m=0;m<moves.length;m+=1){move=moves[m];lookup={};next=[];
+            for(i=0;i<result.length;i+=1){lookup['$'+result[i].id]=result[i];}
+            this.check(lookup['$'+move.after],'Missing flow target '+move.after);
+            for(i=0;i<result.length;i+=1){skip=false;for(j=0;j<move.ids.length;j+=1){if(result[i].id===move.ids[j]){skip=true;}}if(!skip){next.push(result[i]);}
+                if(result[i].id===move.after){for(j=0;j<move.ids.length;j+=1){this.check(lookup['$'+move.ids[j]],'Missing flow unit '+move.ids[j]);next.push(lookup['$'+move.ids[j]]);}}
+            }
+            this.check(next.length===result.length,'Flow move changed source count');result=next;
+        }
+        return result;
+    },
+    inspectLayout: function(doc,data){
+        if(doc.extractLabel('SHAN_HISTORY_V2_FLOW_MOVES')){data.blocks=this.orderBlocks(data.blocks,data.layout);}
+        var story=null,i,j,p,rows=[],ids=['early_p160','early_p161','early_p162','early_g23','early_p164','early_p188','early_g28','early_p190','early_g29','early_p191','early_p192','early_p201'];
+        for(i=0;i<doc.stories.length;i+=1){if(doc.stories[i].label==='SHAN_HISTORY_V2:main'){story=doc.stories[i];break;}}
+        this.check(story,'Missing History for inspection');
+        for(i=0;i<data.blocks.length;i+=1){var wanted=false;for(j=0;j<ids.length;j+=1){if(ids[j]===data.blocks[i].id){wanted=true;}}if(!wanted){continue;}p=story.paragraphs.item(i);var r={id:data.blocks[i].id,page:Number(p.parentTextFrames[0].parentPage.name),style:p.appliedParagraphStyle.name,keep_next:Number(p.keepWithNext),keep_all:p.keepAllLinesTogether,space_before:Number(p.spaceBefore),space_after:Number(p.spaceAfter),leading:String(p.leading),start:String(p.startParagraph),span:String(p.spanColumnType),lines:[]};
+            for(j=0;j<p.lines.length;j+=1){var line=p.lines[j],l={text:String(line.contents).replace(/\uFFFC/g,'[image]'),baseline:Number(line.baseline),x:Number(line.horizontalOffset)};try{l.ascent=Number(line.ascent);l.descent=Number(line.descent);l.end_x=Number(line.endHorizontalOffset);}catch(metric){l.metric_error=metric.message;}r.lines.push(l);}
+            rows.push(r);
+        }
+        return {pages:doc.pages.length,footnotes_across_columns:doc.footnoteOptions.enableStraddling,paragraphs:rows};
+    },
     reviseCaptions: function(doc,data,baseline,tokens,root,runtime){
         var current=data.layout,i,p,lastUsed=0,page,prior,baselineRuntime=SHAN.assemblyV0.read(root,'exports/history_v2/CAPTION_BASELINE_RUNTIME.json');
         data.layout=baseline;prior=this.auditExisting(doc,data,runtime);data.layout=current;
@@ -50,7 +73,7 @@ SHAN.historyV2 = {
             this.check(item,'Unmapped geometry source '+f.image_id);
             rows.push({item:item,x:f.x,y:f.y,width:f.width,height:f.height,graphic:f.graphic,linked_file:f.source.path,linked_sha256:f.source.sha256,fit_mode:f.fit_mode});
         }
-        return {width:plan.width,height:plan.height,placements:rows};
+        return {width:plan.width,height:plan.height,inline_leading_mm:plan.height+plan.inline_clearance_mm,placements:rows};
     },
     placeGroup: function(doc,page,story,index,block,root,runtime){
         var geom=this.groupGeometry(block),pt=SHAN.utils.pt,rects=[],records=[],i,p,rect,graphic,anchor;
@@ -69,11 +92,17 @@ SHAN.historyV2 = {
         if(rects.length>1){anchor=doc.groups.add(rects);anchor.label='SHAN_HISTORY_V2_GROUP:'+block.id;}else{anchor=rects[0];}
         var paragraph=story.paragraphs.item(index),ip=paragraph.insertionPoints.item(0);
         anchor.anchoredObjectSettings.insertAnchoredObject(ip,AnchorPosition.INLINE_POSITION);
-        anchor.anchoredObjectSettings.anchorYoffset=0;anchor.parent.leading=Leading.AUTO;
+        anchor.anchoredObjectSettings.anchorYoffset=0;
+        // Span-column balancing must see the real inline block height, rather
+        // than estimating this object-only line from the body's small type.
+        story.paragraphs.item(index).leading=pt(geom.inline_leading_mm);
         return {anchor:anchor,records:records,height_mm:geom.height,width_mm:geom.width};
     },
     render: function(doc,data,tokens,section,root,runtime){
+        data.blocks=this.orderBlocks(data.blocks,data.layout);doc.insertLabel('SHAN_HISTORY_V2_FLOW_MOVES',data.layout.version);
+        doc.footnoteOptions.enableStraddling=true;
         var check=this.check,blocks=data.blocks,first=SHAN.history.addFrame(doc,doc.pages[0],true,tokens),strings=[],i,j;
+        first.textFramePreferences.footnotesEnableOverrides=true;first.textFramePreferences.footnotesSpanAcrossColumns=true;
         SHAN.history.chapterMarker(doc,doc.pages[0],section);
         doc.textPreferences.smartTextReflow=false;
         for(i=0;i<blocks.length;i+=1){strings.push(blocks[i].type==='text'?this.displayText(data,blocks[i]):'');}
@@ -86,12 +115,14 @@ SHAN.historyV2 = {
             p.applyParagraphStyle(doc.paragraphStyles.itemByName(name),true);indexById['$'+block.id]=i;
             if(name==='P_History_Roster' && (i+1===blocks.length || blocks[i+1].style!=='P_History_Roster')){p.keepWithNext=0;p.spaceAfter=SHAN.utils.pt(4);}
             if(i+1<blocks.length && blocks[i+1].type==='media' && blocks[i+1].description_block===block.id){p.keepWithNext=1;}
+            var kept=data.layout.activity_image_keeps||[];
+            for(j=0;j<kept.length;j+=1){if(block.id===kept[j].paragraph){check(i+1<blocks.length && blocks[i+1].id===kept[j].image,'Activity/image keep is not adjacent');p.keepWithNext=1;}}
         }
         // Source footnote offsets are measured before generated anchor characters.
         var notes=[];doc.footnoteOptions.footnoteTextStyle=doc.paragraphStyles.itemByName('P_History_Footnote');
         doc.footnoteOptions.restartNumbering=FootnoteRestarting.DONT_RESTART;
         doc.footnoteOptions.startAt=1;
-        doc.footnoteOptions.noSplitting=false;doc.footnoteOptions.enableStraddling=false;
+        doc.footnoteOptions.noSplitting=false;doc.footnoteOptions.enableStraddling=true;
         for(i=blocks.length-1;i>=0;i-=1){
             block=blocks[i];
             for(j=(block.footnotes||[]).length-1;j>=0;j-=1){
@@ -111,11 +142,14 @@ SHAN.historyV2 = {
             for(j=0;j<group.records.length;j+=1){imageRecords.push(group.records[j]);}
         }
         runtime.setStage('natural-flow');SHAN.history.runtime=null;
-        var frames=SHAN.history.flow(doc,story,first,tokens,null);doc.recompose();
+        var originalAdd=SHAN.history.addFrame,frames;
+        SHAN.history.addFrame=function(d,page,isFirst,t){var f=originalAdd.call(SHAN.history,d,page,isFirst,t);f.textFramePreferences.footnotesEnableOverrides=true;f.textFramePreferences.footnotesSpanAcrossColumns=true;return f;};
+        try{frames=SHAN.history.flow(doc,story,first,tokens,null);}finally{SHAN.history.addFrame=originalAdd;}doc.recompose();
         frames[frames.length-1].textFramePreferences.verticalBalanceColumns=true;doc.recompose();
         return this.audit(doc,data,story,imageRecords,notes,runtime);
     },
     auditExisting: function(doc,data,runtime){
+        if(doc.extractLabel('SHAN_HISTORY_V2_FLOW_MOVES')){data.blocks=this.orderBlocks(data.blocks,data.layout);}
         var story=null,i,j,blocks=data.blocks,records=[],notes=[];
         for(i=0;i<doc.stories.length;i+=1){if(doc.stories[i].label==='SHAN_HISTORY_V2:main'){story=doc.stories[i];break;}}
         this.check(story && story.paragraphs.length===blocks.length,'Resume is not this task history story');
@@ -183,13 +217,16 @@ SHAN.historyV2 = {
             var parent=rect.parent,anchor=parent.constructor.name==='Group'?parent:rect,ab=anchor.geometricBounds;
             function mmBox(b){return {x:(b[1]-pb[1])*25.4/72,y:(b[0]-pb[0])*25.4/72,width:(b[3]-b[1])*25.4/72,height:(b[2]-b[0])*25.4/72};}
             var linked=record.linked_file || String(record.graphic.itemLink.filePath).replace(/\\/g,'/');
-            imageReport.push({id:record.id,file:record.file,source_sha256:record.source_sha256,linked_file:linked,linked_sha256:record.linked_sha256,block:record.block,caption_block:record.caption_block,page:Number(page.name),page_id:page.id,caption_page:capPage,bounds_pt:gb,width_mm:(gb[3]-gb[1])*25.4/72,height_mm:(gb[2]-gb[0])*25.4/72,frame_mm:mmBox(gb),graphic_mm:mmBox(record.graphic.geometricBounds),column_origin_x_mm:(columnLeft-pb[1])*25.4/72,column_width_mm:columnWidth*25.4/72,anchor_height_mm:(ab[2]-ab[0])*25.4/72,effective_ppi:record.graphic.effectivePpi,rotation:Number(record.graphic.rotationAngle),shear:Number(record.graphic.shearAngle),link_status:'NORMAL'});
+            imageReport.push({id:record.id,file:record.file,source_sha256:record.source_sha256,linked_file:linked,linked_sha256:record.linked_sha256,block:record.block,caption_block:record.caption_block,page:Number(page.name),page_id:page.id,caption_page:capPage,bounds_pt:gb,width_mm:(gb[3]-gb[1])*25.4/72,height_mm:(gb[2]-gb[0])*25.4/72,frame_mm:mmBox(gb),graphic_mm:mmBox(record.graphic.geometricBounds),column_origin_x_mm:(columnLeft-pb[1])*25.4/72,column_width_mm:columnWidth*25.4/72,anchor_height_mm:(ab[2]-ab[0])*25.4/72,reserved_line_height_mm:Number(mediaP.leading)*25.4/72,effective_ppi:record.graphic.effectivePpi,rotation:Number(record.graphic.rotationAngle),shear:Number(record.graphic.shearAngle),link_status:'NORMAL'});
         }
         for(i=0;i<notes.length;i+=1){
             var n=notes[i],fn=n.nativeObject,nativeText=String(fn.contents),prefix=nativeText.slice(0,nativeText.length-n.text.length);
             check(nativeText.slice(prefix.length)===n.text && prefix.length>0 && prefix.length<5 && prefix.charCodeAt(0)!==9 && prefix.charCodeAt(0)!==32,'Footnote text/automatic number mismatch '+n.source_id+' prefix_codes='+prefix.charCodeAt(0)+','+prefix.charCodeAt(1));
             check(fn.storyOffset.parentTextFrames.length>0,'Footnote anchor invisible '+n.source_id);
-            footReport.push({source_id:n.source_id,block:n.block,text:n.text,automatic_number_prefix_codes:[prefix.charCodeAt(0),prefix.charCodeAt(1)],automatic_number_marker:true,anchor_page:Number(fn.storyOffset.parentTextFrames[0].parentPage.name),native_id:fn.id,marker_story_index:fn.storyOffset.index});
+            var noteLines=fn.texts[0].lines,noteWidths=[],maxWidth=0;
+            for(j=0;j<noteLines.length;j+=1){var nw=(Number(noteLines[j].endHorizontalOffset)-Number(noteLines[j].horizontalOffset))*25.4/72;noteWidths.push(nw);maxWidth=Math.max(maxWidth,nw);}
+            if(data.layout.footnotes_across_columns){check(doc.footnoteOptions.enableStraddling && maxWidth>76,'Footnote did not span both columns '+n.source_id+' width='+maxWidth);}
+            footReport.push({source_id:n.source_id,block:n.block,text:n.text,automatic_number_prefix_codes:[prefix.charCodeAt(0),prefix.charCodeAt(1)],automatic_number_marker:true,anchor_page:Number(fn.storyOffset.parentTextFrames[0].parentPage.name),native_id:fn.id,marker_story_index:fn.storyOffset.index,span_across_columns:doc.footnoteOptions.enableStraddling,line_widths_mm:noteWidths,max_line_width_mm:maxWidth});
         }
         check(imageReport.length===data.images,'Image count');
         for(i=0;i<doc.fonts.length;i+=1){check(doc.fonts[i].status===FontStatus.INSTALLED,'Missing font '+doc.fonts[i].name);}

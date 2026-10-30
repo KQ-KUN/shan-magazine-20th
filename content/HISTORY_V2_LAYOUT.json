@@ -1,11 +1,22 @@
 {
-  "version": "HISTORY_V2_CAPTION_SPACING_R2",
+  "version": "HISTORY_V2_DENSITY_FOOTNOTES_R3",
   "skill_file": "D:\\Codex\\skills\\indesign-publication-production\\SKILL.md",
-  "calculator_sha256": "d8805e3410bcbc19f6031783209f89293a7fcfa5c81d5cd938b74b73adecc519",
+  "calculator_sha256": "f9cd465474dbf6f77ee2030a1139e382150ff898c8b0edeb57dc01fd7393fee9",
   "source_import_sha256": "a244b4ab71e14bb4ca68b8a16566ce5e0522449234d2f3b5beec6eb6105d6b14",
   "column_width_mm": 73,
   "image_gap_mm": 2,
   "caption_body_gap_mm": 3.880555555555555,
+  "footnotes_across_columns": true,
+  "flow_moves": [
+    {
+      "ids": [
+        "early_g29",
+        "early_p191"
+      ],
+      "after": "early_p201",
+      "reason": "User requested removal of signature-area void: photograph and existing quoted greetings share the two-column prelude, with the intact nine-image gallery immediately below; image sequence and all main prose remain in original order"
+    }
+  ],
   "crop_authorization": "User explicitly confirmed: 允许裁切边缘，优先保持等宽等高",
   "caption_separation": "left/right descriptions on consecutive lines; one 11pt caption-leading blank after complete caption before body",
   "captions": {
@@ -239,7 +250,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p7",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g2": {
       "status": "READY",
@@ -309,7 +321,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p24",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g3": {
       "status": "READY",
@@ -416,7 +429,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p44",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g4": {
       "status": "READY",
@@ -486,7 +500,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p51",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g5": {
       "status": "READY",
@@ -593,7 +608,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p55",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g6": {
       "status": "READY",
@@ -700,7 +716,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p61",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g7": {
       "status": "READY",
@@ -807,7 +824,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p66",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g8": {
       "status": "READY",
@@ -914,7 +932,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p69",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g9": {
       "status": "READY",
@@ -994,7 +1013,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p72",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g10": {
       "status": "READY",
@@ -1064,7 +1084,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p75",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g11": {
       "status": "READY",
@@ -1134,7 +1155,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p117",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g12": {
       "kind": "NAMED_EXCEPTION",
@@ -1224,7 +1246,8 @@
           }
         }
       ],
-      "exception": "Original three-image table: one complete flyer plus two complete photographs; five-mode calculator accepts one/two images only; source order and no distortion retained"
+      "exception": "Original three-image table: one complete flyer plus two complete photographs; five-mode calculator accepts one/two images only; source order and no distortion retained",
+      "inline_clearance_mm": 0
     },
     "early_g13": {
       "status": "READY",
@@ -1331,7 +1354,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p122",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g14": {
       "status": "READY",
@@ -1438,7 +1462,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p125",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g15": {
       "status": "READY",
@@ -1508,7 +1533,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p127",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g16": {
       "status": "READY",
@@ -1615,7 +1641,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p132",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g17": {
       "status": "READY",
@@ -1685,7 +1712,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p136",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g18": {
       "status": "READY",
@@ -1700,7 +1728,7 @@
       },
       "gap": 0,
       "defaults": {
-        "single_landscape_width_ratio": 1.0,
+        "single_landscape_width_ratio": 0.6027397260273972,
         "single_portrait_width_ratio": 0.6666667,
         "pair_same_orientation_equal_width": true,
         "pair_same_orientation_equal_height": true,
@@ -1711,10 +1739,10 @@
       "frames": [
         {
           "image_id": "early_rId33",
-          "x": 0.0,
+          "x": 14.5,
           "y": 0.0,
-          "width": 73.0,
-          "height": 73.0,
+          "width": 44.0,
+          "height": 44.0,
           "orientation": "LANDSCAPE",
           "image_count": 1,
           "layout_mode": "SINGLE_LANDSCAPE",
@@ -1740,22 +1768,30 @@
             "protected_content": false
           },
           "graphic": {
-            "x": 0.0,
+            "x": 14.5,
             "y": 0.0,
-            "width": 73.0,
-            "height": 73.0
+            "width": 44.0,
+            "height": 44.0
           }
         }
       ],
       "captions": [],
-      "height": 73.0,
+      "height": 44.0,
       "visual_review": "REQUIRED",
       "min_effective_ppi": 150.0,
-      "exceptions": [],
+      "exceptions": [
+        {
+          "reason": "Compact simple association emblem from 73mm to 44mm; no crop or distortion; free space for the following event and poster",
+          "overrides": {
+            "single_landscape_width_ratio": 0.6027397260273972
+          }
+        }
+      ],
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p150",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g19": {
       "status": "READY",
@@ -1862,7 +1898,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p153",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g20": {
       "status": "READY",
@@ -1969,7 +2006,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p155",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g21": {
       "status": "READY",
@@ -2076,7 +2114,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p157",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g22": {
       "status": "READY",
@@ -2183,7 +2222,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p160",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g23": {
       "status": "READY",
@@ -2198,7 +2238,7 @@
       },
       "gap": 0,
       "defaults": {
-        "single_landscape_width_ratio": 1.0,
+        "single_landscape_width_ratio": 0.7945205479452054,
         "single_portrait_width_ratio": 0.6666667,
         "pair_same_orientation_equal_width": true,
         "pair_same_orientation_equal_height": true,
@@ -2209,10 +2249,10 @@
       "frames": [
         {
           "image_id": "early_rId42",
-          "x": 0.0,
+          "x": 7.5,
           "y": 0.0,
-          "width": 73.0,
-          "height": 58.4,
+          "width": 58.0,
+          "height": 46.4,
           "orientation": "LANDSCAPE",
           "image_count": 1,
           "layout_mode": "SINGLE_LANDSCAPE",
@@ -2238,22 +2278,30 @@
             "protected_content": false
           },
           "graphic": {
-            "x": 0.0,
+            "x": 7.5,
             "y": 0.0,
-            "width": 73.0,
-            "height": 58.4
+            "width": 58.0,
+            "height": 46.4
           }
         }
       ],
       "captions": [],
-      "height": 58.4,
+      "height": 46.4,
       "visual_review": "REQUIRED",
       "min_effective_ppi": 150.0,
-      "exceptions": [],
+      "exceptions": [
+        {
+          "reason": "User authorized compact poster: preserve full image at 58mm width so the Eternity salon poster can follow its activity paragraph on the preceding page",
+          "overrides": {
+            "single_landscape_width_ratio": 0.7945205479452054
+          }
+        }
+      ],
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p164",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g24": {
       "status": "READY",
@@ -2323,7 +2371,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p168",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g25": {
       "status": "READY",
@@ -2393,7 +2442,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p171",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g26": {
       "status": "READY",
@@ -2500,7 +2550,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p184",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g27": {
       "status": "READY",
@@ -2607,7 +2658,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p187",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g28": {
       "status": "READY",
@@ -2622,7 +2674,7 @@
       },
       "gap": 0,
       "defaults": {
-        "single_landscape_width_ratio": 1.0,
+        "single_landscape_width_ratio": 0.7945205479452054,
         "single_portrait_width_ratio": 0.6666667,
         "pair_same_orientation_equal_width": true,
         "pair_same_orientation_equal_height": true,
@@ -2633,10 +2685,10 @@
       "frames": [
         {
           "image_id": "early_rId49",
-          "x": 0.0,
+          "x": 7.5,
           "y": 0.0,
-          "width": 73.0,
-          "height": 54.37971014492754,
+          "width": 58.0,
+          "height": 43.20579710144928,
           "orientation": "LANDSCAPE",
           "image_count": 1,
           "layout_mode": "SINGLE_LANDSCAPE",
@@ -2656,28 +2708,36 @@
           },
           "fit_mode": "COVER",
           "crop_or_stretch_policy": {
-            "crop_fraction": 0,
+            "crop_fraction": 2.220446049250313e-16,
             "stretch_limit": 1,
             "crop_review_required": false,
             "protected_content": false
           },
           "graphic": {
-            "x": 0.0,
+            "x": 7.4999999999999964,
             "y": 0.0,
-            "width": 73.0,
-            "height": 54.37971014492754
+            "width": 58.00000000000001,
+            "height": 43.20579710144928
           }
         }
       ],
       "captions": [],
-      "height": 54.37971014492754,
+      "height": 43.20579710144928,
       "visual_review": "REQUIRED",
       "min_effective_ppi": 150.0,
-      "exceptions": [],
+      "exceptions": [
+        {
+          "reason": "Compact signature-event group photograph to balance the two-column prelude above its nine-image gallery; preserve full photo",
+          "overrides": {
+            "single_landscape_width_ratio": 0.7945205479452054
+          }
+        }
+      ],
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p190",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g29": {
       "kind": "NAMED_EXCEPTION",
@@ -2929,7 +2989,8 @@
           }
         }
       ],
-      "exception": "User explicitly requested nonuniform stretch of lower-left signature early_rId56; all nine frames now share one size; other eight sources have matching landscape ratios"
+      "exception": "User explicitly requested nonuniform stretch of lower-left signature early_rId56; all nine frames now share one size; other eight sources have matching landscape ratios",
+      "inline_clearance_mm": 0
     },
     "early_g30": {
       "status": "READY",
@@ -3004,7 +3065,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p205",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g31": {
       "status": "READY",
@@ -3074,7 +3136,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p208",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g32": {
       "status": "READY",
@@ -3181,7 +3244,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p226",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g33": {
       "status": "READY",
@@ -3261,7 +3325,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p229",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g34": {
       "status": "READY",
@@ -3341,7 +3406,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p233",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g35": {
       "status": "READY",
@@ -3468,7 +3534,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p236",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g36": {
       "status": "READY",
@@ -3575,7 +3642,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p249",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g37": {
       "status": "READY",
@@ -3645,7 +3713,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p252",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g38": {
       "status": "READY",
@@ -3752,7 +3821,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p256",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g39": {
       "status": "READY",
@@ -3859,7 +3929,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p261",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g40": {
       "status": "READY",
@@ -3966,7 +4037,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p265",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g41": {
       "status": "READY",
@@ -4073,7 +4145,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p267",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g42": {
       "status": "READY",
@@ -4148,7 +4221,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p284",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g43": {
       "status": "READY",
@@ -4255,7 +4329,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p287",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g44": {
       "status": "READY",
@@ -4362,7 +4437,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p289",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g45": {
       "status": "READY",
@@ -4469,7 +4545,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p294",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g46": {
       "status": "READY",
@@ -4576,7 +4653,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p297",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g47": {
       "status": "READY",
@@ -4683,7 +4761,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p301",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g48": {
       "status": "READY",
@@ -4790,7 +4869,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p303",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g49": {
       "status": "READY",
@@ -4860,7 +4940,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p313",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g50": {
       "status": "READY",
@@ -4967,7 +5048,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p327",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g51": {
       "status": "READY",
@@ -5074,7 +5156,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p331",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g52": {
       "status": "READY",
@@ -5181,7 +5264,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p348",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "early_g53": {
       "status": "READY",
@@ -5288,7 +5372,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "early_p351",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g54": {
       "status": "READY",
@@ -5358,7 +5443,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g55": {
       "status": "READY",
@@ -5428,7 +5514,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g56": {
       "status": "READY",
@@ -5498,7 +5585,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g57": {
       "status": "READY",
@@ -5615,7 +5703,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": "approved_tail_p190",
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g58": {
       "status": "READY",
@@ -5687,7 +5776,8 @@
       "width": 73,
       "caption_block": "approved_tail_p193",
       "caption_validation": "Native story caption measured separately from the anchored image-only group",
-      "height_override_reason": "Bounded tail treatment: remove upper blank wall from award-banner photo; keep default 2/3-column width and final activity text/poster on the same page"
+      "height_override_reason": "Bounded tail treatment: remove upper blank wall from award-banner photo; keep default 2/3-column width and final activity text/poster on the same page",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g59": {
       "status": "READY",
@@ -5703,7 +5793,7 @@
       "gap": 0,
       "defaults": {
         "single_landscape_width_ratio": 1.0,
-        "single_portrait_width_ratio": 0.6666667,
+        "single_portrait_width_ratio": 0.547945205479452,
         "pair_same_orientation_equal_width": true,
         "pair_same_orientation_equal_height": true,
         "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
@@ -5713,10 +5803,10 @@
       "frames": [
         {
           "image_id": "approved_tail_rId23",
-          "x": 12.166665450000004,
+          "x": 16.5,
           "y": 0.0,
-          "width": 48.66666909999999,
-          "height": 86.54924675170453,
+          "width": 40.0,
+          "height": 71.13636363636364,
           "orientation": "PORTRAIT",
           "image_count": 1,
           "layout_mode": "SINGLE_PORTRAIT",
@@ -5742,22 +5832,30 @@
             "protected_content": false
           },
           "graphic": {
-            "x": 12.166665450000004,
+            "x": 16.5,
             "y": 0.0,
-            "width": 48.66666909999999,
-            "height": 86.54924675170453
+            "width": 40.0,
+            "height": 71.13636363636364
           }
         }
       ],
       "captions": [],
-      "height": 86.54924675170453,
+      "height": 71.13636363636364,
       "visual_review": "REQUIRED",
       "min_effective_ppi": 150.0,
-      "exceptions": [],
+      "exceptions": [
+        {
+          "reason": "Compact complete portrait poster to 40mm to avoid an isolated final activity page; no crop or distortion",
+          "overrides": {
+            "single_portrait_width_ratio": 0.547945205479452
+          }
+        }
+      ],
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g60": {
       "status": "READY",
@@ -5864,7 +5962,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g61": {
       "status": "READY",
@@ -5934,7 +6033,8 @@
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     },
     "approved_tail_g62": {
       "status": "READY",
@@ -5950,7 +6050,7 @@
       "gap": 0,
       "defaults": {
         "single_landscape_width_ratio": 1.0,
-        "single_portrait_width_ratio": 0.6666667,
+        "single_portrait_width_ratio": 0.547945205479452,
         "pair_same_orientation_equal_width": true,
         "pair_same_orientation_equal_height": true,
         "pair_mixed_landscape_to_portrait_width_ratio": 2.0,
@@ -5960,10 +6060,10 @@
       "frames": [
         {
           "image_id": "approved_tail_rId27",
-          "x": 12.166665450000004,
+          "x": 16.5,
           "y": 0.0,
-          "width": 48.66666909999999,
-          "height": 65.04882954352112,
+          "width": 40.0,
+          "height": 53.46478873239437,
           "orientation": "PORTRAIT",
           "image_count": 1,
           "layout_mode": "SINGLE_PORTRAIT",
@@ -5983,28 +6083,42 @@
           },
           "fit_mode": "COVER",
           "crop_or_stretch_policy": {
-            "crop_fraction": 1.1102230246251565e-16,
+            "crop_fraction": 0,
             "stretch_limit": 1,
             "crop_review_required": false,
             "protected_content": false
           },
           "graphic": {
-            "x": 12.16666545,
+            "x": 16.5,
             "y": 0.0,
-            "width": 48.6666691,
-            "height": 65.04882954352112
+            "width": 40.0,
+            "height": 53.46478873239437
           }
         }
       ],
       "captions": [],
-      "height": 65.04882954352112,
+      "height": 53.46478873239437,
       "visual_review": "REQUIRED",
       "min_effective_ppi": 150.0,
-      "exceptions": [],
+      "exceptions": [
+        {
+          "reason": "Compact complete portrait poster to 40mm to avoid an isolated final activity page; no crop or distortion",
+          "overrides": {
+            "single_portrait_width_ratio": 0.547945205479452
+          }
+        }
+      ],
       "kind": "FIVE_MODE",
       "width": 73,
       "caption_block": null,
-      "caption_validation": "Native story caption measured separately from the anchored image-only group"
+      "caption_validation": "Native story caption measured separately from the anchored image-only group",
+      "inline_clearance_mm": 0
     }
-  }
+  },
+  "activity_image_keeps": [
+    {
+      "paragraph": "early_p162",
+      "image": "early_g23"
+    }
+  ]
 }

@@ -1,0 +1,99 @@
+{
+  "version": "HISTORY_DENSITY_FOOTNOTES_R3",
+  "status": "VALIDATED_NOT_FROZEN",
+  "date": "2026-10-30",
+  "user_request": "尽可能消除会史和高校签名处的无效留白；允许局部调整、压缩、裁剪；脚注横跨两栏",
+  "final_names": {
+    "name": "余淼",
+    "role": "2017级会长",
+    "other_name": "楚休红"
+  },
+  "history_pages": 18,
+  "reader_pages": 88,
+  "interior_pages": 86,
+  "density_evidence": {
+    "status": "PASS",
+    "eternity_event_and_poster_page": 21,
+    "signature_event_photo_gallery_page": 22,
+    "signature_prelude_column_end_difference_mm": 6.697450443581272,
+    "last_page_media_groups": [
+      "approved_tail_g60",
+      "approved_tail_g61",
+      "approved_tail_g62"
+    ],
+    "main_prose_chronology": "EXACT",
+    "picture_sequence": "EXACT",
+    "all_source_ids": 427,
+    "gallery_caption_move": [
+      {
+        "ids": [
+          "early_g29",
+          "early_p191"
+        ],
+        "after": "early_p201",
+        "reason": "User requested removal of signature-area void: photograph and existing quoted greetings share the two-column prelude, with the intact nine-image gallery immediately below; image sequence and all main prose remain in original order"
+      }
+    ],
+    "inline_image_leading": "Actual DOM leading equals image-group height; paragraph spaceAfter supplies the separate gap",
+    "footnotes": "All 3 native notes span both columns; text and automatic numbers exact",
+    "visual": "PASS",
+    "visual_scope": "All 18 History pages inspected in overview; full-size signature page 22, Eternity page 21 and preceding page 20; source and native geometry independently checked; native full-width footnotes visually inspected on logical 14,17,21; final page 31 has no isolated poster",
+    "previous_R2_prelude_column_end_difference_mm": 48.57429593323053
+  },
+  "footnotes": [
+    {
+      "id": "2",
+      "page": 21,
+      "span_across_columns": true,
+      "max_line_width_mm": 122.417290920681,
+      "automatic_number_marker": true
+    },
+    {
+      "id": "1",
+      "page": 17,
+      "span_across_columns": true,
+      "max_line_width_mm": 150.534459262424,
+      "automatic_number_marker": true
+    },
+    {
+      "id": "0",
+      "page": 14,
+      "span_across_columns": true,
+      "max_line_width_mm": 151.95532430013,
+      "automatic_number_marker": true
+    }
+  ],
+  "source_sha256": "be5eb4f24a5257b2c4a139a07e8d3504ba858b28d03b1649ed4846d15ea7378e",
+  "source_preservation": {
+    "blocks": 427,
+    "original_images": 105,
+    "main_prose_order": "EXACT",
+    "picture_order": "EXACT",
+    "caption_display": "R2 retained: consecutive left/right lines, 11pt gap after whole caption",
+    "signatures": "All 9 equal frames; only lower-left early_rId56 stretched",
+    "old_approved_tail": "2020–2021 onward retained verbatim"
+  },
+  "unchanged_book_pages": 70,
+  "tests": {
+    "source_preservation": 5,
+    "geometry": 4,
+    "density": 3,
+    "native_history": "PASS: no overset, no missing links, exact text, full-width notes",
+    "native_assembly": "PASS: automatic TOC, chapters recto, 88 pages",
+    "component_text": "PASS: all 15 imported components",
+    "other_pages": "Pixel-identical to R2"
+  },
+  "frozen_renderers": "Unmodified",
+  "delivery": "../交付文件/会史新版排版与总装_20261030_留白脚注R3",
+  "artifacts": {
+    "SHAN_HISTORY_V2.pdf": "12d3c77c6728f0140415534370674fe4eb1bbfdc065ad9f50b8f23b9f6a80240",
+    "SHAN_EBOOK_HISTORY_V2.pdf": "5502866af05e75e5fc859826cea83a11506d1fbf91dd55b9c1176a66562d9eae",
+    "SHAN_HISTORY_V2.indd": "13a0f8d08979b8dca1782ef2d667f6b713ced4eecfdace2fb035cc51961e1d5b",
+    "SHAN_REVIEW_HISTORY_V2.indd": "3ae6d42e08afb79b5216bda7593ba29614ea1f896cac826df31f05a6c90dfa82"
+  },
+  "limits": [
+    "Article-ending whitespace retained where the last intact event/image unit cannot fill a full page",
+    "PDF is electronic review output; existing front cover plus C2 blank retained; no approved back cover or final press imposition",
+    "INDD links depend on the existing project assets"
+  ]
+}

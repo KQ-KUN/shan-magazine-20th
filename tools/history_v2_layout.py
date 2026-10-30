@@ -12,6 +12,17 @@ def read(p):return json.loads((ROOT/p).read_text('utf-8-sig'))
 def write(p,d):(ROOT/p).write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n','utf-8')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 
+def display_blocks(data,layout):
+ blocks=list(data['blocks'])
+ for move in layout.get('flow_moves',[]):
+  lookup={b['id']:b for b in blocks};assert all(k in lookup for k in move['ids']) and move['after'] in lookup
+  result=[]
+  for block in blocks:
+   if block['id'] not in move['ids']:result.append(block)
+   if block['id']==move['after']:result.extend(lookup[k] for k in move['ids'])
+  assert len(result)==len(blocks) and len({b['id'] for b in result})==len(blocks);blocks=result
+ return blocks
+
 def prepare():
  data=read('content/HISTORY_V2_IMPORT.json');groups={};captions={};byid={b['id']:b for b in data['blocks']}
  for b in data['blocks']:
@@ -56,6 +67,10 @@ def prepare():
   for a in items:
    c=a['crop'];info=inspected[a['id']];images.append({'id':a['id'],'width_px':info['width_px']*(1-c['l']-c['r']),'height_px':info['height_px']*(1-c['t']-c['b'])})
   request={'column_width':73,'available_height':110,'gap':2,'images':images}
+  if b['id']=='early_g18':request.update(defaults={'single_landscape_width_ratio':44/73},override_reason='Compact simple association emblem from 73mm to 44mm; no crop or distortion; free space for the following event and poster')
+  if b['id']=='early_g23':request.update(defaults={'single_landscape_width_ratio':58/73},override_reason='User authorized compact poster: preserve full image at 58mm width so the Eternity salon poster can follow its activity paragraph on the preceding page')
+  if b['id']=='early_g28':request.update(defaults={'single_landscape_width_ratio':58/73},override_reason='Compact signature-event group photograph to balance the two-column prelude above its nine-image gallery; preserve full photo')
+  if b['id'] in ('approved_tail_g59','approved_tail_g62'):request.update(defaults={'single_portrait_width_ratio':40/73},override_reason='Compact complete portrait poster to 40mm to avoid an isolated final activity page; no crop or distortion')
   # These text-led mixed units protect the complete portrait poster. Its paired
   # photograph takes the proportional crop; no source pixels are rewritten.
   if len(items)==2 and (images[0]['width_px']>=images[0]['height_px'])!=(images[1]['width_px']>=images[1]['height_px']):
@@ -74,7 +89,10 @@ def prepare():
   plan.update(kind='FIVE_MODE',width=73,caption_block=b['caption_block'],caption_validation='Native story caption measured separately from the anchored image-only group')
   groups[b['id']]=plan
   if b['id']=='approved_tail_g58':plan['height_override_reason']='Bounded tail treatment: remove upper blank wall from award-banner photo; keep default 2/3-column width and final activity text/poster on the same page'
- result={'version':'HISTORY_V2_CAPTION_SPACING_R2','skill_file':str(SKILL/'SKILL.md'),'calculator_sha256':sha(SKILL/'scripts/image_layout.py'),'source_import_sha256':sha(ROOT/'content/HISTORY_V2_IMPORT.json'),'column_width_mm':73,'image_gap_mm':2,'caption_body_gap_mm':11*25.4/72,'crop_authorization':'User explicitly confirmed: 允许裁切边缘，优先保持等宽等高','caption_separation':'left/right descriptions on consecutive lines; one 11pt caption-leading blank after complete caption before body','captions':captions,'groups':groups}
+ result={'version':'HISTORY_V2_DENSITY_FOOTNOTES_R3','skill_file':str(SKILL/'SKILL.md'),'calculator_sha256':sha(SKILL/'scripts/image_layout.py'),'source_import_sha256':sha(ROOT/'content/HISTORY_V2_IMPORT.json'),'column_width_mm':73,'image_gap_mm':2,'caption_body_gap_mm':11*25.4/72,'footnotes_across_columns':True,'flow_moves':[{'ids':['early_g29','early_p191'],'after':'early_p201','reason':'User requested removal of signature-area void: photograph and existing quoted greetings share the two-column prelude, with the intact nine-image gallery immediately below; image sequence and all main prose remain in original order'}],'crop_authorization':'User explicitly confirmed: 允许裁切边缘，优先保持等宽等高','caption_separation':'left/right descriptions on consecutive lines; one 11pt caption-leading blank after complete caption before body','captions':captions,'groups':groups}
+ result['activity_image_keeps']=[{'paragraph':'early_p162','image':'early_g23'}]
+ # Paragraph spaceAfter already supplies the image-to-caption/body gap.
+ for group in groups.values():group['inline_clearance_mm']=0
  write('content/HISTORY_V2_LAYOUT.json',result)
  tokens=read('spec/HISTORY_V2_TOKENS.json')
  for name,d in tokens['paragraph_styles'].items():
@@ -99,7 +117,8 @@ def validate():
  layout=read('content/HISTORY_V2_LAYOUT.json');runtime=read('exports/history_v2/HISTORY_RUNTIME.json');byid={i['id']:i for i in runtime['images']};results=[]
  for key,plan in layout['groups'].items():
   records=[byid[f['image_id']] for f in plan['frames']];origin=records[0]['column_origin_x_mm'];oy=min(r['frame_mm']['y'] for r in records)
-  actual={'origin':'InDesign_DOM','units':'mm','items':[],'captions':[],'anchored':True,'reserved_height_mm':records[0]['anchor_height_mm']}
+  assert abs(records[0]['reserved_line_height_mm']-records[0]['anchor_height_mm']-plan['inline_clearance_mm'])<.1,(key,'inline leading reservation')
+  actual={'origin':'InDesign_DOM','units':'mm','items':[],'captions':[],'anchored':True,'reserved_height_mm':records[0]['reserved_line_height_mm']-plan['inline_clearance_mm']}
   for f,r in zip(plan['frames'],records):
    box=lambda key:{**r[key],'x':r[key]['x']-origin,'y':r[key]['y']-oy}
    actual['items'].append({'image_id':r['id'],'frame':box('frame_mm'),'graphic':box('graphic_mm'),'source_path':str((ROOT/r['linked_file']).resolve()),'page_id':r['page_id'],'link_missing':r['link_status']!='NORMAL','effective_ppi':r['effective_ppi'],'rotation':r['rotation'],'shear':r['shear']})

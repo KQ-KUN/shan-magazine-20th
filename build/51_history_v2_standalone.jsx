@@ -27,6 +27,11 @@
   data.layout=a.read(root,'content/HISTORY_V2_LAYOUT.json');
   for(var bi=0;bi<data.blocks.length;bi+=1){if(data.blocks[bi].type==='media'){data.blocks[bi].geometry=data.layout.groups[data.blocks[bi].id];}}
   var context={warnings:[],runtime:runtime},request=a.read(root,'exports/history_v2/REQUEST.json'),result;
+  if(request.inspect_only){
+   for(var si=0;si<app.documents.length;si+=1){var existing=app.documents[si].getElements()[0],ep='';try{ep=existing.fullName.fsName.replace(/\\/g,'/');}catch(unsaved){}if(ep===out+'/SHAN_HISTORY_V2.indd'){doc=existing;break;}}
+   if(!doc){doc=app.open(File(out+'/SHAN_HISTORY_V2.indd'));}
+   a.write(out+'/DENSITY_DIAGNOSTIC.json',a.json(SHAN.historyV2.inspectLayout(doc,data)));return 'PASS read-only density diagnostic';
+  }
   if(request.caption_revision){
    var baselinePath=root+'/'+request.caption_baseline_file;
    for(var ci=0;ci<app.documents.length;ci+=1){var candidate=app.documents[ci].getElements()[0],path='';try{path=candidate.fullName.fsName.replace(/\\/g,'/');}catch(unsaved){}if(path===baselinePath){doc=candidate;break;}}

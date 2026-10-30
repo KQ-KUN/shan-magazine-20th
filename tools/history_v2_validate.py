@@ -26,11 +26,15 @@ def render(file,folder,scale=1.7):
 def standalone():
  from history_v2_layout import validate as validate_layout
  validate_layout()
- data=read('content/HISTORY_V2_IMPORT.json');r=read('exports/history_v2/HISTORY_RUNTIME.json');pdf=OUT/'SHAN_HISTORY_V2.pdf'
+ from history_v2_layout import display_blocks
+ data=read('content/HISTORY_V2_IMPORT.json');layout=read('content/HISTORY_V2_LAYOUT.json');view=display_blocks(data,layout);r=read('exports/history_v2/HISTORY_RUNTIME.json');pdf=OUT/'SHAN_HISTORY_V2.pdf'
  assert r['status']=='PASS' and not r['overset'] and len(r['images'])==105 and len(r['footnotes'])==3
  assert r['source_sha256']==data['source_sha256']==digest(ROOT/data['source'])
  assert len(r['paragraphs'])==len(data['blocks'])==427
- for block,actual in zip(data['blocks'],r['paragraphs']):assert actual['text']==block.get('text','') and actual['id']==block['id']
+ for block,actual in zip(view,r['paragraphs']):assert actual['text']==block.get('text','') and actual['id']==block['id']
+ prose=lambda blocks:[b['id'] for b in blocks if b['type']=='text' and not b.get('style','').startswith('P_History_Caption')]
+ assert prose(data['blocks'])==prose(view),'Main prose chronology changed'
+ assert [a['id'] for b in data['blocks'] for a in b.get('items',[])]==[a['id'] for b in view for a in b.get('items',[])],'Original picture sequence changed'
  assert [x['text'] for x in r['years']]==[b['text'] for b in data['blocks'] if b.get('style')=='P_History_Year']
  assert [x['text'] for x in r['years']].count('2020年——2021年')==1
  byid={b['id']:b for b in data['blocks']};rows=[]
@@ -42,14 +46,24 @@ def standalone():
   rows.append(dict(image_id=img['id'],file=img['file'],linked_file=img['linked_file'],year=block['year'],source_paragraph=block['source_paragraph'],source_caption=byid[img['caption_block']]['text'] if img['caption_block'] else '',displayed_caption=displayed,related_activity=byid[block['description_block']]['text'] if block.get('description_block') else '',page=img['page'],caption_page=img['caption_page'],effective_ppi=round(ppi,1),links=img['link_status'],crop=json.dumps(asset['crop'])))
  for fn in r['footnotes']:
   expected=next(n for n in byid[fn['block']]['footnotes'] if n['source_id']==fn['source_id']);assert fn['text']==expected['text'] and fn['automatic_number_marker'] and fn['automatic_number_prefix_codes'][0]==4
+  if layout.get('footnotes_across_columns'):assert fn['span_across_columns'] and fn['max_line_width_mm']>76
  current='\n'.join(p['text'] for p in r['paragraphs']);assert current.count('2017级会长：余淼')==1 and '于淼' not in current and '楚修红' not in current
+ if layout.get('version')=='HISTORY_V2_DENSITY_FOOTNOTES_R3':
+  paras={p['id']:p for p in r['paragraphs']};groups={}
+  for img in r['images']:groups.setdefault(img['block'],[]).append(img)
+  assert paras['early_p162']['page']==groups['early_g23'][0]['page'],'Eternity event/poster separated'
+  assert paras['early_p188']['page']==groups['early_g28'][0]['page']==groups['early_g29'][0]['page'],'Signature event/gallery split'
+  prelude_imbalance=abs(paras['early_p190']['last_baseline']-paras['early_p201']['last_baseline'])*25.4/72
+  assert prelude_imbalance<30,('Signature prelude still leaves a large column void',prelude_imbalance)
+  last_groups={i['block'] for i in r['images'] if i['page']==13+r['pages']};assert len(last_groups)>1,'Isolated final poster page'
+  write(Path('DENSITY_ACCEPTANCE.json'),{'status':'PASS','eternity_event_and_poster_page':paras['early_p162']['page'],'signature_event_photo_gallery_page':paras['early_p188']['page'],'signature_prelude_column_end_difference_mm':prelude_imbalance,'last_page_media_groups':sorted(last_groups),'main_prose_chronology':'EXACT','picture_sequence':'EXACT','all_source_ids':427,'gallery_caption_move':layout['flow_moves'],'inline_image_leading':'Actual DOM leading equals image-group height; paragraph spaceAfter supplies the separate gap','footnotes':'All 3 native notes span both columns; text and automatic numbers exact','visual':'PENDING_AGENT_INSPECTION'})
  with (OUT/'IMAGE_CAPTION_CHECK.csv').open('w',encoding='utf-8-sig',newline='') as f:w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
  reader=PdfReader(pdf);assert len(reader.pages)==r['pages']
  for p in reader.pages:assert abs(float(p.trimbox.width)*25.4/72-185)<.01 and abs(float(p.trimbox.height)*25.4/72-260)<.01
  text=''.join(''.join(p.extract_text().split()) for p in reader.pages)
  assert '于淼' not in text and '楚修红' not in text and '2017级会长：余淼' in text
  folder=OUT/'review_final'/digest(pdf)[:12];pages,contacts=render(pdf,folder)
- write(Path('HISTORY_CONTENT_INTEGRITY.json'),{'status':'PASS','source_sha256':data['source_sha256'],'native_pdf_sha256':digest(pdf),'pages':pages,'old_history_pages':7,'audited_prefix_images':94,'approved_tail_images':11,'exact_source_blocks':427,'native_footnotes':[dict(id=n['source_id'],text=n['text'],automatic_marker=n['automatic_number_marker'],page=n['anchor_page']) for n in r['footnotes']],'year_order':'EXACT; boundary 2020—2021 appears once','name_checks':'余淼／2017级会长；楚休红；no 于淼/楚修红 in current display','body_text_normalization':'NONE; generated native anchor/footnote markers only excluded from exact comparison','minimum_effective_ppi':min(row['effective_ppi'] for row in rows),'preview_directory':str(folder.relative_to(ROOT)),'contacts':contacts,'visual':'PENDING_AGENT_INSPECTION'})
+ write(Path('HISTORY_CONTENT_INTEGRITY.json'),{'status':'PASS','source_sha256':data['source_sha256'],'native_pdf_sha256':digest(pdf),'pages':pages,'old_history_pages':7,'audited_prefix_images':94,'approved_tail_images':11,'exact_source_blocks':427,'native_footnotes':[dict(id=n['source_id'],text=n['text'],automatic_marker=n['automatic_number_marker'],page=n['anchor_page'],span_across_columns=n.get('span_across_columns'),max_line_width_mm=n.get('max_line_width_mm')) for n in r['footnotes']],'year_order':'EXACT; boundary 2020—2021 appears once','name_checks':'余淼／2017级会长；楚休红；no 于淼/楚修红 in current display','body_text_normalization':'NONE; generated native anchor/footnote markers only excluded from exact comparison','minimum_effective_ppi':min(row['effective_ppi'] for row in rows),'preview_directory':str(folder.relative_to(ROOT)),'contacts':contacts,'visual':'PENDING_AGENT_INSPECTION'})
  integrity=read('exports/history_v2/HISTORY_CONTENT_INTEGRITY.json');integrity['body_text_normalization']='Body and footnotes exact; only 32 mapped left/right caption semicolon separators display as one forced line break; blank line is after the complete caption';integrity['geometry_report']='IMAGE_GEOMETRY_CHECK.json';integrity['image_sources']='All 105 originals unchanged; 6 traceable zero-alpha trims and 2 lossless EXIF derivatives (orientation 8 transposed; invalid orientation 0 leaves pixels unchanged)';write(Path('HISTORY_CONTENT_INTEGRITY.json'),integrity)
  print('PASS standalone:',pages,'pages; 105 linked images; 3 original native footnotes with automatic markers; all 427 blocks exact')
 

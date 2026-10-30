@@ -11,7 +11,7 @@ class ImageRevision(unittest.TestCase):
    if group['kind']!='FIVE_MODE':continue
    modes.add(group['layout_mode']);frames=group['frames'];a=frames[0]
    if len(frames)==1:
-    self.assertAlmostEqual(a['width'],73 if a['orientation']=='LANDSCAPE' else 73*0.6666667)
+    self.assertAlmostEqual(a['width'],73*group['defaults']['single_'+a['orientation'].lower()+'_width_ratio'])
    else:
     b=frames[1];self.assertEqual(a['height'],b['height']);self.assertEqual(a['y'],b['y']);self.assertAlmostEqual(b['x']-a['x']-a['width'],2)
     if group['layout_mode']=='PAIR_MIXED':self.assertAlmostEqual(max(a['width'],b['width'])/min(a['width'],b['width']),2)
