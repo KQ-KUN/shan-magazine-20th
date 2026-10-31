@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "pages": 25,
+  "source_blocks": 590,
+  "images": 170,
+  "native_full_width_footnotes": 5,
+  "media_moves": 66,
+  "gaps": {
+    "before": {
+      "pages": 26,
+      "nonterminal_columns": 50,
+      "sum_column_end_gap_mm": 889.1,
+      "maximum_column_end_gap_mm": 60.71,
+      "columns_over_20mm": 15
+    },
+    "after": {
+      "pages": 25,
+      "nonterminal_columns": 48,
+      "sum_column_end_gap_mm": 279.83,
+      "maximum_column_end_gap_mm": 16.75,
+      "columns_over_20mm": 0
+    }
+  },
+  "pdf_sha256": "1e81409b79f42547c60034e4a71c93bdce743e73d1f8fc86f611560c66d33fc1",
+  "source_word_sha256": "f06764bb90c2b261c34f95517f2c3f8b29c63c7b8f76195818a9cf1a5fec76cc",
+  "delivery": "D:\\HuaweiMoveData\\Users\\22974\\Documents\\ChatGPT\\社刊\\交付文件\\会史文字填白重排_20261031",
+  "scope": "HISTORY_ONLY_NO_BOOK_REBUILD"
+}

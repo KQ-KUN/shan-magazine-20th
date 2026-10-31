@@ -1,7 +1,8 @@
-﻿param([ValidateSet('word','standalone','assembly','folios','geometry')][string]$Phase='word',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
+﻿param([ValidateSet('word','standalone','assembly','folios','geometry','reflow','reflow-inspect','reflow-finalize','reflow-refine','reflow-balance')][string]$Phase='word',[string]$ProjectRoot=(Join-Path $PSScriptRoot '..'))
 $ErrorActionPreference='Stop'
 $historyRoot=[IO.Path]::GetFullPath($ProjectRoot).Replace('\','/')
 $historyOut=Join-Path $historyRoot 'exports/history_full'
+if($Phase -like 'reflow*'){$historyOut=Join-Path $historyRoot 'exports/history_reflow'}
 New-Item -ItemType Directory -Force -Path $historyOut | Out-Null
 if($Phase -eq 'word'){
  $historyWord=$null;$historyDoc=$null
@@ -21,15 +22,16 @@ if($Phase -eq 'word'){
  }finally{if($null -ne $historyDoc){$historyDoc.Close(0)};if($null -ne $historyWord){$historyWord.Quit()}}
  exit
 }
-$historyBuild=if($Phase -in @('standalone','resume','captions','inspect','geometry')){'54_history_full_standalone.jsx'}elseif($Phase -eq 'folios'){'56_history_full_folios.jsx'}else{'55_history_full_assembly.jsx'}
-if($Phase -in @('standalone','resume','captions','inspect','geometry')){
- [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"geometry_revision":'+($Phase -eq 'geometry').ToString().ToLower()+',"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+',"caption_revision":'+($Phase -eq 'captions').ToString().ToLower()+',"inspect_only":'+($Phase -eq 'inspect').ToString().ToLower()+',"caption_baseline_file":"exports/history_full/CAPTION_BASELINE_NATIVE.indd"}'),[Text.UTF8Encoding]::new($false))
+$historyBuild=if($Phase -like 'reflow*'){'57_history_reflow_standalone.jsx'}elseif($Phase -in @('standalone','resume','captions','inspect','geometry','reflow','reflow-inspect','reflow-finalize','reflow-refine','reflow-balance')){'54_history_full_standalone.jsx'}elseif($Phase -eq 'folios'){'56_history_full_folios.jsx'}else{'55_history_full_assembly.jsx'}
+if($Phase -in @('standalone','resume','captions','inspect','geometry','reflow','reflow-inspect','reflow-finalize','reflow-refine','reflow-balance')){
+ [IO.File]::WriteAllText((Join-Path $historyOut 'REQUEST.json'),('{"balance_ending":'+($Phase -eq 'reflow-balance').ToString().ToLower()+',"refine_current":'+($Phase -eq 'reflow-refine').ToString().ToLower()+',"finalize_only":'+($Phase -eq 'reflow-finalize').ToString().ToLower()+',"geometry_revision":'+($Phase -eq 'geometry').ToString().ToLower()+',"resume_only":'+($Phase -eq 'resume').ToString().ToLower()+',"caption_revision":'+($Phase -eq 'captions').ToString().ToLower()+',"inspect_only":'+($Phase -in @('inspect','reflow-inspect')).ToString().ToLower()+',"caption_baseline_file":"exports/history_full/CAPTION_BASELINE_NATIVE.indd"}'),[Text.UTF8Encoding]::new($false))
  $historyImport=Join-Path $historyRoot 'content/HISTORY_FULL_IMPORT.json'
  $historyData=Get-Content -LiteralPath $historyImport -Raw -Encoding UTF8 | ConvertFrom-Json
  $historySource=Join-Path $historyRoot $historyData.source
  $historyHash=(Get-FileHash -LiteralPath $historySource -Algorithm SHA256).Hash.ToLower()
  if($historyHash -ne $historyData.source_sha256){throw 'Revised DOCX hash mismatch before dispatch'}
- $historyGuard=@{source=$historyData.source;sha256=$historyHash;bytes=(Get-Item -LiteralPath $historySource).Length;import_sha256=(Get-FileHash -LiteralPath $historyImport -Algorithm SHA256).Hash.ToLower();layout_sha256=(Get-FileHash -LiteralPath (Join-Path $historyRoot 'content/HISTORY_FULL_LAYOUT.json') -Algorithm SHA256).Hash.ToLower();verified_at=(Get-Date -Format o)}
+ $historyLayout=if($Phase -like 'reflow*'){'content/HISTORY_REFLOW_LAYOUT.json'}else{'content/HISTORY_FULL_LAYOUT.json'}
+ $historyGuard=@{source=$historyData.source;sha256=$historyHash;bytes=(Get-Item -LiteralPath $historySource).Length;import_sha256=(Get-FileHash -LiteralPath $historyImport -Algorithm SHA256).Hash.ToLower();layout_sha256=(Get-FileHash -LiteralPath (Join-Path $historyRoot $historyLayout) -Algorithm SHA256).Hash.ToLower();verified_at=(Get-Date -Format o)}
  [IO.File]::WriteAllText((Join-Path $historyOut 'SOURCE_HOST_GUARD.json'),($historyGuard | ConvertTo-Json),[Text.UTF8Encoding]::new($false))
 }
 if($Phase -eq 'assembly'){

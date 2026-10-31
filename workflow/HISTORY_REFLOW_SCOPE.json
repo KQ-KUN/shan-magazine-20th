@@ -1,0 +1,17 @@
+{
+  "task": "Skill-first text-first whitespace reflow; History only",
+  "authorization": "User permits changes to media/body relative positions; preserve copy, captions, names and footnote references; no full-book rebuild",
+  "allowlist": [
+    "modules/history_reflow.jsx",
+    "build/57_history_reflow_standalone.jsx",
+    "tools/run_history_full.ps1",
+    "tools/history_reflow_*.py",
+    "content/HISTORY_REFLOW_LAYOUT.json",
+    "workflow/HISTORY_REFLOW*.json",
+    "tests/test_history_reflow.py"
+  ],
+  "baseline_commit": "64e94b6",
+  "baseline_history": "exports/history_full/SHAN_HISTORY_FULL.indd",
+  "source_unchanged": "content/HISTORY_FULL_IMPORT.json",
+  "output": "exports/history_reflow and ../交付文件/会史文字填白重排_20261031"
+}
