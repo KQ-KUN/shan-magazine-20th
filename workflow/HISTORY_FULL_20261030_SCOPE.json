@@ -1,0 +1,10 @@
+{
+  "task": "2020年以后新版会史 Word 审计修订与社刊排版总装",
+  "authority": "用户2026-10-30明确授权：先进行word审计，修改题注，检查语病等事务，再制作成社刊",
+  "confirmed": {"2026_recruitment_poster_designer": "于笑涵", "November_2026_records": "原文不变", "names": ["余淼／2017级会长", "楚休红"]},
+  "preserve": ["此前审校至2019—2020年的文字和原始图片", "R3的图文规则、签名特例和跨栏脚注", "其他文章与冻结渲染器", "用户桌面原稿与此前交付"],
+  "allowlist": ["tools/history_full_*.py", "tools/run_history_full.ps1", "build/54_history_full_standalone.jsx", "build/55_history_full_assembly.jsx", "build/56_history_full_folios.jsx", "content/HISTORY_FULL*.json", "spec/HISTORY_FULL_TOKENS.json", "assets/history_full/**", "assets/history_full_layout/**", "manuscripts/source/history/会史第二版_全篇审校_20261030.docx", "tests/test_history_full*.py", "workflow/HISTORY_FULL*.json"],
+  "frozen_baseline": "workflow/HISTORY_PROFILE_FACT_CORRECTION.json:frozen_scope_hashes",
+  "output": "exports/history_full and ../交付文件/会史全篇审校与社刊总装_20261030",
+  "git": "Only this task scope may be committed; external push needs existing explicit target authorization"
+}
