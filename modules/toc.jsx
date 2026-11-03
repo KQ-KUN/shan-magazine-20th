@@ -14,7 +14,7 @@ SHAN.toc = {
             if(c.kind==="chapter"){for(var j=0;j<sections.length;j+=1){if(sections[j].id===c.section_id){s=sections[j];}}this.check(s,"Unknown chapter "+c.id);index=s.display_index;}
             var title=s?s.cn:(meta.title || c.title),author=s?"":(meta.author || c.author || "");
             this.check(!this.contains(config.exclude_titles,title),"Deleted content entered TOC "+title);
-            this.check(c.kind!=="chapter" || r.start_page%2===1,"Chapter entry does not point to recto opener "+c.id);
+            this.check(c.kind!=="chapter" || manifest.chapter_start_policy==="DIGITAL_CONTINUOUS_ANY_SIDE" || r.start_page%2===1,"Chapter entry does not point to recto opener "+c.id);
             rows.push({component_id:c.id,kind:c.kind,title:title,author:author,display_index:index,
                 start_page:r.start_page,interior_page:r.start_page,printed_folio:r.start_page,review_pdf_page:r.start_page+2});
         }

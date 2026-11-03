@@ -1,0 +1,153 @@
+{
+  "digital": {
+    "file": "assets/cover/back/SHAN_BACK_COVER_DIGITAL_185x260.pdf",
+    "sha256": "bafbf70286013121d46405186dde47b58f0df8bf2ab785be9ff5563571e6c142",
+    "bytes": 2286543,
+    "pages": 1,
+    "rotation": 0,
+    "has_text": false,
+    "boxes_mm": {
+      "mediabox": [
+        0.0,
+        0.0,
+        184.99998,
+        260.00001
+      ],
+      "cropbox": [
+        0.0,
+        0.0,
+        184.99998,
+        260.00001
+      ],
+      "trimbox": [
+        0.0,
+        0.0,
+        184.99998,
+        260.00001
+      ],
+      "bleedbox": [
+        0.0,
+        0.0,
+        184.99998,
+        260.00001
+      ],
+      "artbox": [
+        0.0,
+        0.0,
+        184.99998,
+        260.00001
+      ]
+    },
+    "images": [
+      [
+        1056,
+        1490
+      ]
+    ],
+    "status": "APPROVED_FOR_DIGITAL",
+    "assembly_mode": "DIRECT_PDF_LINK_100_PERCENT",
+    "supersedes": "procedural back-cover prototype"
+  },
+  "print_candidate": {
+    "file": "assets/cover/back/PRINT_CANDIDATE/SHAN_BACK_COVER_PRINT_CANDIDATE_191x266_BLEED3.pdf",
+    "sha256": "fe0026168eb02cd0f9c271b5053b432e3f55e03a24cde98b03688287a2b163d5",
+    "bytes": 2286195,
+    "pages": 1,
+    "rotation": 0,
+    "has_text": false,
+    "boxes_mm": {
+      "mediabox": [
+        0.0,
+        0.0,
+        190.99999,
+        266.00001
+      ],
+      "cropbox": [
+        0.0,
+        0.0,
+        190.99999,
+        266.00001
+      ],
+      "trimbox": [
+        3.0,
+        3.0,
+        188.0,
+        263.0
+      ],
+      "bleedbox": [
+        0.0,
+        0.0,
+        190.99999,
+        266.00001
+      ],
+      "artbox": [
+        3.0,
+        3.0,
+        188.0,
+        263.0
+      ]
+    },
+    "images": [
+      [
+        1056,
+        1490
+      ]
+    ],
+    "status": "PRINT_CANDIDATE_NOT_APPROVED",
+    "effective_ppi": 140.4,
+    "icc": "PRINTER_PENDING",
+    "pdfx": "NOT_CERTIFIED",
+    "spine": "WIDTH_PENDING",
+    "cover_spread": "NOT_GENERATED"
+  },
+  "source": {
+    "file": "assets/cover/back/sources/USER_ORIGINAL_164559.pdf",
+    "sha256": "efd89de3f15bd9a246f1bdc17f06354bfd384dc6867fc05f0cd821e6d42c387e",
+    "bytes": 2293482,
+    "pages": 1,
+    "rotation": 0,
+    "has_text": false,
+    "boxes_mm": {
+      "mediabox": [
+        0.0,
+        2.68818,
+        279.4,
+        396.91733
+      ],
+      "cropbox": [
+        0.0,
+        2.68818,
+        279.4,
+        396.91733
+      ],
+      "trimbox": [
+        0.0,
+        2.68818,
+        279.4,
+        396.91733
+      ],
+      "bleedbox": [
+        0.0,
+        2.68818,
+        279.4,
+        396.91733
+      ],
+      "artbox": [
+        0.0,
+        2.68818,
+        279.4,
+        396.91733
+      ]
+    },
+    "images": [
+      [
+        1056,
+        1490
+      ]
+    ]
+  },
+  "front_cover": "assets/cover/SHAN_FRONT_COVER_EMBLEM_R1.pdf",
+  "front_cover_reason": "Current approved project cover retained; handoff FINAL path is superseded",
+  "cover_inside_front": "TRULY_BLANK",
+  "cover_inside_back": "TRULY_BLANK"
+}

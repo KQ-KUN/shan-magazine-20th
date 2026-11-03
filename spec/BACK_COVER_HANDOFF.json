@@ -1,0 +1,139 @@
+{
+  "project": "SHAN | 山东大学学生科幻协会二十周年纪念刊",
+  "package_revision": "back-cover-handoff-v1",
+  "finding": "User source PDFs visually identical and neither is natively sized for the publication",
+  "source_visuals_identical": true,
+  "selected_artwork_source": "sources/originals/USER_ORIGINAL_164559.pdf",
+  "role_mapping": {
+    "digital_back": "assets/cover/back/SHAN_BACK_COVER_DIGITAL_185x260.pdf",
+    "print_back_candidate": "assets/cover/back/SHAN_BACK_COVER_PRINT_CANDIDATE_191x266_BLEED3.pdf"
+  },
+  "print_status": "CANDIDATE_NOT_PRESS_APPROVED",
+  "known_risks": [
+    "Artwork has a raster image 1056x1490 px, effective ~140-145 PPI at finished size, not 300 PPI.",
+    "No printer-specific ICC/CMYK output intent or PDF/X validation has been established.",
+    "This is only an individual back cover, not a final back+spine+front spread.",
+    "Printer must supply spine width, binding, cover stock, color profile, and wrap template."
+  ],
+  "size_spec": {
+    "digital_trim_mm": [
+      185,
+      260
+    ],
+    "print_media_bleed_mm": [
+      191,
+      266
+    ],
+    "print_trim_mm": [
+      185,
+      260
+    ],
+    "bleed_mm": 3
+  },
+  "files": [
+    {
+      "file": "sources/originals/USER_ORIGINAL_164333.pdf",
+      "bytes": 2293482,
+      "sha256": "6d53656514dd4f64b2577b6402239cff6028dae695985e040bd20255298bd1a1",
+      "pages": 1,
+      "mediabox_mm": [
+        279.4,
+        394.229
+      ],
+      "trimbox_mm": [
+        279.4,
+        394.229
+      ],
+      "bleedbox_mm": [
+        279.4,
+        394.229
+      ],
+      "image_sizes": [
+        [
+          1056,
+          1490
+        ]
+      ],
+      "rotation": 0,
+      "has_text": false
+    },
+    {
+      "file": "sources/originals/USER_ORIGINAL_164559.pdf",
+      "bytes": 2293482,
+      "sha256": "efd89de3f15bd9a246f1bdc17f06354bfd384dc6867fc05f0cd821e6d42c387e",
+      "pages": 1,
+      "mediabox_mm": [
+        279.4,
+        394.229
+      ],
+      "trimbox_mm": [
+        279.4,
+        394.229
+      ],
+      "bleedbox_mm": [
+        279.4,
+        394.229
+      ],
+      "image_sizes": [
+        [
+          1056,
+          1490
+        ]
+      ],
+      "rotation": 0,
+      "has_text": false
+    },
+    {
+      "file": "assets/cover/back/SHAN_BACK_COVER_PRINT_CANDIDATE_191x266_BLEED3.pdf",
+      "bytes": 2286195,
+      "sha256": "fe0026168eb02cd0f9c271b5053b432e3f55e03a24cde98b03688287a2b163d5",
+      "pages": 1,
+      "mediabox_mm": [
+        191.0,
+        266.0
+      ],
+      "trimbox_mm": [
+        185.0,
+        260.0
+      ],
+      "bleedbox_mm": [
+        191.0,
+        266.0
+      ],
+      "image_sizes": [
+        [
+          1056,
+          1490
+        ]
+      ],
+      "rotation": 0,
+      "has_text": false
+    },
+    {
+      "file": "assets/cover/back/SHAN_BACK_COVER_DIGITAL_185x260.pdf",
+      "bytes": 2286543,
+      "sha256": "bafbf70286013121d46405186dde47b58f0df8bf2ab785be9ff5563571e6c142",
+      "pages": 1,
+      "mediabox_mm": [
+        185.0,
+        260.0
+      ],
+      "trimbox_mm": [
+        185.0,
+        260.0
+      ],
+      "bleedbox_mm": [
+        185.0,
+        260.0
+      ],
+      "image_sizes": [
+        [
+          1056,
+          1490
+        ]
+      ],
+      "rotation": 0,
+      "has_text": false
+    }
+  ]
+}

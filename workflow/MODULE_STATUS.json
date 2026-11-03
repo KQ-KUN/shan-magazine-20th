@@ -92,12 +92,23 @@
     "frontCover": {
       "status": "APPROVED",
       "sourceType": "EXTERNAL_ARTWORK",
-      "asset": "assets/cover/SHAN_FRONT_COVER_FINAL.pdf",
+      "asset": "assets/cover/SHAN_FRONT_COVER_EMBLEM_R1.pdf",
       "assemblyMode": "DIRECT_PDF_LINK",
       "jsxStatus": "SUPERSEDED_BY_EXTERNAL_ARTWORK"
     },
     "backCover": {
-      "status": "PENDING"
+      "status": "APPROVED_FOR_DIGITAL",
+      "sourceType": "EXTERNAL_ARTWORK",
+      "asset": "assets/cover/back/SHAN_BACK_COVER_DIGITAL_185x260.pdf",
+      "assemblyMode": "DIRECT_PDF_LINK",
+      "runtimeTested": true,
+      "printCandidate": {
+        "status": "PRINT_CANDIDATE_NOT_APPROVED",
+        "asset": "assets/cover/back/PRINT_CANDIDATE/SHAN_BACK_COVER_PRINT_CANDIDATE_191x266_BLEED3.pdf",
+        "effectivePpi": 140.4,
+        "spineWidth": "PENDING",
+        "printerProfile": "PENDING"
+      }
     },
     "spine": {
       "status": "WIDTH_PENDING"

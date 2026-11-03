@@ -1,0 +1,39 @@
+{
+  "authorization": "Digital back integration, print candidate registration, named whitespace fixes, copyright addition, native validation and GitHub commit/push",
+  "preserve_frozen_source_files": true,
+  "editable": [
+    "modules/back_cover.jsx",
+    "modules/publication_compact.jsx",
+    "modules/chapter_art.jsx",
+    "modules/print_book.jsx",
+    "modules/toc.jsx",
+    "build/62_back_cover_refine.jsx",
+    "build/63_back_cover_folios.jsx",
+    "build/64_back_cover_assembly.jsx",
+    "build/65_back_cover_reader.jsx",
+    "content/BACK_COVER_MANIFEST.json",
+    "content/EDITORIAL_TOC_RELEASE_DISPLAY.json",
+    "content/BACK_COVER_BOOK.json",
+    "content/BACK_COVER_ASSEMBLY_MANIFEST.json",
+    "spec/BACK_COVER_HANDOFF.json",
+    "spec/MESSAGES_COMPACT_TOKENS.json",
+    "spec/COVER_ARTWORK_STATUS.md",
+    "tasks/TASK_BACK_COVER_DIGITAL_PRINT.md",
+    "tools/back_cover_release.py",
+    "tools/run_back_cover.ps1",
+    "tools/verify_back_cover_release.py",
+    "tests/back_cover.test.cjs",
+    "tests/cover_system.test.cjs",
+    "workflow/BACK_COVER_ACCEPTANCE.json",
+    "workflow/BACK_COVER_RELEASE_SCOPE.json",
+    "workflow/MODULE_STATUS.json",
+    "assets/cover/back/SHAN_BACK_COVER_DIGITAL_185x260.pdf",
+    "assets/cover/back/PRINT_CANDIDATE/SHAN_BACK_COVER_PRINT_CANDIDATE_191x266_BLEED3.pdf",
+    "assets/cover/back/sources/USER_ORIGINAL_164559.pdf"
+  ],
+  "frozen_baseline_commit": "c408fbffc6702b82dfbd5ecab5a223991540d312",
+  "user_confirmed": {
+    "digital_chapters": "Remove colored fillers; allow chapter openers on either side",
+    "whitespace_copy": "Use following original paragraphs, no new copy"
+  }
+}

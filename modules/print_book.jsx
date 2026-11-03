@@ -30,7 +30,7 @@ SHAN.printBook = {
     auditPages: function(doc,allowBlank){
         var i,j,page,links=doc.links;
         for(i=0;i<doc.pages.length;i+=1){page=doc.pages[i];this.check(SHAN.assemblyV0.side(page)===(i%2?"LEFT_HAND":"RIGHT_HAND"),"Physical page parity "+(i+1));
-            if(page.label==="COVER_INSIDE_FRONT_BLANK"){this.check(allowBlank && page.pageItems.length===0,"C2 not blank");}
+            if(page.label==="COVER_INSIDE_FRONT_BLANK" || page.label==="COVER_INSIDE_BACK_BLANK" || page.label==="EBOOK_TERMINAL_PARITY_BLANK"){this.check((allowBlank || page.label==="EBOOK_TERMINAL_PARITY_BLANK") && page.pageItems.length===0 && page.appliedMaster===null,"Intentional blank contains content");}
             else{this.check(page.pageItems.length>0,"Unexpected blank "+(i+1));}
             for(j=0;j<page.textFrames.length;j+=1){this.check(!page.textFrames[j].overflows,"Overset "+page.textFrames[j].label);}
         }
@@ -87,12 +87,13 @@ SHAN.printBook = {
         var plan=a.read(root,runtime.planPath || "content/PRINT_BOOK_MANIFEST.json"),baseline=a.read(root,plan.baseline),manifest=a.read(root,plan.source_plan);
         var out=root+"/"+(plan.output || "exports/print_v2"),version=plan.output_version || "V2";
         var t=a.read(root,plan.section_tokens),base=a.read(root,"spec/VISUAL_TOKENS.json"),sections=a.read(root,"spec/CONTENT_MANIFEST.json").sections;
+        if(plan.digital_continuous){t.allow_verso_openers=true;}
         var inputs=a.read(root,(plan.output || "exports/print_v2")+"/PRINT_COMPONENT_INPUTS.json"),byId={},i,j,c,entry,page,file,section,next=1;
         this.check(inputs.status==="PASS" && inputs.source_components_untouched,"Invalid production copies");
         for(i=0;i<inputs.components.length;i+=1){entry=inputs.components[i];byId[entry.id]=entry;}
         this.check(manifest.interior.length===baseline.components.length,"Component count changed");
         var doc=a.fresh({document:null},1),review,report={status:"RUNNING",binding_mode:plan.binding_mode,cover_pages:plan.cover_pages,
-            cover_artwork_pages_supplied:plan.cover_artwork_pages_supplied,reader_cover_pages:2,components:[],intentional_transition_pages:[],
+            cover_artwork_pages_supplied:plan.cover_artwork_pages_supplied,reader_cover_pages:plan.digital_back?4:2,components:[],intentional_transition_pages:[],
             openers:[],physical_pages:[],overset:false,missing_links:false,frozen_scope_changed:false};
         runtime.document=doc;runtime.report=report;
         for(i=0;i<manifest.interior.length;i+=1){
@@ -120,6 +121,7 @@ SHAN.printBook = {
             report.components.push({id:c.id,kind:c.kind,start_page:Number(doc.pages[next-1].name),end_page:Number(doc.pages[next+entry.page_count-2].name),page_count:entry.page_count,status:entry.status,
                 source_sha256:entry.sha256,production_sha256:(c.kind==="chapter" || c.kind==="toc" || c.kind==="editorial_toc")?null:byId[c.id].sha256});next+=entry.page_count;
         }
+        if(baseline.terminal_parity_blank){var pad=a.page(doc,"EBOOK_TERMINAL_PARITY_BLANK");this.check(pad.pageItems.length===0,"Terminal parity blank has content");next+=1;}
         this.check(doc.pages.length===baseline.interior_pages && next-1===baseline.interior_pages,"Additional interior pages");
         this.check(report.intentional_transition_pages.length===baseline.parity_transitions.length,"Additional transitions");
         for(i=0;i<baseline.parity_transitions.length;i+=1){this.check(report.intentional_transition_pages[i].page===baseline.parity_transitions[i].page && report.intentional_transition_pages[i].before===baseline.parity_transitions[i].before,"Wrong transition replacement");}
@@ -130,11 +132,11 @@ SHAN.printBook = {
             this.check(combinedRecord && combinedRecord.page_count===1,"Combined editorial/contents requires exactly one page");
             var combinedPage=doc.pages[combinedRecord.start_page-1],combinedConfig=a.read(root,plan.toc_manifest);
             var combinedData=SHAN.toc.entries(manifest,{status:"PASS",components:report.components},combinedConfig,sections);
-            var combined=SHAN.editorialToc.render(doc,combinedPage,combinedData,a.read(root,"spec/EDITORIAL_TOC_TOKENS.json"),a.read(root,"content/EDITORIAL_TOC_DISPLAY.json"),root);
+            var combined=SHAN.editorialToc.render(doc,combinedPage,combinedData,a.read(root,"spec/EDITORIAL_TOC_TOKENS.json"),a.read(root,plan.editorial_display || "content/EDITORIAL_TOC_DISPLAY.json"),root);
             report.editorial_toc=combined;report.credits_page={interior_page:combinedRecord.start_page,printed_folio:combinedRecord.start_page,review_pdf_page:combinedRecord.start_page+2,side:a.side(combinedPage)};
             report.toc_page={interior_page:combinedRecord.start_page,printed_folio:combinedRecord.start_page,review_pdf_page:combinedRecord.start_page+2,side:a.side(combinedPage),page_count:1};
             report.toc_rendering=combined;report.toc_entries=combinedData.entries;report.toc_pending_excluded=combinedData.pending;report.toc_page_numbers_source=combinedData.page_numbers_source;
-            report.toc_validation={status:"PASS",overset:false,actual_runtime_start_pages:true,chapters_point_to_recto_openers:true,credits_toc_same_page:true,entry_count:combinedData.entries.length};
+            report.toc_validation={status:"PASS",overset:false,actual_runtime_start_pages:true,chapters_point_to_recto_openers:!plan.digital_continuous,credits_toc_same_page:true,entry_count:combinedData.entries.length};
         }else if(plan.toc_manifest){
             runtime.setStage("native-toc-from-actual-ranges");var tocConfig=a.read(root,plan.toc_manifest),tocTokens=a.read(root,"spec/TOC_TOKENS.json"),tocRecord=null,creditsRecord=null,tocPages=[];
             for(i=0;i<report.components.length;i+=1){if(report.components[i].kind==="toc"){tocRecord=report.components[i];}if(report.components[i].id==="editorial_info"){creditsRecord=report.components[i];}}
@@ -151,7 +153,7 @@ SHAN.printBook = {
             report.credits_page={interior_page:creditsRecord.start_page,printed_folio:creditsRecord.start_page,review_pdf_page:creditsRecord.start_page+2,side:a.side(creditsPage)};
             report.toc_page={interior_page:tocRecord.start_page,printed_folio:tocRecord.start_page,review_pdf_page:tocRecord.start_page+2,side:a.side(tocPage),page_count:tocRecord.page_count};
             report.toc_rendering=tocResult;report.toc_entries=tocData.entries;report.toc_pending_excluded=tocData.pending;report.toc_page_numbers_source=tocData.page_numbers_source;
-            report.toc_validation={status:"PASS",overset:false,actual_runtime_start_pages:true,chapters_point_to_recto_openers:true,credits_toc_same_spread:true,entry_count:tocData.entries.length};
+            report.toc_validation={status:"PASS",overset:false,actual_runtime_start_pages:true,chapters_point_to_recto_openers:!plan.digital_continuous,credits_toc_same_spread:true,entry_count:tocData.entries.length};
         }
         runtime.setStage("audit-interior");this.auditPages(doc,false);report.interior_pages=doc.pages.length;
         report.first_interior_side=a.side(doc.pages[0]);report.last_interior_side=a.side(doc.pages[doc.pages.length-1]);
@@ -164,8 +166,10 @@ SHAN.printBook = {
         file=File(out+"/SHAN_INTERIOR_PRINT_"+version+".pdf");
         for(i=0;i<doc.pages.length;i+=1){runtime.setStage("reader-interior-page",{physical_page:i+1});page=a.page(review,"READER_INTERIOR:"+(i+1));this.placeBleed(review,page,file,i+1,page.label);
             this.check(a.side(page)===a.side(doc.pages[i]),"Reader/interior side disagreement");}
-        runtime.setStage("audit-reader");this.auditPages(review,true);this.check(review.pages.length===doc.pages.length+2,"Reader page count");
-        report.total_reader_pdf_pages=review.pages.length;report.c2_blank=true;report.reader_page_model=["Front Cover","Blank Inside Front Cover","Interior 1 RIGHT_HAND"];
+        runtime.setStage("audit-reader");if(plan.digital_back){report.back_cover=SHAN.backCover.append(root,review,plan.digital_back);}
+        this.auditPages(review,true);
+        this.check(review.pages.length===doc.pages.length+(plan.digital_back?4:2),"Reader page count");
+        report.total_reader_pdf_pages=review.pages.length;report.c2_blank=true;report.reader_page_model=["Front Cover","Blank Inside Front Cover","Interior 1 RIGHT_HAND"];if(plan.digital_back){report.reader_page_model.push("Blank Inside Back Cover","Approved Digital Back Cover");}
         report.focus=a.focus(review);runtime.setStage("save-reader");review.save(File(out+"/SHAN_REVIEW_"+version+".indd"));
         runtime.setStage("export-isolated-reader");this.exportIsolatedPages(review,File(out+"/SHAN_REVIEW_"+version+".pdf"),runtime);
         runtime.setStage("reader-facing-view");this.clipReaderInsideBleed(review);review.save();

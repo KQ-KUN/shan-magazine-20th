@@ -77,13 +77,15 @@ assert.deepEqual({ status: status.cover_system.status, runtimeTested: status.cov
     designValuesPending: status.cover_system.designValuesPending, frozen: status.cover_system.frozen },
 { status: 'PARTIAL_APPROVED_EXTERNAL_ARTWORK', runtimeTested: false, designValuesPending: true, frozen: false });
 assert.deepEqual(status.cover_system.frontCover, {
-    status: 'APPROVED', sourceType: 'EXTERNAL_ARTWORK', asset: 'assets/cover/SHAN_FRONT_COVER_FINAL.pdf',
+    status: 'APPROVED', sourceType: 'EXTERNAL_ARTWORK', asset: 'assets/cover/SHAN_FRONT_COVER_EMBLEM_R1.pdf',
     assemblyMode: 'DIRECT_PDF_LINK', jsxStatus: 'SUPERSEDED_BY_EXTERNAL_ARTWORK'
 });
-assert.equal(status.cover_system.backCover.status, 'PENDING');
+assert.equal(status.cover_system.backCover.status, 'APPROVED_FOR_DIGITAL');
 assert.equal(status.cover_system.spine.status, 'WIDTH_PENDING');
 for (const mod of ['foundation', 'chapter', 'interview', 'visual_system', 'fiction', 'memoir', 'feature', 'association_profile']) {
     const tag = mod === 'visual_system' ? 'visual-system-v1.0' : `${mod.replace('_', '-')}-v1.0`;
-    execFileSync('git', ['diff', '--exit-code', `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
+    // This release protects the accepted source at task start, including prior approved font fixes.
+    const baseline = JSON.parse(read('workflow/BACK_COVER_RELEASE_SCOPE.json')).frozen_baseline_commit;
+    execFileSync('git', ['diff', '--exit-code', baseline || `${tag}^{}`, '--', ...status[mod].scope], { cwd: root });
 }
 console.log('PASS Cover System Phase A: locked copy, 2x 185x260 mm pages, 3 mm bleed, local assertions, spine width pending, BOM and frozen scopes.');

@@ -83,7 +83,7 @@ SHAN.chapterArt = {
     },
     render: function (doc,page,section,t,base,transition) {
         var def=t.sections[section.id],b=page.bounds,p=SHAN.utils.pt,bg,foreground,frame,i,texts=[],frames=[];
-        this.check(def,"Unknown section "+section.id);this.check(page.side===(transition?PageSideOptions.LEFT_HAND:PageSideOptions.RIGHT_HAND),"Wrong page side "+section.id);
+        this.check(def,"Unknown section "+section.id);this.check((!transition && t.allow_verso_openers===true) || page.side===(transition?PageSideOptions.LEFT_HAND:PageSideOptions.RIGHT_HAND),"Wrong page side "+section.id);
         this.activeSection=section.id;
         page.appliedMaster=NothingEnum.NOTHING;page.label=transition?"CHAPTER_TRANSITION_VERSO:"+section.id:"CHAPTER_OPENER:"+section.id;
         this.styles(doc,t,base,def.light_background);
